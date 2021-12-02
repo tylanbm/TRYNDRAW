@@ -23,8 +23,8 @@ function HomeScreen({route, navigation }) {
             <Text>Home Screen</Text>
             <Text>Hi there {user.email}!</Text>
             <Button
-                title="Go to Details"
-                onPress={() => navigation.navigate('Details')}
+                title="Go to Challenges"
+                onPress={() => navigation.navigate('Challenges')}
             />
             <Text> </Text>
             <Button

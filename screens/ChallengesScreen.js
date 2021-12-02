@@ -1,14 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-function DetailsScreen() {
+function ChallengesScreen() {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Details Screen</Text>
+            <Text>Challenges waddup</Text>
         </View>
     );
 }
 
-export default DetailsScreen
+export default ChallengesScreen
 
 const styles = StyleSheet.create({})
