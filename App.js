@@ -68,9 +68,8 @@ const isSignedIn = () => {
 const AppWithTabs = () => (
   <Tab.Navigator>
     <Tab.Screen name="Home2" component={HomeScreen} />
-    <Tab.Screen name="Details" component={DetailsScreen} />
+    <Tab.Screen name="Challenges" component={ChallengesScreen} />
   </Tab.Navigator>
-
 );
 
 function App() {
@@ -104,12 +103,12 @@ function App() {
         <Stack.Screen name="Home" component={HomeScreen} options={{
           title: 'DART - HOME',
           headerTitleAlign: "center",
-         />
+        }} />
         
         <Stack.Screen name="Challenges" component={ChallengesScreen} />
         
         
-         />        
+        }} />        
       </Stack.Navigator>
     </NavigationContainer>
 */
