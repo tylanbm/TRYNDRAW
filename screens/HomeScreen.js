@@ -2,19 +2,15 @@ import React from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import { getAuth, signOut,onAuthStateChanged } from "firebase/auth";
 
-<<<<<<< HEAD
 
 
 
-=======
->>>>>>> origin/main
 function HomeScreen({navigation }) {
     
 
 
 
 
-<<<<<<< HEAD
  const signOutUser = () => {
      signOut(auth).then(() => {
         // Sign-out successful.
@@ -46,18 +42,6 @@ function HomeScreen({navigation }) {
         }
     });
     
-=======
-    const signOutUser = () => {
-        signOut(auth).then(() => {
-            // Sign-out successful.
-            console.log("Signed Out")
-            global.signedIn = false;
-        }).catch((error) => {
-            // An error happened.
-        });
-    }
-
->>>>>>> origin/main
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text>Home Screen</Text>
