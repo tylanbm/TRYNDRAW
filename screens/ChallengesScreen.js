@@ -309,7 +309,6 @@ function ChallengesScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
       <Text style={styles.subtitle1}>Select a Challenge:</Text>
 
       {/* select challenge buttons */}
@@ -466,16 +465,10 @@ function ChallengesScreen() {
 export default ChallengesScreen
 
 const styles = StyleSheet.create({
-      // style for entire page
+  // style for entire page
   container: {
     flex: 1,
     alignItems: 'center'
-  },
-
-  // tab title
-  title: {
-    fontSize: 50,
-    fontWeight: 'bold'
   },
 
   // "Select a Challenge:"
