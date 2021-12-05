@@ -464,7 +464,9 @@ function ChallengesScreen() {
 
 export default ChallengesScreen
 
+
 const styles = StyleSheet.create({
+
   // style for entire page
   container: {
     flex: 1,
