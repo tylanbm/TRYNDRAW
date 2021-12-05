@@ -3,7 +3,7 @@ import { Button, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useState } from 'react';
 
 
@@ -13,17 +13,18 @@ import DetailsScreen from './screens/DetailsScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ErrorScreen from './screens/ErrorScreen';
+import GalleryScreen from './screens/GalleryScreen';
 
 //Other
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const auth = getAuth();
 
-
 const AppWithTabs = () => (
   <Tab.Navigator>
     <Tab.Screen name="Home2" component={HomeScreen} />
     <Tab.Screen name="Details" component={DetailsScreen} />
+    <Tab.Screen name="Gallery" component={GalleryScreen} />
   </Tab.Navigator>
 
 );

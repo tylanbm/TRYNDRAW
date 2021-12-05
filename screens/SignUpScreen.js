@@ -13,13 +13,11 @@ const SignUpScreen = () => {
     const [password, setPassword] = useState('')
     const navigation = useNavigation();
 
-
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
         })
         return unsubscribe
     }, [])
-
 
     const register = async () => {
         try {
@@ -32,7 +30,6 @@ const SignUpScreen = () => {
             console.log(email);
         }
     }
-
 
     return (
         <View style={styles.container}>
