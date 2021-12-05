@@ -14,6 +14,7 @@ import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ErrorScreen from './screens/ErrorScreen';
 import GalleryScreen from './screens/GalleryScreen';
+import ChallengesScreen from './screens/ChallengesScreen';
 
 //Other
 const Stack = createNativeStackNavigator();
@@ -23,6 +24,7 @@ const auth = getAuth();
 const AppWithTabs = () => (
   <Tab.Navigator>
     <Tab.Screen name="Home2" component={HomeScreen} />
+    <Tab.Screen name='Challenges' component={ChallengesScreen} />
     <Tab.Screen name="Details" component={DetailsScreen} />
     <Tab.Screen name="Gallery" component={GalleryScreen} />
   </Tab.Navigator>
