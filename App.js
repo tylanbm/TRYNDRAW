@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Button, View, Text} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useState } from 'react';
+
+
+
 
 
 //Screen Imports
@@ -15,6 +18,11 @@ import SignUpScreen from './screens/SignUpScreen';
 import ErrorScreen from './screens/ErrorScreen';
 import GalleryScreen from './screens/GalleryScreen';
 import ChallengesScreen from './screens/ChallengesScreen';
+
+
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...', "Setting", "AsyncStorage"]); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 //Other
 const Stack = createNativeStackNavigator();
@@ -32,6 +40,7 @@ const AppWithTabs = () => (
 );
 
 function App() {
+  
   //Keeps state of whether user is signed in or not
   const [isSignedIn, setIsSignedIn] = useState('')
   

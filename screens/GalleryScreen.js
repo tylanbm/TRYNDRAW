@@ -1,27 +1,56 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import {collection, doc, setDoc, query, orderBy, limit} from 'firebase/firestore'
+import {collection, doc, setDoc, query, orderBy, limit, getFirestore,getDoc} from 'firebase/firestore'
 
 
-const GalleryScreen = () => {
+const db = getFirestore();
+const galleryRef = collection(db,"gallery");
 
-    /*
-    const messagesRef = collection("messages");
-    await setDoc(doc(messagesRef, "SF"), {
-        msg: "San Francisco is a place" 
+const docRef = doc(db, "gallery", "hello");
+
+
+const setData = async () => {
+
+    await setDoc(doc(db, "characters", "mario2"), {
+        employment: "plumber",
+        outfitColor: "red",
+        specialAttack: "fireball"
     });
-    await setDoc(doc(messagesRef, "TI"), {
-        msg: "Tyrell loves to buy icecream in SF"
-    });
-    */
-    //const q = query(messagesRef, orderBy('createdAt'), limit(5));
+
+}
+
+const getData = async () => {
+
+    const docRef = doc(db, "characters", "mario");
+    const docSnap = await getDoc(docRef);
+    let returnValue = "";
+
+    if (docSnap.exists()) {
+        returnValue = String(docSnap.data().specialAttack.toString());
+        console.log("Document data yay:", returnValue);
+    } else {
+        // doc.data() will be undefined in this case
+        returnValue="No document found!"
+        console.log("No such document!");
+    }
+    return returnValue;
+    
+}
+
+
+
+//const q = query(messagesRef, orderBy('createdAt'), limit(5));
 
     //const [messages] = useCollectionData(q);
 
+const GalleryScreen = () => {
+
+    let meme = getData();
+    
 
     return (
         <View>
-            <Text>This is a text component</Text>
+            <Text>Okay! {meme.toString()}</Text>
         </View>
     )
 }
