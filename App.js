@@ -39,16 +39,27 @@ const AppWithTabs = () => (
 
 );
 
-function SplashScreenImage({navigation}) {
+const imgBack = <ImageBackground
+  style={{flex:1}}
+  source={require('./assets/splash.png')}
+  resizeMode='contain'
+/>
+
+function SplashScreenHome({navigation}) {
   setTimeout(() => {
-    navigation.replace('Home')
-  }, 3000)
+    navigation.navigate('Home')
+  }, 1000)
   return (
-    <ImageBackground
-      style={{flex:1}}
-      source={require('./assets/splash.png')}
-      resizeMode='contain'>
-    </ImageBackground>
+    imgBack
+  )
+}
+
+function SplashScreenLogin({navigation}) {
+  setTimeout(() => {
+    navigation.navigate('Login')
+  }, 1000)
+  return (
+    imgBack
   )
 }
 
@@ -56,7 +67,7 @@ function App() {
   
   //Keeps state of whether user is signed in or not
   const [isSignedIn, setIsSignedIn] = useState('')
-  
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
@@ -79,18 +90,19 @@ function App() {
  //If user is signed in then render the app with tabs, otherwise send user to log in screen
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='SplashScreen'>
-        <Stack.Screen name='SplashScreen' component={SplashScreenImage} options={{headerShown: false}}/>
+      <Stack.Navigator>
         {isSignedIn ? (
           <>
+            <Stack.Screen name='SplashScreen' component={SplashScreenHome} options={{headerShown: false}} />
             <Stack.Screen name="Home" component={AppWithTabs} options={{headerShown: false}}/>
           </>
         ) : (
           <>
+            <Stack.Screen name='SplashScreen' component={SplashScreenLogin} options={{headerShown: false}} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
           </>
-  )}
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   

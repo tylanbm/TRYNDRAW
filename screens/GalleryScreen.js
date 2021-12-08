@@ -33,6 +33,7 @@ const getData = async () => {
         returnValue="No document found!"
         console.log("No such document!");
     }
+    returnValue = 'john'
     return returnValue;
     
 }
@@ -46,6 +47,7 @@ const getData = async () => {
 const GalleryScreen = () => {
 
     let meme = getData();
+    console.log('Hooh:', meme)
     
 
     return (
