@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Button, View, Text, ImageBackground } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -31,6 +31,19 @@ const AppWithTabs = () => (
 
 );
 
+function SplashScreenImage({navigation}) {
+  setTimeout(() => {
+    navigation.replace('Home')
+  }, 3000)
+  return (
+    <ImageBackground
+      style={{flex:1}}
+      source={require('./assets/splash.png')}
+      resizeMode='contain'>
+    </ImageBackground>
+  )
+}
+
 function App() {
   //Keeps state of whether user is signed in or not
   const [isSignedIn, setIsSignedIn] = useState('')
@@ -57,12 +70,13 @@ function App() {
  //If user is signed in then render the app with tabs, otherwise send user to log in screen
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-      {isSignedIn ? (
-        <>
-          <Stack.Screen name="Home" component={AppWithTabs} />
-        </>
-  ) : (
+      <Stack.Navigator initialRouteName='SplashScreen'>
+        <Stack.Screen name='SplashScreen' component={SplashScreenImage} options={{headerShown: false}}/>
+        {isSignedIn ? (
+          <>
+            <Stack.Screen name="Home" component={AppWithTabs} options={{headerShown: false}}/>
+          </>
+        ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
