@@ -1,13 +1,18 @@
+//General imports
 import * as React from 'react';
-import { Button, View, Text, ImageBackground } from 'react-native';
+import { Button, View, Text, ImageBackground, Settings } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useState } from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-
+//Ignore warnings
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...', "Setting", "AsyncStorage"]); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 
 //Screen Imports
@@ -18,11 +23,9 @@ import SignUpScreen from './screens/SignUpScreen';
 import ErrorScreen from './screens/ErrorScreen';
 import GalleryScreen from './screens/GalleryScreen';
 import ChallengesScreen from './screens/ChallengesScreen';
+import SettingsScreen from './screens/SettingsScreen';
 
 
-import { LogBox } from 'react-native';
-LogBox.ignoreLogs(['Warning: ...', "Setting", "AsyncStorage"]); // Ignore log notification by message
-LogBox.ignoreAllLogs();//Ignore all log notifications
 
 //Other
 const Stack = createNativeStackNavigator();
@@ -30,18 +33,45 @@ const Tab = createBottomTabNavigator();
 const auth = getAuth();
 
 const AppWithTabs = () => (
-  <Tab.Navigator>
-    <Tab.Screen name="Home2" component={HomeScreen} />
+  <Tab.Navigator 
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+
+        if (route.name === 'Home') {
+          iconName = focused
+            ? 'home'
+            : 'home-outline';
+        } else if (route.name === 'Gallery') {
+          iconName = focused ? 'images' : 'images-outline';
+        } else if (route.name === 'Vote') {
+          iconName = focused ? 'heart' : 'heart-outline';
+        } else if (route.name === 'Challenges') {
+          iconName = focused ? 'trophy' : 'trophy-outline';
+        }
+         else if (route.name === 'Settings') {
+          iconName = focused ? 'settings' : 'settings-outline';
+        }
+
+        // You can return any component that you like here!
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: '#05a6f8',
+      tabBarInactiveTintColor: 'gray',
+    })}>
+    <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name='Challenges' component={ChallengesScreen} />
-    <Tab.Screen name="Details" component={DetailsScreen} />
+    <Tab.Screen name="Vote" component={DetailsScreen} />
     <Tab.Screen name="Gallery" component={GalleryScreen} />
+    <Tab.Screen name="Settings" component={SettingsScreen} />
   </Tab.Navigator>
 
 );
 
+/*
 function SplashScreenImage({navigation}) {
   setTimeout(() => {
-    navigation.replace('Home')
+    navigation.replace('HomeTabs')
   }, 3000)
   return (
     <ImageBackground
@@ -51,6 +81,9 @@ function SplashScreenImage({navigation}) {
     </ImageBackground>
   )
 }
+
+<Stack.Screen name='SplashScreen' component={SplashScreenImage} options={{headerShown: false}}/>
+*/
 
 function App() {
   
@@ -79,11 +112,10 @@ function App() {
  //If user is signed in then render the app with tabs, otherwise send user to log in screen
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='SplashScreen'>
-        <Stack.Screen name='SplashScreen' component={SplashScreenImage} options={{headerShown: false}}/>
+      <Stack.Navigator >
         {isSignedIn ? (
           <>
-            <Stack.Screen name="Home" component={AppWithTabs} options={{headerShown: false}}/>
+            <Stack.Screen name="HomeTabs" component={AppWithTabs} options={{headerShown: false}}/>
           </>
         ) : (
           <>
