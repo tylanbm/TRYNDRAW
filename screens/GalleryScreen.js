@@ -52,6 +52,7 @@ const GalleryScreen = () => {
 
     return (
         <View>
+            <Text>I use {data}</Text>
             <FlatList
                 
             />
