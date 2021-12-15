@@ -1,15 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import {collection, doc, setDoc, query, orderBy, limit, getFirestore,getDoc} from 'firebase/firestore'
 
 
 const db = getFirestore();
 const galleryRef = collection(db,"gallery");
-
 const docRef = doc(db, "gallery", "hello");
 
 
-const setData = async () => {
+const setData = async() => {
 
     await setDoc(doc(db, "characters", "mario2"), {
         employment: "plumber",
@@ -19,44 +18,45 @@ const setData = async () => {
 
 }
 
-const getData = async () => {
+const getData = async() => {
 
-    const docRef = doc(db, "characters", "mario");
+    const docRef = doc(db, "characters", "testy");
     const docSnap = await getDoc(docRef);
-    let returnValue = "";
+    let returnVal = '';
 
     if (docSnap.exists()) {
-        returnValue = String(docSnap.data().specialAttack.toString());
-        console.log("Document data yay:", returnValue);
+        returnVal = String(docSnap.data().title.toString());
+        console.log("Document data:", returnVal);
     } else {
         // doc.data() will be undefined in this case
-        returnValue="No document found!"
+        returnVal = "No document found!";
         console.log("No such document!");
     }
-    returnValue = 'john'
-    return returnValue;
-    
+    return returnVal;
 }
 
 
-
 //const q = query(messagesRef, orderBy('createdAt'), limit(5));
-
-    //const [messages] = useCollectionData(q);
+//const [messages] = useCollectionData(q);
 
 const GalleryScreen = () => {
-
-    let meme = getData();
-    console.log('Hooh:', meme)
     
+    const [data, setData] = useState('det');
+
+    useEffect(() => {
+        const getIt = async() => {
+            setData(await getData());
+        }
+        getIt();
+    })
 
     return (
         <View>
-            <Text>Okay! {meme.toString()}</Text>
+            <Text>I use {data}</Text>
         </View>
     )
 }
 
-export default GalleryScreen
+export default GalleryScreen;
 
 const styles = StyleSheet.create({})

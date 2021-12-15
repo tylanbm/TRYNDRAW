@@ -54,15 +54,6 @@ function SplashScreenHome({navigation}) {
   )
 }
 
-function SplashScreenLogin({navigation}) {
-  setTimeout(() => {
-    navigation.navigate('Login')
-  }, 1000)
-  return (
-    imgBack
-  )
-}
-
 function App() {
   
   //Keeps state of whether user is signed in or not
@@ -93,12 +84,11 @@ function App() {
       <Stack.Navigator>
         {isSignedIn ? (
           <>
-            <Stack.Screen name='SplashScreen' component={SplashScreenHome} options={{headerShown: false}} />
+            <Stack.Screen name='SplashScreenHome' component={SplashScreenHome} options={{headerShown: false}} />
             <Stack.Screen name="Home" component={AppWithTabs} options={{headerShown: false}}/>
           </>
         ) : (
           <>
-            <Stack.Screen name='SplashScreen' component={SplashScreenLogin} options={{headerShown: false}} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
           </>
