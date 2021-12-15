@@ -24,6 +24,8 @@ import ErrorScreen from './screens/ErrorScreen';
 import GalleryScreen from './screens/GalleryScreen';
 import ChallengesScreen from './screens/ChallengesScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import CanvasScreen from './screens/CanvasScreen';
+import DebugScreen from './screens/DebugScreen';
 
 
 
@@ -51,6 +53,8 @@ const AppWithTabs = () => (
         }
          else if (route.name === 'Settings') {
           iconName = focused ? 'settings' : 'settings-outline';
+        } else {
+          iconName = focused ? 'bug' : 'bug-outline'
         }
 
         // You can return any component that you like here!
@@ -59,15 +63,17 @@ const AppWithTabs = () => (
       tabBarActiveTintColor: '#05a6f8',
       tabBarInactiveTintColor: 'gray',
     })}>
+    <Tab.Screen name='Debug' component={DebugScreen} />
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name='Challenges' component={ChallengesScreen} />
     <Tab.Screen name="Vote" component={DetailsScreen} />
-    <Tab.Screen name="Gallery" component={GalleryScreen} />
+    
     <Tab.Screen name="Settings" component={SettingsScreen} />
   </Tab.Navigator>
 
 );
-
+//<Tab.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
+//<Tab.Screen name="Gallery" component={GalleryScreen} />
 /*
 function SplashScreenImage({navigation}) {
   setTimeout(() => {
