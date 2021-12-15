@@ -1,9 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
-import { getAuth, signOut,onAuthStateChanged } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
-function HomeScreen({navigation }) {
-    
+const SettingsScreen = () => {
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -16,20 +15,21 @@ function HomeScreen({navigation }) {
             // An error happened.
         });
     }
-
+    
+    
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Home Screen</Text>
-            <Text>Hi there {user.email}!</Text>
+            <Text>The settings screen</Text>
             <Button
-                title="Go to Details"
-                onPress={() => navigation.navigate('Vote')}
+                title="Sign Out"
+                onPress={() => signOutUser()}
+                
             />
-            <Text> </Text>
         </View>
-    );
+        
+    )
 }
 
-export default HomeScreen
+export default SettingsScreen
 
 const styles = StyleSheet.create({})

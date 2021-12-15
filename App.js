@@ -1,13 +1,18 @@
+//General imports
 import * as React from 'react';
-import { Button, View, Text, ImageBackground } from 'react-native';
+import { Button, View, Text, ImageBackground, Settings } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useState } from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-
+//Ignore warnings
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...', "Setting", "AsyncStorage"]); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 
 //Screen Imports
@@ -18,11 +23,11 @@ import SignUpScreen from './screens/SignUpScreen';
 import ErrorScreen from './screens/ErrorScreen';
 import GalleryScreen from './screens/GalleryScreen';
 import ChallengesScreen from './screens/ChallengesScreen';
+import SettingsScreen from './screens/SettingsScreen';
+import CanvasScreen from './screens/CanvasScreen';
+import DebugScreen from './screens/DebugScreen';
 
 
-import { LogBox } from 'react-native';
-LogBox.ignoreLogs(['Warning: ...', "Setting", "AsyncStorage"]); // Ignore log notification by message
-LogBox.ignoreAllLogs();//Ignore all log notifications
 
 //Other
 const Stack = createNativeStackNavigator();
@@ -30,11 +35,41 @@ const Tab = createBottomTabNavigator();
 const auth = getAuth();
 
 const AppWithTabs = () => (
-  <Tab.Navigator>
-    <Tab.Screen name="Home2" component={HomeScreen} />
+  <Tab.Navigator 
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+
+        if (route.name === 'Home') {
+          iconName = focused
+            ? 'home'
+            : 'home-outline';
+        } else if (route.name === 'Gallery') {
+          iconName = focused ? 'images' : 'images-outline';
+        } else if (route.name === 'Vote') {
+          iconName = focused ? 'heart' : 'heart-outline';
+        } else if (route.name === 'Challenges') {
+          iconName = focused ? 'trophy' : 'trophy-outline';
+        }
+         else if (route.name === 'Settings') {
+          iconName = focused ? 'settings' : 'settings-outline';
+        } else {
+          iconName = focused ? 'bug' : 'bug-outline'
+        }
+
+        // You can return any component that you like here!
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: '#05a6f8',
+      tabBarInactiveTintColor: 'gray',
+    })}>
+    <Tab.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
+
+    <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name='Challenges' component={ChallengesScreen} />
-    <Tab.Screen name="Details" component={DetailsScreen} />
+    <Tab.Screen name="Vote" component={DetailsScreen} />
     <Tab.Screen name="Gallery" component={GalleryScreen} />
+    <Tab.Screen name="Settings" component={SettingsScreen} />
   </Tab.Navigator>
 
 );
@@ -53,6 +88,9 @@ function SplashScreenHome({navigation}) {
     imgBack
   )
 }
+
+<Stack.Screen name='SplashScreen' component={SplashScreenHome} options={{headerShown: false}}/>
+
 
 function App() {
   
