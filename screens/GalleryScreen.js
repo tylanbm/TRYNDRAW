@@ -8,7 +8,7 @@ const galleryRef = collection(db,"gallery");
 const docRef = doc(db, "gallery", "hello");
 
 
-const setData = async() => {
+const setDataInDatabase = async() => {
 
     await setDoc(doc(db, "characters", "mario2"), {
         employment: "plumber",
