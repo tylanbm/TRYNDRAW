@@ -63,17 +63,17 @@ const AppWithTabs = () => (
       tabBarActiveTintColor: '#05a6f8',
       tabBarInactiveTintColor: 'gray',
     })}>
-    <Tab.Screen name='Debug' component={DebugScreen} />
+    <Tab.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
+
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name='Challenges' component={ChallengesScreen} />
     <Tab.Screen name="Vote" component={DetailsScreen} />
-    
+    <Tab.Screen name="Gallery" component={GalleryScreen} />
     <Tab.Screen name="Settings" component={SettingsScreen} />
   </Tab.Navigator>
 
 );
-//<Tab.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
-//<Tab.Screen name="Gallery" component={GalleryScreen} />
+
 /*
 function SplashScreenImage({navigation}) {
   setTimeout(() => {
