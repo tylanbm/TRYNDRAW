@@ -41,7 +41,7 @@ const getData = async() => {
 
 const GalleryScreen = () => {
     
-    const [data, setData] = useState('det');
+    const [data, setData] = useState('');
 
     useEffect(() => {
         const getIt = async() => {
