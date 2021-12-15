@@ -89,7 +89,7 @@ function SplashScreenHome({navigation}) {
   )
 }
 
-<Stack.Screen name='SplashScreen' component={SplashScreenHome} options={{headerShown: false}}/>
+//<Stack.Screen name='SplashScreen' component={SplashScreenHome} options={{headerShown: false}}/>
 
 
 function App() {

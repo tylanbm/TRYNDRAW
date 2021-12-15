@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, FlatList } from 'react-native'
 import {collection, doc, setDoc, query, orderBy, limit, getFirestore,getDoc} from 'firebase/firestore'
 
 
@@ -20,12 +20,12 @@ const setData = async() => {
 
 const getData = async() => {
 
-    const docRef = doc(db, "characters", "testy");
+    const docRef = doc(db, "characters", "mario");
     const docSnap = await getDoc(docRef);
     let returnVal = '';
 
     if (docSnap.exists()) {
-        returnVal = String(docSnap.data().title.toString());
+        returnVal = String(docSnap.data().specialAttack.toString());
         console.log("Document data:", returnVal);
     } else {
         // doc.data() will be undefined in this case
@@ -52,7 +52,9 @@ const GalleryScreen = () => {
 
     return (
         <View>
-            <Text>I use {data}</Text>
+            <FlatList
+                
+            />
         </View>
     )
 }
