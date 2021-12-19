@@ -64,7 +64,6 @@ const AppWithTabs = () => (
       tabBarInactiveTintColor: 'gray',
     })}>
     <Tab.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
-
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name='Challenges' component={ChallengesScreen} />
     <Tab.Screen name="Vote" component={DetailsScreen} />
@@ -80,6 +79,7 @@ const imgBack = <ImageBackground
   resizeMode='contain'
 />
 
+/*
 function SplashScreenHome({navigation}) {
   setTimeout(() => {
     navigation.navigate('Home')
@@ -88,8 +88,10 @@ function SplashScreenHome({navigation}) {
     imgBack
   )
 }
+*/
 
 //<Stack.Screen name='SplashScreen' component={SplashScreenHome} options={{headerShown: false}}/>
+//<Stack.Screen name='SplashScreenHome' component={SplashScreenHome} options={{headerShown: false}} />
 
 
 function App() {
@@ -122,8 +124,7 @@ function App() {
       <Stack.Navigator>
         {isSignedIn ? (
           <>
-            <Stack.Screen name='SplashScreenHome' component={SplashScreenHome} options={{headerShown: false}} />
-            <Stack.Screen name="Home" component={AppWithTabs} options={{headerShown: false}}/>
+            <Stack.Screen name="HomeTabs" component={AppWithTabs} options={{headerShown: false}}/>
           </>
         ) : (
           <>
