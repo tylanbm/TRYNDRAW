@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+
 import { StyleSheet,
     Text,
     View,
@@ -48,7 +49,6 @@ const getAllData = async() => {
     const querySnapshot = await getDocs(docsRef);
     const tempData = [];
     
-
     if (querySnapshot != null) {
         querySnapshot.forEach((doc) => {
             let yay = {

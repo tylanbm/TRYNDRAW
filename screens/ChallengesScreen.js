@@ -23,96 +23,98 @@ import {
 } from '@expo/vector-icons'
 
 
-function ChallengesScreen() {
+// screen function
+const ChallengesScreen = () => {
+
   // icons for challenge detail names
-  const nameIcon = <MaterialIcons name='drive-file-rename-outline' size={20} color='black' />
-  const toolIcon = <Feather name='pen-tool' size={20} color='black' />
-  const colourIcon = <Ionicons name='color-palette' size={20} color='black' />
-  const timeIcon = <Ionicons name='time' size={20} color='black' />
+  const nameIcon = <MaterialIcons name='drive-file-rename-outline' size={20} color='black' />;
+  const toolIcon = <Feather name='pen-tool' size={20} color='black' />;
+  const colourIcon = <Ionicons name='color-palette' size={20} color='black' />;
+  const timeIcon = <Ionicons name='time' size={20} color='black' />;
 
   // icons for challenge tools
-  const toolBrush = <Entypo name='brush' size={40} color='black' />
-  const toolBucket = <Foundation name='paint-bucket' size={40} color='black' />
-  const toolKnife = <MaterialCommunityIcons name='knife' size={42} color='black' />
-  const toolPencil = <Entypo name='pencil' size={40} color='black' />
-  const toolUndo = <FontAwesome5 name='undo' size={40} color='black' />
-  const toolNone = <Feather name='x' size={40} color='black' />
+  const toolBrush = <Entypo name='brush' size={40} color='black' />;
+  const toolBucket = <Foundation name='paint-bucket' size={40} color='black' />;
+  const toolKnife = <MaterialCommunityIcons name='knife' size={42} color='black' />;
+  const toolPencil = <Entypo name='pencil' size={40} color='black' />;
+  const toolUndo = <FontAwesome5 name='undo' size={40} color='black' />;
+  const toolNone = <Feather name='x' size={40} color='black' />;
 
   // icons for challenge colours
-  const colourBlack = <FontAwesome name='circle' size={40} color='black' />
-  const colourBlue = <FontAwesome name='circle' size={40} color='blue' />
-  const colourGreen = <FontAwesome name='circle' size={40} color='green' />
-  const colourGrey = <FontAwesome name='circle' size={40} color='grey' />
-  const colourOrange = <FontAwesome name='circle' size={40} color='darkorange' />
-  const colourRed = <FontAwesome name='circle' size={40} color='red' />
-  const colourNone = <FontAwesome name='circle-o' size={40} color='black' />
+  const colourBlack = <FontAwesome name='circle' size={40} color='black' />;
+  const colourBlue = <FontAwesome name='circle' size={40} color='blue' />;
+  const colourGreen = <FontAwesome name='circle' size={40} color='green' />;
+  const colourGrey = <FontAwesome name='circle' size={40} color='grey' />;
+  const colourOrange = <FontAwesome name='circle' size={40} color='darkorange' />;
+  const colourRed = <FontAwesome name='circle' size={40} color='red' />;
+  const colourNone = <FontAwesome name='circle-o' size={40} color='black' />;
 
   // challenge names
-  const chall1 = 'Happy\nCats'
-  const chall2 = 'Cat\nMan'
-  const chall3 = 'Rainy\nCity'
+  const chall1 = 'Happy\nCats';
+  const chall2 = 'Cat\nMan';
+  const chall3 = 'Rainy\nCity';
 
   // variables for challenge selection colours; top buttons
-  const [challColour1, setChallColour1] = useState('grey')
-  const [challColour2, setChallColour2] = useState('grey')
-  const [challColour3, setChallColour3] = useState('grey')
+  const [challColour1, setChallColour1] = useState('grey');
+  const [challColour2, setChallColour2] = useState('grey');
+  const [challColour3, setChallColour3] = useState('grey');
 
   // variable for challenge detail name
-  const [challName, setChallName] = useState('Word1\nWord2')
+  const [challName, setChallName] = useState('Word1\nWord2');
 
   // variable for challenge detail tools
-  const [tool1, setTool1] = useState(toolNone)
-  const [tool2, setTool2] = useState(toolNone)
-  const [tool3, setTool3] = useState(toolNone)
-  const [toolName1, setToolName1] = useState('None')
-  const [toolName2, setToolName2] = useState('None')
-  const [toolName3, setToolName3] = useState('None')
+  const [tool1, setTool1] = useState(toolNone);
+  const [tool2, setTool2] = useState(toolNone);
+  const [tool3, setTool3] = useState(toolNone);
+  const [toolName1, setToolName1] = useState('None');
+  const [toolName2, setToolName2] = useState('None');
+  const [toolName3, setToolName3] = useState('None');
 
   // variables for challenge detail colours
-  const [colour1, setColour1] = useState(colourNone)
-  const [colour2, setColour2] = useState(colourNone)
-  const [colour3, setColour3] = useState(colourNone)
-  const [colourName1, setColourName1] = useState('None')
-  const [colourName2, setColourName2] = useState('None')
-  const [colourName3, setColourName3] = useState('None')
+  const [colour1, setColour1] = useState(colourNone);
+  const [colour2, setColour2] = useState(colourNone);
+  const [colour3, setColour3] = useState(colourNone);
+  const [colourName1, setColourName1] = useState('None');
+  const [colourName2, setColourName2] = useState('None');
+  const [colourName3, setColourName3] = useState('None');
 
   // variable for challenge detail time
-  const [time, setTime] = useState('00:00')
+  const [time, setTime] = useState('00:00');
 
   // switches between showing the "START DRAWING!" button and the "Enter text" text box
-  const [showText, setShowText] = useState(false)
+  const [showText, setShowText] = useState(false);
 
   // change the 1st tool
   const changeTool1 = (tool) => {
     switch(tool) {
       case 'brush':
-        setTool1(toolBrush)
-        setToolName1('Brush')
+        setTool1(toolBrush);
+        setToolName1('Brush');
         break;
       
       case 'bucket':
-        setTool1(toolBucket)
-        setToolName1('Bucket')
+        setTool1(toolBucket);
+        setToolName1('Bucket');
         break;
 
       case 'knife':
-        setTool1(toolKnife)
-        setToolName1('Knife')
+        setTool1(toolKnife);
+        setToolName1('Knife');
         break;
       
       case 'pencil':
-        setTool1(toolPencil)
-        setToolName1('Pencil')
+        setTool1(toolPencil);
+        setToolName1('Pencil');
         break;
 
       case 'undo':
-        setTool1(toolUndo)
-        setToolName1('Undo')
+        setTool1(toolUndo);
+        setToolName1('Undo');
         break;
 
       default:
-        setTool1(toolNone)
-        setToolName1('None')
+        setTool1(toolNone);
+        setToolName1('None');
         break;
     }
   }
@@ -121,33 +123,33 @@ function ChallengesScreen() {
   const changeTool2 = (tool) => {
     switch(tool) {
       case 'brush':
-        setTool2(toolBrush)
-        setToolName2('Brush')
+        setTool2(toolBrush);
+        setToolName2('Brush');
         break;
       
       case 'bucket':
-        setTool2(toolBucket)
-        setToolName2('Bucket')
+        setTool2(toolBucket);
+        setToolName2('Bucket');
         break;
 
       case 'knife':
-        setTool2(toolKnife)
-        setToolName2('Knife')
+        setTool2(toolKnife);
+        setToolName2('Knife');
         break;
       
       case 'pencil':
-        setTool2(toolPencil)
-        setToolName2('Pencil')
+        setTool2(toolPencil);
+        setToolName2('Pencil');
         break;
 
       case 'undo':
-        setTool2(toolUndo)
-        setToolName2('Undo')
+        setTool2(toolUndo);
+        setToolName2('Undo');
         break;
 
       default:
-        setTool2(toolNone)
-        setToolName2('None')
+        setTool2(toolNone);
+        setToolName2('None');
         break;
     }
   }
@@ -156,33 +158,33 @@ function ChallengesScreen() {
   const changeTool3 = (tool) => {
     switch(tool) {
       case 'brush':
-        setTool3(toolBrush)
-        setToolName3('Brush')
+        setTool3(toolBrush);
+        setToolName3('Brush');
         break;
       
       case 'bucket':
-        setTool3(toolBucket)
-        setToolName3('Bucket')
+        setTool3(toolBucket);
+        setToolName3('Bucket');
         break;
 
       case 'knife':
-        setTool3(toolKnife)
-        setToolName3('Knife')
+        setTool3(toolKnife);
+        setToolName3('Knife');
         break;
       
       case 'pencil':
-        setTool3(toolPencil)
-        setToolName3('Pencil')
+        setTool3(toolPencil);
+        setToolName3('Pencil');
         break;
 
       case 'undo':
-        setTool3(toolUndo)
-        setToolName3('Undo')
+        setTool3(toolUndo);
+        setToolName3('Undo');
         break;
 
       default:
-        setTool3(toolNone)
-        setToolName3('None')
+        setTool3(toolNone);
+        setToolName3('None');
         break;
     }
   }
@@ -191,38 +193,38 @@ function ChallengesScreen() {
   const changeColour1 = (colour) => {
     switch(colour) {
       case 'black':
-        setColour1(colourBlack)
-        setColourName1('Black')
+        setColour1(colourBlack);
+        setColourName1('Black');
         break;
         
       case 'blue':
-        setColour1(colourBlue)
-        setColourName1('Blue')
+        setColour1(colourBlue);
+        setColourName1('Blue');
         break;
   
       case 'green':
-        setColour1(colourGreen)
-        setColourName1('Green')
+        setColour1(colourGreen);
+        setColourName1('Green');
         break;
         
       case 'grey':
-        setColour1(colourGrey)
-        setColourName1('Grey')
+        setColour1(colourGrey);
+        setColourName1('Grey');
         break;
   
       case 'orange':
-        setColour1(colourOrange)
-        setColourName1('Orange')
+        setColour1(colourOrange);
+        setColourName1('Orange');
         break;
 
       case 'red':
-        setColour1(colourRed)
-        setColourName1('Red')
+        setColour1(colourRed);
+        setColourName1('Red');
         break;
   
       default:
-        setColour1(colourNone)
-        setColourName1('None')
+        setColour1(colourNone);
+        setColourName1('None');
         break;
     }
   }
@@ -231,38 +233,38 @@ function ChallengesScreen() {
   const changeColour2 = (colour) => {
     switch(colour) {
       case 'black':
-        setColour2(colourBlack)
-        setColourName2('Black')
+        setColour2(colourBlack);
+        setColourName2('Black');
         break;
         
       case 'blue':
-        setColour2(colourBlue)
-        setColourName2('Blue')
+        setColour2(colourBlue);
+        setColourName2('Blue');
         break;
   
       case 'green':
-        setColour2(colourGreen)
-        setColourName2('Green')
+        setColour2(colourGreen);
+        setColourName2('Green');
         break;
         
       case 'grey':
-        setColour2(colourGrey)
-        setColourName2('Grey')
+        setColour2(colourGrey);
+        setColourName2('Grey');
         break;
   
       case 'orange':
-        setColour2(colourOrange)
-        setColourName2('Orange')
+        setColour2(colourOrange);
+        setColourName2('Orange');
         break;
 
       case 'red':
-        setColour2(colourRed)
-        setColourName2('Red')
+        setColour2(colourRed);
+        setColourName2('Red');
         break;
   
       default:
-        setColour2(colourNone)
-        setColourName2('None')
+        setColour2(colourNone);
+        setColourName2('None');
         break;
     }
   }
@@ -271,38 +273,38 @@ function ChallengesScreen() {
   const changeColour3 = (colour) => {
     switch(colour) {
       case 'black':
-        setColour3(colourBlack)
-        setColourName3('Black')
+        setColour3(colourBlack);
+        setColourName3('Black');
         break;
         
       case 'blue':
-        setColour3(colourBlue)
-        setColourName3('Blue')
+        setColour3(colourBlue);
+        setColourName3('Blue');
         break;
   
       case 'green':
-        setColour3(colourGreen)
-        setColourName3('Green')
+        setColour3(colourGreen);
+        setColourName3('Green');
         break;
         
       case 'grey':
-        setColour3(colourGrey)
-        setColourName3('Grey')
+        setColour3(colourGrey);
+        setColourName3('Grey');
         break;
   
       case 'orange':
-        setColour3(colourOrange)
-        setColourName3('Orange')
+        setColour3(colourOrange);
+        setColourName3('Orange');
         break;
 
       case 'red':
-        setColour3(colourRed)
-        setColourName3('Red')
+        setColour3(colourRed);
+        setColourName3('Red');
         break;
   
       default:
-        setColour3(colourNone)
-        setColourName3('None')
+        setColour3(colourNone);
+        setColourName3('None');
         break;
     }
   }
@@ -462,7 +464,7 @@ function ChallengesScreen() {
   )
 }
 
-export default ChallengesScreen
+export default ChallengesScreen;
 
 
 const styles = StyleSheet.create({
@@ -470,7 +472,7 @@ const styles = StyleSheet.create({
   // style for entire page
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   // "Select a Challenge:"
@@ -482,7 +484,7 @@ const styles = StyleSheet.create({
   // challenge selection buttons
   challButton: {
     width: 120,
-    height: 120
+    height: 120,
   },
 
   // text within challenge buttons
@@ -492,19 +494,19 @@ const styles = StyleSheet.create({
     marginRight: 10,
     textAlign: 'center',
     lineHeight: 50,
-    borderRadius: 10
+    borderRadius: 10,
   },
 
   // "Challenge Details"
   subtitle2: {
     fontSize: 35,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
 
   // text for the detail categories
   detailName: {
     fontSize: 20,
-    marginTop: 10
+    marginTop: 10,
   },
 
   // text and icons in the categories
@@ -516,31 +518,31 @@ const styles = StyleSheet.create({
   // left column details; name and colours
   detailLeft: {
     flexDirection: 'column',
-    width: 100
+    width: 100,
   },
 
   // right column details; Tools and Time
   detailRight: {
     flexDirection: 'column',
-    marginLeft: 60
+    marginLeft: 60,
   },
 
   // labels for challenge detail icons
   iconLabel: {
-    fontSize: 12
+    fontSize: 12,
   },
 
   // how the challenge detail icons appear
   iconView: {
     flexDirection: 'column',
     alignItems: 'center',
-    width: 45
+    width: 45,
   },
 
   // "Enter text" text box
   textView: {
     fontSize: 25,
-    width: 300
+    width: 300,
   },
 
   // "START DRAWING!" button
@@ -550,7 +552,7 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: 'green',
     borderRadius: 10,
-    textAlign: 'center'
+    textAlign: 'center',
   },
 
   // I think this formats the whole screen
