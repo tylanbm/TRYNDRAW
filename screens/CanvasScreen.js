@@ -1,5 +1,11 @@
-import React, { useState } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { FlatList,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View } from "react-native";
 
 const DATA = [
     {
@@ -59,6 +65,7 @@ const CanvasScreen = () => {
                     extraData={selectedId}
                 />
             </SafeAreaView>
+
             <SafeAreaView style={styles.canvas}></SafeAreaView>
             <SafeAreaView>
                 <FlatList
@@ -70,7 +77,6 @@ const CanvasScreen = () => {
                     extraData={selectedId}
                 />
             </SafeAreaView>
-            
         </View>
     );
 };
