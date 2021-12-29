@@ -22,8 +22,8 @@ function HomeScreen({navigation }) {
             <Text>Home Screen</Text>
             <Text>Hi there {user.email}!</Text>
             <Button
-                title="Go to Details"
-                onPress={() => navigation.navigate('Vote')}
+                title="Start Drawing"
+                onPress={() => navigation.navigate('Canvas')}
             />
             <Text> </Text>
         </View>
