@@ -64,7 +64,6 @@ const AppWithTabs = () => (
       tabBarActiveTintColor: '#05a6f8',
       tabBarInactiveTintColor: 'gray',
     })}>
-    <Tab.Screen name="TestCanvas" component={TestCanvasScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name='Challenges' component={ChallengesScreen} />

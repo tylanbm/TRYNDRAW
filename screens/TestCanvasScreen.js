@@ -1,8 +1,9 @@
 import React, { useRef } from 'react'
-import { Draw, DrawRef } from "@benjeau/react-native-draw";
+
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ViewShot from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
+import { Draw, DrawRef } from "@benjeau/react-native-draw";
 
 
 
