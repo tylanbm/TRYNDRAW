@@ -51,11 +51,11 @@ const getAllData = async() => {
     
     if (querySnapshot != null) {
         querySnapshot.forEach((doc) => {
-            let yay = {
+            let temp = {
                 id: doc.data().id,
-                attack: doc.data().specialAttack,
+                specialAttack: doc.data().specialAttack,
             }
-            tempData.push(yay);
+            tempData.push(temp);
         });
     } else {
         console.log("No such query snapshot!");
@@ -78,14 +78,6 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
     </TouchableOpacity>
 );
 
-/*<FlatList
-                style={styles.container1}
-                data={fbData}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                extraData={selectedId}
-            />*/
-
 const datas = () => {
     const DATA = [
         {
@@ -107,9 +99,9 @@ const datas = () => {
 
 const GalleryScreen = () => {
 
-    const data = '';
-    const [fbData, setFbData] = useState([]);
-    const tempDatas = datas();
+    //let data = '';
+    //const tempDatas = datas();
+    const [fireData, setFireData] = useState([]);
 
     // useEffect(() => {
     //     const getIt = async() => {
@@ -119,15 +111,15 @@ const GalleryScreen = () => {
     //     console.log(data);
     // })
 
-    /*
+    
     // google why useEffect is refereshing repeatedly
     useEffect(() => {
         const getThis = async() => {
-            setFbData(await getAllData());
+            setFireData(await getAllData());
         }
         getThis();
-        console.log(fbData);
-    }, [data])*/
+        console.log(fireData);
+    }, [])
 
     const [selectedId, setSelectedId] = useState(null);
 
@@ -147,21 +139,21 @@ const GalleryScreen = () => {
 
     return (
         <View>
-            <Text>I use {data}</Text>
             <SafeAreaView>
-            <FlatList
-                style={styles.container1}
-                data={tempDatas}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                extraData={selectedId}
-            />
+                <FlatList
+                    style={styles.container1}
+                    data={fireData}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                    extraData={selectedId}
+                />
             </SafeAreaView>
         </View>
     )
 }
 
 export default GalleryScreen;
+
 
 const styles = StyleSheet.create({
     container1: {
