@@ -26,6 +26,7 @@ import ChallengesScreen from './screens/ChallengesScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import CanvasScreen from './screens/CanvasScreen';
 import DebugScreen from './screens/DebugScreen';
+import TestCanvasScreen from './screens/TestCanvasScreen';
 
 
 
@@ -63,6 +64,7 @@ const AppWithTabs = () => (
       tabBarActiveTintColor: '#05a6f8',
       tabBarInactiveTintColor: 'gray',
     })}>
+    <Tab.Screen name="TestCanvas" component={TestCanvasScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Home" component={HomeScreen} />
     <Tab.Screen name='Challenges' component={ChallengesScreen} />
