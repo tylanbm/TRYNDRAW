@@ -1,31 +1,55 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+
+import { getStorage,
+    ref,
+    uploadBytes,
+    uploadBytesResumable } from 'firebase/storage';
 
 import { StyleSheet,
     Text,
     View,
+    Image,
     FlatList,
     SafeAreaView,
     ActivityIndicator,
-    TouchableOpacity } from 'react-native'
+    TouchableOpacity } from 'react-native';
+
 import { collection,
     doc,
     setDoc,
     getFirestore,
     getDoc,
-    getDocs } from 'firebase/firestore'
+    getDocs, } from 'firebase/firestore';
+
+import { captureRef, viewRef } from 'react-native-view-shot';
 
 const db = getFirestore();
+const storage = getStorage();
 const galleryRef = collection(db,"gallery");
 const docRef = doc(db, "gallery", "hello");
 
 const setDataInDatabase = async() => {
-
     await setDoc(doc(db, "characters", "mario2"), {
         employment: "plumber",
         outfitColor: "red",
         specialAttack: "fireball"
     });
+}
 
+const uploadImg = async() => {
+    const marioRef = <Image source={require('../assets/mario.png')} />;
+    const marioImgRef = captureRef(marioRef, {
+        format: "png",
+        result: 'base64',
+      }).then(
+        uri => console.log("Image saved to", uri),
+        error => console.error("Oops, snapshot failed", error),
+      );
+		
+    const metadata = { contentType: 'image/png' };
+    uploadBytes(marioRef, marioImgRef, metadata).then(() => {
+        console.log("Uploaded file!");
+    });
 }
 
 const getData = async() => {
@@ -60,8 +84,7 @@ const getAllData = async() => {
     } else {
         console.log("No such query snapshot!");
     }
-     
-    console.log(tempData); 
+    
     return tempData;
 }
 
@@ -113,6 +136,13 @@ const GalleryScreen = () => {
 
     
     // google why useEffect is refereshing repeatedly
+    useEffect(() => {
+        const getIt = async() => {
+            await uploadImg();
+        }
+        getIt();
+    }, [])
+
     useEffect(() => {
         const getThis = async() => {
             setFireData(await getAllData());
