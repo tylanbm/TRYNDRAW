@@ -5298,6 +5298,11 @@
   "resolved" "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   "version" "1.2.3"
 
+"random-word-slugs@^0.1.6":
+  "integrity" "sha512-EVPGKyhXTdnBlMCrqBvby3nf9Jz+W/rVuP2nOi68aDZa6VJ2OXvz+VDCwl8jULBLZ1Ht8wscRA+/SogeI9NYGw=="
+  "resolved" "https://registry.npmjs.org/random-word-slugs/-/random-word-slugs-0.1.6.tgz"
+  "version" "0.1.6"
+
 "range-parser@~1.2.1":
   "integrity" "sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg=="
   "resolved" "https://registry.npmjs.org/range-parser/-/range-parser-1.2.1.tgz"

@@ -91,7 +91,7 @@ const SettingsScreen = () => {
                     style={styles.buttonStyle}
                     >
                     <Text style={{fontWeight: 'bold', color: buttonColour2}}>APP INFO</Text>
-                    <Text style={styles.icon}> {heart2}</Text>
+                    <Text style={styles.icon}>{heart2}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     // both buttons
     buttonStyle: {
         flexDirection: 'row',
-        width: 400,
+        width: '95%',
     },
 
     // heart icon
