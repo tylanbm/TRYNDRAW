@@ -37,18 +37,12 @@ const setDataInDatabase = async() => {
 }
 
 const uploadImg = async() => {
-    const marioRef = <Image source={require('../assets/mario.png')} />;
-    const marioImgRef = captureRef(marioRef, {
-        format: "png",
-        result: 'base64',
-      }).then(
-        uri => console.log("Image saved to", uri),
-        error => console.error("Oops, snapshot failed", error),
-      );
-		
+    // to be fixed
+    const marioRef = ref(storage, 'gallery.png');
+    const marioImgRef = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]);
     const metadata = { contentType: 'image/png' };
     uploadBytes(marioRef, marioImgRef, metadata).then(() => {
-        console.log("Uploaded file!");
+        console.log("Uploaded gallery file!");
     });
 }
 

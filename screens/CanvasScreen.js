@@ -4,6 +4,10 @@ import { backgroundColor, color } from "react-native/Libraries/Components/View/R
 import ViewShot from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 import { Draw, DrawRef,ColorPicker} from "@benjeau/react-native-draw";
+import { getStorage,
+    ref,
+    uploadBytes,
+    uploadBytesResumable } from 'firebase/storage';
 
 const COLORS = [
     {
@@ -83,6 +87,7 @@ const CanvasScreen = () => {
 
     const drawRef = useRef(DrawRef);
     const viewShot = useRef(ViewShot);
+    const storage = getStorage();
     
 
     let currentThickness = 10;
@@ -137,6 +142,14 @@ const CanvasScreen = () => {
             console.log("Do something with ", uri);
             MediaLibrary.requestPermissionsAsync();
             MediaLibrary.saveToLibraryAsync(uri);
+
+            /* !!!NEEDS TO BE FIXED!!!
+            const imgRef = ref(storage, 'canvas.jpg');
+            const imgFile = new File(uri, 'canvas.jpg', {type: 'image/jpg'});
+            const metadata = { contentType: 'image/jpg' };
+            uploadBytes(imgRef, imgFile, metadata).then(() => {
+                console.log("Uploaded canvas file!");
+            });*/
         })
     };
 
@@ -253,7 +266,7 @@ const CanvasScreen = () => {
                 
                 <ViewShot
                     ref={viewShot}
-                    options={{ format: "jpg", quality: 0.9 }} >
+                    options={{ format: "jpg", quality: 0.9, result: 'base64' }} >
 
                     <View style={styles.container}>
                         <Draw
