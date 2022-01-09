@@ -14,15 +14,15 @@ const LoginScreen = () => {
     const [password, setPassword] = useState('')
     const navigation = useNavigation();
 
-    
+    //Check if user is logged in and return state
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
         })
         return unsubscribe
     }, [])
     
-    
-        const register = async () => {
+    //Register a new user
+    const register = async () => {
         try {
             const user = await createUserWithEmailAndPassword(auth, email,password);
             console.log(user);
@@ -33,7 +33,7 @@ const LoginScreen = () => {
             console.log(email);
         }  
     }
-
+    
     const logInUser = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
