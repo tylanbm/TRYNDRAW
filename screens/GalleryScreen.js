@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, } from 'react';
 
 import { getStorage,
     ref,
-    uploadBytes,
-    uploadBytesResumable } from 'firebase/storage';
+    getDownloadURL,
+    listAll, } from 'firebase/storage';
 
 import { StyleSheet,
     Text,
@@ -12,7 +12,7 @@ import { StyleSheet,
     FlatList,
     SafeAreaView,
     ActivityIndicator,
-    TouchableOpacity } from 'react-native';
+    TouchableOpacity, } from 'react-native';
 
 import { collection,
     doc,
@@ -20,8 +20,6 @@ import { collection,
     getFirestore,
     getDoc,
     getDocs, } from 'firebase/firestore';
-
-import { captureRef, viewRef } from 'react-native-view-shot';
 
 const db = getFirestore();
 const storage = getStorage();
@@ -32,19 +30,43 @@ const setDataInDatabase = async() => {
     await setDoc(doc(db, "characters", "mario2"), {
         employment: "plumber",
         outfitColor: "red",
-        specialAttack: "fireball"
+        specialAttack: "fireball",
     });
 }
 
+/*
 const uploadImg = async() => {
     // to be fixed
-    const marioRef = ref(storage, 'gallery.png');
+    const marioRef = ref(storage, 'gallery');
     const marioImgRef = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]);
-    const metadata = { contentType: 'image/png' };
+    const metadata = { contentType: 'image/jpg' };
     uploadBytes(marioRef, marioImgRef, metadata).then(() => {
         console.log("Uploaded gallery file!");
     });
-}
+}*/
+
+// const getURLs = async() => {
+//     const listRef = ref(storage, 'images');
+//     const urls = [];
+//     let index = 0;
+
+//     listAll(listRef).then((res) => {
+//         res.items.forEach(async(itemRef) => {
+//             let temp = await getDownloadURL(itemRef);
+//             temp = String(temp.toString());
+//             let img = {
+//                 id: index,
+//                 url: temp,
+//             }
+//             console.log(index + ": " + img.url);
+//             urls.push(img);
+//             index++;
+//         });
+//     }).catch((error) => {
+//         console.log("Image URL error!");
+//     });
+//     return urls;
+// }
 
 const getData = async() => {
 
@@ -82,68 +104,122 @@ const getAllData = async() => {
     return tempData;
 }
 
-
-//getAllData();
-
+const datas = [
+    {
+        id: "0",
+        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario0.jpg?alt=media&token=520833ee-1590-45f6-95e8-eef6641069d8',
+    },
+    {
+        id: "1",
+        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario1.jpg?alt=media&token=e1fbaaa8-e0ef-44e0-93b0-fe0a3052bfcb',
+    },
+    {
+        id: "2",
+        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario4.jpg?alt=media&token=cf33a555-4f23-4e89-8f57-0b25c9d95063',
+    },
+    {
+        id: "3",
+        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario3.jpg?alt=media&token=208a07d6-3f17-4dbb-9900-c404832b382b',
+    },
+    {
+        id: "4",
+        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario2.jpg?alt=media&token=380a7b9d-a133-4f0e-886e-82a24f85f033',
+    },
+    {
+        id: "5",
+        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario5.jpg?alt=media&token=97041184-a60f-4b49-91dc-2be2ca62273c',
+    },
+    {
+        id: "6",
+        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario7.jpg?alt=media&token=7032d64d-7bb9-4bc3-9a3d-4f0965d36dfb',
+    },
+    {
+        id: "7",
+        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario6.jpg?alt=media&token=e865315d-318d-4c9b-bfa7-b88ec48706e5',
+    },
+];
 
 //const q = query(messagesRef, orderBy('createdAt'), limit(5));
 //const [messages] = useCollectionData(q);
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-        <Text style={[styles.title, textColor]}>{item.specialAttack}</Text>
+        <Text style={[styles.titleStyle, textColor]}>{item.specialAttack}</Text>
     </TouchableOpacity>
 );
 
-const datas = () => {
-    const DATA = [
-        {
-            id: "1",
-            specialAttack: "fireball",
-        },
-        {
-            id: "2",
-            specialAttack: "memepower",
-        },
-        {
-            id: "3",
-            specialAttack: "meows loudly",
-        },
-    ];
-
-    return DATA;
-}
 
 const GalleryScreen = () => {
 
-    //let data = '';
-    //const tempDatas = datas();
+    const [getImgs, setImgs] = useState([]);
     const [fireData, setFireData] = useState([]);
+    const [getRefresh, setRefresh] = useState(false);
 
-    // useEffect(() => {
-    //     const getIt = async() => {
-    //         setData(await getData());
-    //     }
-    //     getIt();
-    //     console.log(data);
-    // })
+    const getURLs = async() => {
+        const listRef = ref(storage, 'images');
+        let urls = [];
+        let index = 0;
+    
+        listAll(listRef).then((res) => {
+            res.items.forEach(async(itemRef) => {
+                let temp = await getDownloadURL(itemRef);
+                temp = String(temp.toString());
+                let img = {
+                    id: index,
+                    url: temp,
+                }
+                console.log("Before: " + img.id + ": " + img.url);
+                urls.push(img);
+                setImgs(getImgs => [...getImgs, img]);
+                console.log("After: " + urls[index].id + ": " + urls[index].url);
+                index++;
+            });
+        }).catch((error) => {
+            console.log("Image URL error!");
+        });
+
+        console.log("URLS returned: " + urls[0].url);
+        return true;
+    }
+
+    console.log("START!");
+    
 
     
-    // google why useEffect is refereshing repeatedly
+
+    // useEffect(() => {
+    //     const getGetData = async() => {
+    //         setData(await getData());
+    //     }
+    //     getGetData();
+    // })
+
+/*
     useEffect(() => {
-        const getIt = async() => {
+        const getUpload = async() => {
             await uploadImg();
         }
-        getIt();
-    }, [])
+        getUpload();
+    }, [])*/
+
+    // useEffect(() => {
+    //     const getGetAll = async() => {
+    //         setFireData(await getAllData());
+    //     }
+    //     getGetAll();
+    // }, []);
 
     useEffect(() => {
-        const getThis = async() => {
-            setFireData(await getAllData());
+        const getDownload = async() => {
+            const urls = await getURLs();
+            setImgs(urls);
         }
-        getThis();
-        console.log(fireData);
-    }, [])
+        getDownload();
+        console.log("Firebase: " + getImgs);
+        console.log("Local: " + datas);
+    }, []);
+
+    console.log("GET THEM: " + getImgs);
 
     const [selectedId, setSelectedId] = useState(null);
 
@@ -156,20 +232,32 @@ const GalleryScreen = () => {
                 item={item}
                 onPress={() => setSelectedId(item.id)}
                 backgroundColor={{ backgroundColor }}
-                textColor={{ color }}
+                textColor = {{ color }}
             />
+        );
+    };
+
+    const renderImg = ({ item }) => {
+        return (
+            <Image
+                style={styles.imgStyle}
+                source={{uri: item.url}}
+                key={item.id}
+        />
         );
     };
 
     return (
         <View>
+            <View style={styles.container1}>
+
+                <Text>Blah blah {}</Text>
+            </View>
             <SafeAreaView>
                 <FlatList
-                    style={styles.container1}
-                    data={fireData}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                    extraData={selectedId}
+                    style={styles.container2}
+                    data={getImgs}
+                    renderItem={renderImg}
                 />
             </SafeAreaView>
         </View>
@@ -181,14 +269,22 @@ export default GalleryScreen;
 
 const styles = StyleSheet.create({
     container1: {
-        backgroundColor: "#F5F5F5",
-    }, 
+        flexDirection: 'column',
+        backgroundColor: "white",
+    },
+    container2: {
+        
+    },
     item: {
         padding: 8.5,
         marginVertical: 8,
         marginHorizontal: 2,
     },
-    title: {
+    titleStyle: {
         fontSize: 12,
     },
+    imgStyle: {
+        width: 100,
+        height: 100,
+    }
 })
