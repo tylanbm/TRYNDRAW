@@ -156,7 +156,7 @@ const GalleryScreen = () => {
     const [getRefresh, setRefresh] = useState(false);
 
     const getURLs = async() => {
-        const listRef = ref(storage, 'images');
+        const listRef = ref(storage, 'testImages');
         let urls = [];
         let index = 0;
     
@@ -168,24 +168,16 @@ const GalleryScreen = () => {
                     id: index,
                     url: temp,
                 }
-                console.log("Before: " + img.id + ": " + img.url);
                 urls.push(img);
                 setImgs(getImgs => [...getImgs, img]);
-                console.log("After: " + urls[index].id + ": " + urls[index].url);
                 index++;
             });
         }).catch((error) => {
             console.log("Image URL error!");
         });
 
-        console.log("URLS returned: " + urls[0].url);
         return true;
     }
-
-    console.log("START!");
-    
-
-    
 
     // useEffect(() => {
     //     const getGetData = async() => {
@@ -284,7 +276,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     imgStyle: {
-        width: 100,
-        height: 100,
+        width: 300,
+        height: 300,
     }
 })
