@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
-import { backgroundColor, color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+import { backgroundColor, borderColor, color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 import ViewShot from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 import { Draw, DrawRef,ColorPicker} from "@benjeau/react-native-draw";
@@ -19,40 +19,50 @@ import {
     getDocs,
 } from 'firebase/firestore';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 const db = getFirestore();
 
 const COLORS = [
     {
         id: "1",
         title: "Red",
+        colorCode: 'red',
     },
     {
         id: "2",
         title: "Orange",
+        colorCode: 'orange',
     },
     {
         id: "3",
         title: "Yellow",
+        colorCode: 'yellow',
     },
     {
         id: "4",
         title: "Green",
+        colorCode: 'green',
     },
     {
         id: "5",
         title: "L-Blue",
+        colorCode: 'lightblue',
     },
     {
         id: "6",
-        title: "D-Blue",
+        title: "Blue",
+        colorCode: 'blue',
     },
     {
         id: "7",
         title: "Violet",
+        colorCode: 'violet',
     },
     {
         id: "8",
         title: "Black",
+        colorCode: 'black',
     },
 ];
 
@@ -79,15 +89,18 @@ const TOOLS = [
     },
 ];
 
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-        <Text style={[styles.title, textColor]}>{item.title}</Text>
+
+
+const ColorSwatch = (swatch, onPress, swatchColor,swatchSize) => (
+    <TouchableOpacity onPress={onPress} style={[styles.swatch, backgroundColor]}>
+        <Ionicons name={'ellipse'} size={swatchSize} color={swatchColor}/>
     </TouchableOpacity>
 );
 
-const Item2 = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-        <Text style={[styles.title, textColor]}>{item.title}</Text>
+
+const Item = ({ item, onPress, backgroundColor, swatchColor, style }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.item3, style,]}>
+        <Ionicons name={'ellipse'} style={[swatchColor, styles.swatch]} />
     </TouchableOpacity>
 );
 
@@ -124,32 +137,10 @@ const CanvasScreen = () => {
         drawRef.current.clear();
     }
 
-    //Colors
-    const setRed = () => {
-        drawRef.current.setColor("red");
+    //Set the brush color
+    const setColor = (color) => {
+        drawRef.current.setColor(color);
     }
-    const setOrange = () => {
-        drawRef.current.setColor("orange");
-    }
-    const setYellow = () => {
-        drawRef.current.setColor("yellow");
-    }
-    const setGreen = () => {
-        drawRef.current.setColor("green");
-    }
-    const setLightBlue = () => {
-        drawRef.current.setColor("lightblue");
-    }
-    const setBlue = () => {
-        drawRef.current.setColor("blue");
-    }
-    const setViolet = () => {
-        drawRef.current.setColor("violet");
-    }
-    const setBlack = () => {
-        drawRef.current.setColor("#000000");
-    }
-
     
     //A function that takes a snapshot of the canvas element and uploads image to firebase storage
     const captureViewShot = () => {
@@ -168,7 +159,7 @@ const CanvasScreen = () => {
 
             const storageRef = ref(storage, storagePath);
             
-            uploadImage = async (imageUri) => {
+            const uploadImage = async (imageUri) => {
                 const response = await fetch(imageUri);
                 //Generate blob from image URI
                 const blob = await response.blob();
@@ -186,44 +177,7 @@ const CanvasScreen = () => {
         })
     };
 
-    const ColorBar = () => (
-        <View style={[styles.row]}>
-            <TouchableOpacity onPress={setRed} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Red</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity onPress={setOrange} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Orange</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setYellow} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Yellow</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setGreen} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Green</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setLightBlue} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>L-Blue</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setBlue} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Blue</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setViolet} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Violet</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setBlack} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Black</Text>
-            </TouchableOpacity>
-
-
-        </View>
-
-    );
 
 
     const ToolBar = () => (
@@ -254,54 +208,46 @@ const CanvasScreen = () => {
     
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-        const color = item.id === selectedId ? 'white' : 'black';
+        const backgroundColor = item.id === selectedId ? "#05a6f8" : "#F5F5F5";
+        const color = item.colorCode;
+        const borderColor = item.id === selectedId ? "#05a6f8" : "lightgray";
 
         return (
-            <Item2
+            <Item
                 item={item}
-                onPress={() => setSelectedId2(item.id) }
+                onPress={() => {setSelectedId(item.id); setColor(item.colorCode)}}
                 backgroundColor={{ backgroundColor }}
-                textColor={{ color }}
+                swatchColor={{color}}
+                style={{borderColor: borderColor, borderWidth: 2, padding: 3, borderRadius: 30, overflow: 'hidden', margin:2, marginHorizontal: 4, alignItems: 'center', justifyContent: 'center', alignContent: 'center', backgroundColor: 'white'}}
             />
         );
     };
-
-    const renderItem2 = ({ item }) => {
-        const backgroundColor = item.id === selectedId2 ? "#6e3b6e" : "#f9c2ff";
-        const color = item.id === selectedId2 ? 'white' : 'black';
-
-        return (
-            <Item2
-                item={item}
-                onPress={() => removeLastPath()}
-                backgroundColor={{ backgroundColor }}
-                textColor={{ color }}
-            />
-        );
-    };
-
 
     return (
         <View style={styles.mainContainer}>
-            <View style={styles.box1}>
+            <View>
                 <SafeAreaView style={{ alignItems: 'center' }}>
-                    <ColorBar/>
+                    <FlatList
+                        data={COLORS}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        extraData={selectedId}
+                        horizontal={true}
+                    /> 
                 </SafeAreaView>
             </View>
+            
             <View style={styles.title}>
-                <Text> You are drawing... HAPPY CATS</Text>
             </View>
             <View style={styles.box2}>
-                
-                <ViewShot
-                    ref={viewShot}
-                    options={{ format: "jpg", quality: 0.9}} >
-
+            
                     <View style={styles.container}>
+                    <ViewShot
+                        ref={viewShot}
+                        options={{ format: "jpg", quality: 0.9 }} >
                         <Draw
                             ref={drawRef}
-                            height={400}
+                            height={300}
                             width={300}
                             hideBottom={true}
                             initialValues={{
@@ -311,12 +257,11 @@ const CanvasScreen = () => {
                                 paths: []
                             }}
                             brushPreview="none"
-                            canvasStyle={{ elevation: 0, backgroundColor: "#F5F5F5" }}
+                            canvasStyle={{ elevation: 0, backgroundColor: "#FFFFFF" }}
                         />
+                        </ViewShot>
                     </View>
-                    
-
-                </ViewShot>
+                
             </View>
 
             <View style={styles.box3}>
@@ -344,6 +289,9 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "center",
         margin: 40,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: "#D2D2D2"
     },
     container1: {
         marginTop: StatusBar.currentHeight || 0,
@@ -363,6 +311,17 @@ const styles = StyleSheet.create({
         marginHorizontal: 2,
         backgroundColor: "lightblue",
     },
+    item3: {
+        marginVertical: 8,
+        marginHorizontal: 1,
+    },
+    swatch: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        paddingLeft: 1.5,
+        fontSize: 32,
+        borderRadius: 30,
+    },
     item2: {
         padding: 8.5,
         marginVertical: 8,
@@ -378,7 +337,7 @@ const styles = StyleSheet.create({
     },
     box2: {
         flex: 12,
-        backgroundColor: "white",
+        backgroundColor: "#FAFAFA",
     },
     box3: {
         flex: 1.25,
