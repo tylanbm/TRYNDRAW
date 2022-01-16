@@ -156,8 +156,7 @@ const GalleryScreen = () => {
     const [getRefresh, setRefresh] = useState(false);
 
     const getURLs = async() => {
-        const listRef = ref(storage, 'testImages');
-        let urls = [];
+        const listRef = ref(storage, 'images');
         let index = 0;
     
         listAll(listRef).then((res) => {
@@ -168,15 +167,12 @@ const GalleryScreen = () => {
                     id: index,
                     url: temp,
                 }
-                urls.push(img);
                 setImgs(getImgs => [...getImgs, img]);
                 index++;
             });
         }).catch((error) => {
             console.log("Image URL error!");
         });
-
-        return true;
     }
 
     // useEffect(() => {
@@ -203,15 +199,10 @@ const GalleryScreen = () => {
 
     useEffect(() => {
         const getDownload = async() => {
-            const urls = await getURLs();
-            setImgs(urls);
+            await getURLs();
         }
         getDownload();
-        console.log("Firebase: " + getImgs);
-        console.log("Local: " + datas);
     }, []);
-
-    console.log("GET THEM: " + getImgs);
 
     const [selectedId, setSelectedId] = useState(null);
 
@@ -241,15 +232,13 @@ const GalleryScreen = () => {
 
     return (
         <View>
-            <View style={styles.container1}>
-
-                <Text>Blah blah {}</Text>
-            </View>
             <SafeAreaView>
                 <FlatList
                     style={styles.container2}
                     data={getImgs}
                     renderItem={renderImg}
+                    horizontal={false}
+                    numColumns={2}
                 />
             </SafeAreaView>
         </View>
@@ -276,7 +265,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     imgStyle: {
-        width: 300,
-        height: 300,
-    }
+        width: '50%',
+        aspectRatio: 1,
+    },
 })
