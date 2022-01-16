@@ -10,7 +10,7 @@ function HomeScreen({navigation }) {
     const signOutUser = () => {
         signOut(auth).then(() => {
             // Sign-out successful.
-            console.log("Signed Out")
+            console.log("Signed Out");
             global.signedIn = false;
         }).catch((error) => {
             // An error happened.

@@ -156,7 +156,7 @@ const GalleryScreen = () => {
     const [getRefresh, setRefresh] = useState(false);
 
     const getURLs = async() => {
-        const listRef = ref(storage, 'images');
+        const listRef = ref(storage, 'testImages');
         let index = 0;
     
         listAll(listRef).then((res) => {
@@ -226,7 +226,7 @@ const GalleryScreen = () => {
                 style={styles.imgStyle}
                 source={{uri: item.url}}
                 key={item.id}
-        />
+            />
         );
     };
 
