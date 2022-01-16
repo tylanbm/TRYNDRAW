@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
-import { getAuth, signOut,onAuthStateChanged } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
-function HomeScreen({navigation }) {
+function HomeScreen({ navigation }) {
     
     const auth = getAuth();
     const user = auth.currentUser;
@@ -14,6 +14,7 @@ function HomeScreen({navigation }) {
             global.signedIn = false;
         }).catch((error) => {
             // An error happened.
+            console.log("Sign out error!");
         });
     }
 
