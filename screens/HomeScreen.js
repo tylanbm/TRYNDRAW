@@ -18,6 +18,14 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 // import Ionicons icon library
 import { Ionicons } from '@expo/vector-icons';
 
+// avoid rendering text before font is loaded
+//import { AppLoading } from 'expo-app-loading';
+
+// Google Fonts
+//import { useFonts,
+  //Roboto_400Regular, }
+//from '@expo-google-fonts/dev';
+
 
 const HomeScreen = ({ navigation }) => {
     
@@ -45,6 +53,11 @@ const HomeScreen = ({ navigation }) => {
         getPic();
     }, []);
 
+    // let [fontsLoaded] = useFonts({
+    //     Roboto_400Regular
+    // });
+
+    //if (!fontsLoaded) return <AppLoading />;
     return (
         <View style={styles.container}>
             <Image
@@ -82,6 +95,7 @@ const styles = StyleSheet.create({
     // welcome back
     title: {
         fontSize: 40,
+        //fontFamily: 'Roboto_400Regular',
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20,
