@@ -1,10 +1,14 @@
-import React, { useState, useEffect, } from 'react';
 
+// import React itself, change const state, use async methods
+import React, { useState, useEffect } from 'react';
+
+// import Firebase storage
 import { getStorage,
     ref,
     getDownloadURL,
     listAll, } from 'firebase/storage';
 
+// import React styles and features
 import { StyleSheet,
     Text,
     View,
@@ -14,12 +18,14 @@ import { StyleSheet,
     ActivityIndicator,
     TouchableOpacity, } from 'react-native';
 
+// import Firestore docs
 import { collection,
     doc,
     setDoc,
     getFirestore,
     getDoc,
     getDocs, } from 'firebase/firestore';
+
 
 const db = getFirestore();
 const storage = getStorage();
@@ -162,7 +168,7 @@ const GalleryScreen = () => {
         listAll(listRef).then((res) => {
             res.items.forEach(async(itemRef) => {
                 let temp = await getDownloadURL(itemRef);
-                temp = String(temp.toString());
+                temp = temp.toString();
                 let img = {
                     id: index,
                     url: temp,
@@ -234,7 +240,6 @@ const GalleryScreen = () => {
         <View>
             <SafeAreaView>
                 <FlatList
-                    style={styles.container2}
                     data={getImgs}
                     renderItem={renderImg}
                     horizontal={false}
@@ -249,23 +254,28 @@ export default GalleryScreen;
 
 
 const styles = StyleSheet.create({
+
+    // Database FlatList
     container1: {
         flexDirection: 'column',
         backgroundColor: "white",
     },
-    container2: {
-        
-    },
+
+    // items in FlatList
     item: {
         padding: 8.5,
         marginVertical: 8,
         marginHorizontal: 2,
     },
+
+    // title for Database
     titleStyle: {
         fontSize: 12,
     },
+
+    // images in FlatList
     imgStyle: {
         width: '50%',
         aspectRatio: 1,
     },
-})
+});

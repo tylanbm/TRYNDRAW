@@ -1,10 +1,9 @@
-import React, { useRef } from 'react'
+import React, { useRef } from 'react';
 
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ViewShot from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
-import { Draw, DrawRef } from "@benjeau/react-native-draw";
-
+import { Draw, DrawRef } from '@benjeau/react-native-draw';
 
 
 const TestCanvasScreen = () => {
@@ -50,7 +49,8 @@ const TestCanvasScreen = () => {
     )
 }
 
-export default TestCanvasScreen
+export default TestCanvasScreen;
+
 
 const styles = StyleSheet.create({
     container: {

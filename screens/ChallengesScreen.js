@@ -30,22 +30,20 @@ const slug3 = generateSlug(3, slugOptions);
 
 // icons
 const buttonIcon = <Ionicons name='arrow-forward' size={25} color='deepskyblue' />;
-const n = <Ionicons name='square-outline' size={20} color='black' />;
-const y = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
+const no = <Ionicons name='square-outline' size={20} color='black' />;
+const yes = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
+const exit = <Ionicons name='arrow-back' size={20} color='red' />;
 
 
-const ChallengesScreen = () => {
+const ChallengesScreen = ({ navigation }) => {
 
   // challenge selection number
   const [select, setSelect] = useState(0);
 
-  // display text below "Start Drawing!"
-  const [drawing, setDrawing] = useState('');
-
   // icon checkmark change
-  const [check1, setCheck1] = useState(n);
-  const [check2, setCheck2] = useState(n);
-  const [check3, setCheck3] = useState(n);
+  const [check1, setCheck1] = useState(no);
+  const [check2, setCheck2] = useState(no);
+  const [check3, setCheck3] = useState(no);
 
   // text colour change
   const [text1, setText1] = useState('grey');
@@ -57,6 +55,9 @@ const ChallengesScreen = () => {
   const [border2, setBorder2] = useState('transparent');
   const [border3, setBorder3] = useState('transparent');
 
+  // notice to tell users if they need to select a challenge
+  const [notice, setNotice] = useState('');
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>What do you want to draw?</Text>
@@ -65,9 +66,9 @@ const ChallengesScreen = () => {
         onPress={() => {
           // set selection to 1st slug
           setSelect(1);
-          setCheck1(y);
-          setCheck2(n);
-          setCheck3(n);
+          setCheck1(yes);
+          setCheck2(no);
+          setCheck3(no);
           setBorder1('deepskyblue');
           setBorder2('transparent');
           setBorder3('transparent');
@@ -84,9 +85,9 @@ const ChallengesScreen = () => {
         onPress={() => {
           // set selection to 2nd slug
           setSelect(2);
-          setCheck1(n);
-          setCheck2(y);
-          setCheck3(n);
+          setCheck1(no);
+          setCheck2(yes);
+          setCheck3(no);
           setBorder1('transparent');
           setBorder2('deepskyblue');
           setBorder3('transparent');
@@ -103,9 +104,9 @@ const ChallengesScreen = () => {
         onPress={() => {
           // set selection to 3rd slug
           setSelect(3);
-          setCheck1(n);
-          setCheck2(n);
-          setCheck3(y);
+          setCheck1(no);
+          setCheck2(no);
+          setCheck3(yes);
           setBorder1('transparent');
           setBorder2('transparent');
           setBorder3('deepskyblue');
@@ -120,40 +121,32 @@ const ChallengesScreen = () => {
 
       <TouchableOpacity
         onPress={() => {
-          switch(select) {
-
-            // print option 1
-            case 1:
-              setDrawing('1');
-              break;
-
-            // print option 2
-            case 2:
-              setDrawing('2');
-              break;
-              
-            // print option 3
-            case 3:
-              setDrawing('3');
-              break;
-
-            // print invalid option
-            default:
-              setDrawing('Please select a challenge.');
-              break;
-          }
+          if (select==0) setNotice('Please select a challenge.');
+          else navigation.navigate('Canvas');
         }}
         style={styles.button}>
         <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>
       </TouchableOpacity>
 
-      <Text style={{fontSize: 15}}>{drawing}</Text>
+      <Text style={styles.notice}>{notice}</Text>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Home');
+        }}
+        style={styles.home}>
+        <Text style={styles.homeText}>{exit} Home</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
 export default ChallengesScreen;
 
+
+// global padding
+let padChal = 10;
+let padExit = 5;
 
 const styles = StyleSheet.create({
   
@@ -179,7 +172,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 20,
     borderWidth: 2,
-    paddingLeft: 10,
+    paddingLeft: padChal,
   },
 
   // challenge selection button text
@@ -188,23 +181,46 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  // 'START DRAWING' button
+  // 'Start drawing!' button
   button: {
     marginTop: 20,
     marginBottom: 10,
-    fontSize: 25,
-    fontWeight: 'bold',
     borderColor: 'deepskyblue',
     borderRadius: 20,
     borderWidth: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: padChal,
+    paddingRight: padChal,
   },
 
-  // 'START DRAWING!'
+  // 'Start drawing!'
   buttonText: {
     fontSize: 25,
     fontWeight: 'bold',
     color: 'deepskyblue',
+  },
+
+  // 'Back to Home' button
+  home: {
+    marginTop: 20,
+    borderColor: 'red',
+    borderRadius: 25,
+    borderWidth: 2,
+    paddingLeft: padExit,
+    paddingRight: padExit,
+    paddingTop: padExit,
+    paddingBottom: padExit,
+  },
+
+  // 'Back to Home'
+  homeText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'red',
+  },
+
+  // notice message
+  notice: {
+    marginTop: 10,
+    marginBottom: 10,
   }
-})
+});

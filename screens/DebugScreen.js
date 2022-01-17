@@ -19,4 +19,5 @@ const DebugScreen = () => {
 
 export default DebugScreen;
 
-const styles = StyleSheet.create({})
+
+const styles = StyleSheet.create({});

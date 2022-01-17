@@ -71,7 +71,8 @@ const SignUpScreen = () => {
     )
 }
 
-export default SignUpScreen
+export default SignUpScreen;
+
 
 let fullWidth = Dimensions.get('window').width;
 
@@ -114,8 +115,5 @@ const styles = StyleSheet.create({
         width: fullWidth * 0.9,
         backgroundColor: '#E5E5E5',
         borderRadius: 3.16,
-
-    }
-
-
+    },
 });

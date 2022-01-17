@@ -328,6 +328,9 @@ const CanvasScreen = () => {
     );
 };
 
+export default CanvasScreen;
+
+
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
@@ -389,5 +392,3 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
 });
-
-export default CanvasScreen;

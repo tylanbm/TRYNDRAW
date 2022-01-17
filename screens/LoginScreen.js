@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
-import { auth } from '../firebaseConfig'
+import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { auth } from '../firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from "react-native";
 import { TextInput } from 'react-native';
@@ -18,7 +18,7 @@ const LoginScreen = () => {
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
         })
-        return unsubscribe
+        return unsubscribe;
     }, [])
     
     //Register a new user
@@ -87,7 +87,8 @@ const LoginScreen = () => {
     )
 }
 
-export default LoginScreen
+export default LoginScreen;
+
 
 let fullWidth = Dimensions.get('window').width;
 
@@ -130,8 +131,5 @@ const styles = StyleSheet.create({
         width: fullWidth * 0.9,
         backgroundColor: '#E5E5E5',
         borderRadius: 3.16,
-
-    }
-
-
+    },
 });
