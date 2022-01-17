@@ -1062,6 +1062,16 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@expo-google-fonts/dev@^0.2.2":
+  "integrity" "sha512-tgn5zhmgUs/d6+YsxJZ3JeGYOiaSXSFpH3COxTF8JLkg6aD/ERVIUf8hhVD9hv0CVAaTuNt+8m7MvIxFWXcq2g=="
+  "resolved" "https://registry.npmjs.org/@expo-google-fonts/dev/-/dev-0.2.2.tgz"
+  "version" "0.2.2"
+
+"@expo-google-fonts/inter@^0.2.2":
+  "integrity" "sha512-dU6mSczI2xkRZbUhQQ5VB+D4AqLOF8ufCIfA1iBjrPZ/Qnka88E5Ez2Mvm41exdKR76norVvYD5GJIQYEEoO/Q=="
+  "resolved" "https://registry.npmjs.org/@expo-google-fonts/inter/-/inter-0.2.2.tgz"
+  "version" "0.2.2"
+
 "@expo/config-plugins@^4.0.2":
   "integrity" "sha512-wdSgwWgonjnZBqkxH1TiFlPsY9nhJ6jSMiSKlUh2N8avgLeot2CzT8kTtJa3jB+3/sHiFZE6/VbD7USAIkmIIA=="
   "resolved" "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-4.0.10.tgz"
@@ -3071,12 +3081,11 @@
     "expo-modules-core" "~0.4.4"
     "uuid" "^3.4.0"
 
-"expo-font@~10.0.3":
-  "integrity" "sha512-xM5oqIduGvJ+qbsZHjMNNt+3hhjOMTunHUtOx5rAmW/D1ZVdfLwjDwOyWBVkH8ChoBRAZy9gsC2cRs7naw8NIw=="
-  "resolved" "https://registry.npmjs.org/expo-font/-/expo-font-10.0.3.tgz"
-  "version" "10.0.3"
+"expo-font@^10.0.4", "expo-font@~10.0.3":
+  "integrity" "sha512-ieEsT6tD6yD6qT7WUzzJ5el0UvACr53RqICu0GI9GUiWuwDFPM2Oi5WfWwYFFStCRuaP6kEtpkJDUZ9cjT5F+w=="
+  "resolved" "https://registry.npmjs.org/expo-font/-/expo-font-10.0.4.tgz"
+  "version" "10.0.4"
   dependencies:
-    "expo-modules-core" "~0.4.4"
     "fontfaceobserver" "^2.1.0"
 
 "expo-keep-awake@~10.0.0":
@@ -3116,7 +3125,7 @@
   "resolved" "https://registry.npmjs.org/expo-status-bar/-/expo-status-bar-1.1.0.tgz"
   "version" "1.1.0"
 
-"expo@~43.0.2":
+"expo@*", "expo@~43.0.2":
   "integrity" "sha512-X4lLvoUuUbjj1n3DOjZ+w9TfNbEvNMRWvbOzYNYwS4FMB04Gt2RvQYYP8mXWbBZz0+b/s/Q+u67jj0+LMdxyfg=="
   "resolved" "https://registry.npmjs.org/expo/-/expo-43.0.3.tgz"
   "version" "43.0.3"

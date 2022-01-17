@@ -11,7 +11,7 @@ import { StyleSheet,
 // import authentication
 import { getAuth,
     signOut,
-    onAuthStateChanged } from "firebase/auth";
+    onAuthStateChanged } from 'firebase/auth';
 
 // import icon libraries
 import { AntDesign } from '@expo/vector-icons';
@@ -39,11 +39,12 @@ const SettingsScreen = () => {
     // sign out button
     const signOutUser = () => {
         signOut(auth).then(() => {
-            // Sign-out successful.
-            console.log("Signed Out");
+            // Sign out successful.
+            console.log('Signed out');
             global.signedIn = false;
         }).catch((error) => {
             // An error happened.
+            console.log('Sign out error!')
         });
     }
 
@@ -51,15 +52,18 @@ const SettingsScreen = () => {
         <View style={styles.container}>
 
             {/* sign out button */}
-            <View style={{alignItems: 'center'}}>
+            <View style={styles.signout}>
                 <Button
                     title="Sign Out"
                     onPress={() => signOutUser()}
                 />
             </View>
 
+            
+
             {/* divider line */}
             <View style={styles.divider} />
+
             <View style={{marginTop: 150}}>
 
                 {/* SETTINGS button */}
@@ -113,6 +117,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 
+    signout: {
+        alignItems: 'center',
+        marginTop: 25,
+    },
+
     // divider line below SIGN OUT button
     divider: {
         borderBottomColor: 'black',
@@ -137,4 +146,4 @@ const styles = StyleSheet.create({
         marginTop: 100,
         alignItems: 'center',
     },
-})
+});
