@@ -25,6 +25,7 @@ import { collection,
     getFirestore,
     getDoc,
     getDocs, } from 'firebase/firestore';
+import { styleProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 
 
 const db = getFirestore();
@@ -217,22 +218,25 @@ const GalleryScreen = () => {
         const color = item.id === selectedId ? 'white' : 'black';
 
         return (
-            <Item
-                item={item}
-                onPress={() => setSelectedId(item.id)}
-                backgroundColor={{ backgroundColor }}
-                textColor = {{ color }}
-            />
+            <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+                <Text style={[styles.titleStyle, textColor]}>{item.specialAttack}</Text>
+            </TouchableOpacity>
         );
     };
 
     const renderImg = ({ item }) => {
+        const id = item.id;
         return (
-            <Image
-                style={styles.imgStyle}
-                source={{uri: item.url}}
-                key={item.id}
-            />
+            <TouchableOpacity
+                onPress={() => console.log(id)}
+                style={styles.touchable}
+                >
+                <Image
+                    source={{uri: item.url}}
+                    style={styles.imgStyle}
+                    key={id}
+                />
+            </TouchableOpacity>
         );
     };
 
@@ -273,9 +277,15 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
 
+    // image button
+    touchable: {
+        width: '50%',
+        aspectRatio: 1,
+    },
+
     // images in FlatList
     imgStyle: {
-        width: '50%',
+        width: '100%',
         aspectRatio: 1,
     },
 });

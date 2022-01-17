@@ -17,7 +17,7 @@ LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 //Screen Imports
 import HomeScreen from './screens/HomeScreen';
-import DetailsScreen from './screens/DetailsScreen';
+import VoteScreen from './screens/VoteScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ErrorScreen from './screens/ErrorScreen';
@@ -65,7 +65,7 @@ const AppWithTabs = () => (
       tabBarInactiveTintColor: 'gray',
     })}>
     <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Vote" component={DetailsScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Vote" component={VoteScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Gallery" component={GalleryScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
   </Tab.Navigator>

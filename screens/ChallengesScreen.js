@@ -23,11 +23,6 @@ const slugOptions = {
   partsOfSpeech: ['adjective', 'adjective', 'noun'],
 }
 
-// generated slugs
-const slug1 = generateSlug(3, slugOptions);
-const slug2 = generateSlug(3, slugOptions);
-const slug3 = generateSlug(3, slugOptions);
-
 // icons
 const buttonIcon = <Ionicons name='arrow-forward' size={25} color='deepskyblue' />;
 const no = <Ionicons name='square-outline' size={20} color='black' />;
@@ -36,6 +31,11 @@ const exit = <Ionicons name='arrow-back' size={20} color='red' />;
 
 
 const ChallengesScreen = ({ navigation }) => {
+
+  // generated slugs
+  const [slug1, setSlug1] = useState(generateSlug(3, slugOptions));
+  const [slug2, setSlug2] = useState(generateSlug(3, slugOptions));
+  const [slug3, setSlug3] = useState(generateSlug(3, slugOptions));
 
   // challenge selection number
   const [select, setSelect] = useState(0);
@@ -132,6 +132,16 @@ const ChallengesScreen = ({ navigation }) => {
 
       <TouchableOpacity
         onPress={() => {
+          setSlug1(generateSlug(3, slugOptions));
+          setSlug2(generateSlug(3, slugOptions));
+          setSlug3(generateSlug(3, slugOptions));
+        }}
+        style={styles.reroll}>
+        <Text style={styles.rerollText}>Re-Roll</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
           navigation.navigate('Home');
         }}
         style={styles.home}>
@@ -197,6 +207,22 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     color: 'deepskyblue',
+  },
+
+  reroll: {
+    marginTop: 20,
+    marginBottom: 10,
+    borderColor: 'green',
+    borderRadius: 20,
+    borderWidth: 2,
+    paddingLeft: padChal,
+    paddingRight: padChal,
+  },
+
+  rerollText: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'green',
   },
 
   // 'Back to Home' button
