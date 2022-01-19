@@ -138,7 +138,7 @@ const ChallengesScreen = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => {
           if (!select) setNote('Please select a challenge.');
-          else navigation.navigate('Details', select);
+          else navigation.navigate('Canvas', select);
         }}
         style={styles.button}>
         <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>  
