@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
-import { backgroundColor, color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View, Dimensions, Modal, Pressable } from "react-native";
+import { backgroundColor, borderColor, color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 import ViewShot from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
 import { Draw, DrawRef,ColorPicker} from "@benjeau/react-native-draw";
@@ -19,40 +19,52 @@ import {
     getDocs,
 } from 'firebase/firestore';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 const db = getFirestore();
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const COLORS = [
     {
         id: "1",
         title: "Red",
+        colorCode: '#FF5454',
     },
     {
         id: "2",
         title: "Orange",
+        colorCode: '#FF8754',
     },
     {
         id: "3",
         title: "Yellow",
+        colorCode: '#FEEE97',
     },
     {
         id: "4",
         title: "Green",
+        colorCode: '#97FEA8',
     },
     {
         id: "5",
         title: "L-Blue",
+        colorCode: '#73CCFE',
     },
     {
         id: "6",
-        title: "D-Blue",
+        title: "Blue",
+        colorCode: '#547AFF',
     },
     {
         id: "7",
         title: "Violet",
+        colorCode: '#9F54FF',
     },
     {
         id: "8",
         title: "Black",
+        colorCode: '#494949',
     },
 ];
 
@@ -79,20 +91,30 @@ const TOOLS = [
     },
 ];
 
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-        <Text style={[styles.title, textColor]}>{item.title}</Text>
-    </TouchableOpacity>
-);
 
-const Item2 = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-        <Text style={[styles.title, textColor]}>{item.title}</Text>
+
+const ColorSwatch = (swatch, onPress, swatchColor,swatchSize) => (
+    <TouchableOpacity onPress={onPress} style={[styles.swatch, backgroundColor]}>
+        <Ionicons name={'ellipse'} size={swatchSize} color={swatchColor}/>
     </TouchableOpacity>
 );
 
 
-const CanvasScreen = () => {
+const Item = ({ item, onPress, backgroundColor, swatchColor, style }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.item3, style,]}>
+        <Ionicons name={'ellipse'} style={[swatchColor, styles.swatch]} />
+    </TouchableOpacity>
+);
+
+
+const CircleButton = ({iconName, onPress}) => (
+    <TouchableOpacity onPress={onPress} style={[styles.toolContainer]}>
+        <Ionicons name={iconName} style={[styles.toolIcon]}/>
+    </TouchableOpacity>
+);
+
+
+const CanvasScreen = ({navigation}) => {
     const [selectedId, setSelectedId] = useState(null);
     const [selectedId2, setSelectedId2] = useState(null);
 
@@ -100,7 +122,8 @@ const CanvasScreen = () => {
     const viewShot = useRef(ViewShot);
     const storage = getStorage();
     
-
+    const [pencilActive, setPencilActive] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
     
 
     let currentThickness = 10;
@@ -111,12 +134,32 @@ const CanvasScreen = () => {
     }
 
     const upThickness = () => {
-        currentThickness -=5;
+        if(currentThickness ==1)
+            currentThickness = 0;
+        currentThickness += 5;
         drawRef.current.setThickness(currentThickness);
     }
 
+    const exitAndDelete = () => {
+        setModalVisible(false);
+        clearDrawing();
+        navigation.navigate('Home');
+    }
+
+    const publishAndExit = () => {
+        setModalVisible(false);
+        captureViewShot();
+        navigation.navigate('Home');
+    }
+
+    const toggleModalVisibility = () => {
+        setModalVisible(!modalVisible);
+    }
+
     const downThickness = () => {
-        currentThickness += 5;
+        currentThickness -= 5;
+        if (currentThickness <= 0 )
+            currentThickness = 1;
         drawRef.current.setThickness(currentThickness);
     }
     
@@ -124,32 +167,10 @@ const CanvasScreen = () => {
         drawRef.current.clear();
     }
 
-    //Colors
-    const setRed = () => {
-        drawRef.current.setColor("red");
+    //Set the brush color
+    const setColor = (color) => {
+        drawRef.current.setColor(color);
     }
-    const setOrange = () => {
-        drawRef.current.setColor("orange");
-    }
-    const setYellow = () => {
-        drawRef.current.setColor("yellow");
-    }
-    const setGreen = () => {
-        drawRef.current.setColor("green");
-    }
-    const setLightBlue = () => {
-        drawRef.current.setColor("lightblue");
-    }
-    const setBlue = () => {
-        drawRef.current.setColor("blue");
-    }
-    const setViolet = () => {
-        drawRef.current.setColor("violet");
-    }
-    const setBlack = () => {
-        drawRef.current.setColor("#000000");
-    }
-
     
     //A function that takes a snapshot of the canvas element and uploads image to firebase storage
     const captureViewShot = () => {
@@ -168,7 +189,7 @@ const CanvasScreen = () => {
 
             const storageRef = ref(storage, storagePath);
             
-            uploadImage = async (imageUri) => {
+            const uploadImage = async (imageUri) => {
                 const response = await fetch(imageUri);
                 //Generate blob from image URI
                 const blob = await response.blob();
@@ -186,137 +207,123 @@ const CanvasScreen = () => {
         })
     };
 
-    const ColorBar = () => (
-        <View style={[styles.row]}>
-            <TouchableOpacity onPress={setRed} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Red</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity onPress={setOrange} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Orange</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setYellow} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Yellow</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setGreen} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Green</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setLightBlue} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>L-Blue</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setBlue} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Blue</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setViolet} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Violet</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={setBlack} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Black</Text>
-            </TouchableOpacity>
-
-
-        </View>
-
-    );
 
 
     const ToolBar = () => (
         <View style={[styles.row]}>
-            <TouchableOpacity onPress={clearDrawing} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Reset</Text>
-            </TouchableOpacity>
+            <CircleButton onPress={console.log("Yay")} iconName={"pencil"}/>
+            <View style={{
+                transform: [
+                    { rotate: "45deg" },
 
-            <TouchableOpacity onPress={removeLastPath} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Undo</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity  style={[styles.item2]}>
-                <Text style={[styles.title]}>    -    </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity  style={[styles.item2]}>
-                <Text style={[styles.title]}>    +    </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={captureViewShot} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Done</Text>
-            </TouchableOpacity>
-
-        </View>
-        
+                ]
+            }}> 
+            <CircleButton onPress={console.log("Yay")} iconName={"tablet-portrait"} /> 
+            </View>
+            
+            <CircleButton onPress={upThickness} iconName={"add"} />
+            <CircleButton onPress={downThickness} iconName={"remove"} />
+            <CircleButton onPress={removeLastPath} iconName={"arrow-undo"} />
+            <CircleButton onPress={clearDrawing} iconName={"trash"} />
+            <CircleButton onPress={toggleModalVisibility} iconName={"checkmark"} />
+        </View>    
     );
     
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-        const color = item.id === selectedId ? 'white' : 'black';
+        const backgroundColor = item.id === selectedId ? "#05a6f8" : "#F5F5F5";
+        const color = item.colorCode;
+        const borderColor = item.id === selectedId ? "#05a6f8" : "#B9B9B9";
 
         return (
-            <Item2
+            <Item
                 item={item}
-                onPress={() => setSelectedId2(item.id) }
+                onPress={() => {setSelectedId(item.id); setColor(item.colorCode)}}
                 backgroundColor={{ backgroundColor }}
-                textColor={{ color }}
-            />
-        );
-    };
-
-    const renderItem2 = ({ item }) => {
-        const backgroundColor = item.id === selectedId2 ? "#6e3b6e" : "#f9c2ff";
-        const color = item.id === selectedId2 ? 'white' : 'black';
-
-        return (
-            <Item2
-                item={item}
-                onPress={() => removeLastPath()}
-                backgroundColor={{ backgroundColor }}
-                textColor={{ color }}
+                swatchColor={{color}}
+                style={{borderColor: borderColor, borderWidth: 1, padding: 3, borderRadius: 30, overflow: 'hidden', margin:2, marginHorizontal: 4, alignItems: 'center', justifyContent: 'center', alignContent: 'center', backgroundColor: 'white'}}
             />
         );
     };
 
     return (
         <View style={styles.mainContainer}>
-            <View style={styles.box1}>
+            <View>
                 <SafeAreaView style={{ alignItems: 'center' }}>
-                    <ColorBar/>
+                    <FlatList
+                        data={COLORS}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        extraData={selectedId}
+                        horizontal={true}
+                    /> 
                 </SafeAreaView>
             </View>
+            
             <View style={styles.title}>
-                <Text> You are drawing... HAPPY CATS</Text>
             </View>
             <View style={styles.box2}>
-                
-                <ViewShot
-                    ref={viewShot}
-                    options={{ format: "jpg", quality: 0.9}} >
-
+            
                     <View style={styles.container}>
+                    <ViewShot
+                        ref={viewShot}
+                        options={{ format: "jpg", quality: 0.9 }} >
                         <Draw
                             ref={drawRef}
-                            height={400}
-                            width={300}
+                            height={screenWidth}
+                            width={screenWidth}
                             hideBottom={true}
                             initialValues={{
                                 color: "#B644D0",
-                                thickness: 10,
-                                opacity: 0.5,
+                                thickness: 5,
+                                opacity: 1,
                                 paths: []
                             }}
                             brushPreview="none"
-                            canvasStyle={{ elevation: 0, backgroundColor: "#F5F5F5" }}
+                            canvasStyle={{ elevation: 0, backgroundColor: "#FFFFFF" }}
                         />
+                        </ViewShot>
                     </View>
-                    
-
-                </ViewShot>
+                
             </View>
+
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    //Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>What do you want to do?</Text>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={publishAndExit}
+                        >
+                            <Text style={styles.textStyle}>Publish Drawing & Exit</Text>
+                        </Pressable>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose, { marginTop: 16 }]}
+                            onPress={() => setModalVisible(!modalVisible)}
+                        >
+                            <Text style={styles.textStyle}>Keep Editing</Text>
+                        </Pressable>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose, { marginTop: 32, backgroundColor: 'red' }]}
+                            onPress={exitAndDelete}
+                        >
+                            <Text style={styles.textStyle}>Delete Drawing & Exit</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
+            
+
 
             <View style={styles.box3}>
                 <SafeAreaView style={{ alignItems: 'center'}}>
@@ -326,8 +333,6 @@ const CanvasScreen = () => {
         </View>
     );
 };
-
-export default CanvasScreen;
 
 
 const styles = StyleSheet.create({
@@ -345,7 +350,10 @@ const styles = StyleSheet.create({
     container: {
         alignContent: "center",
         justifyContent: "center",
-        margin: 40,
+        marginTop: 80,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: "#D2D2D2"
     },
     container1: {
         marginTop: StatusBar.currentHeight || 0,
@@ -354,6 +362,29 @@ const styles = StyleSheet.create({
     container2: {
         backgroundColor: "#F5F5F5",
     }, 
+    toolContainer: {
+        borderColor: "#B9B9B9",
+        borderWidth: 1, 
+        height: 44,
+        width: 44, 
+        marginHorizontal: 4,
+        borderRadius: 30, 
+        overflow: 'hidden', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        alignContent: 'center', 
+        backgroundColor: 'white'
+
+    },
+    toolIcon: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        marginHorizontal: 8,
+        fontSize: 24,
+        borderRadius: 30,
+        color: "#515151DE",
+    },
+
     canvas: {
         flex:1,
         backgroundColor: "red",
@@ -364,6 +395,17 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         marginHorizontal: 2,
         backgroundColor: "lightblue",
+    },
+    item3: {
+        marginVertical: 8,
+        marginHorizontal: 1,
+    },
+    swatch: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        paddingLeft: 1.5,
+        fontSize: 32,
+        borderRadius: 30,
     },
     item2: {
         padding: 8.5,
@@ -380,7 +422,7 @@ const styles = StyleSheet.create({
     },
     box2: {
         flex: 12,
-        backgroundColor: "white",
+        backgroundColor: "#FAFAFA",
     },
     box3: {
         flex: 1.25,
@@ -390,4 +432,52 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: "row",
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "flex-end",
+        alignItems: "center",
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        width: screenWidth,
+        height: screenHeight/2,
+        alignItems: "center",
+        justifyContent: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        borderRadius: 20,
+        elevation: 2,
+        width: 200,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: "center",
+    },
+    buttonOpen: {
+        backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 48,
+        textAlign: "center",
+        fontSize: 24,
+    }
 });
+
+export default CanvasScreen;
