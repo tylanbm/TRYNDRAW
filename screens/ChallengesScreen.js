@@ -61,8 +61,9 @@ const ChallengesScreen = ({ navigation }) => {
   const [border2, setBorder2] = useState('transparent');
   const [border3, setBorder3] = useState('transparent');
 
-  // notice to tell users if they need to select a challenge
-  const [notice, setNotice] = useState('');
+  // note to tell users to select a challenge
+  const [note, setNote] = useState('Please select a challenge.');
+  const [noteColour, setNoteColour] = useState('black');
 
   // check if imported Google Fonts were loaded
   let [fontsLoaded] = useFonts({
@@ -87,6 +88,7 @@ const ChallengesScreen = ({ navigation }) => {
           setText1('black');
           setText2('grey');
           setText3('grey');
+          setNote('');
         }}
         style={[styles.challenge, {borderColor: border1}]}>
         <Text style={[styles.challengeText, {color: text1}]}>
@@ -106,6 +108,7 @@ const ChallengesScreen = ({ navigation }) => {
           setText1('grey');
           setText2('black');
           setText3('grey');
+          setNote('');
         }}
         style={[styles.challenge, {borderColor: border2}]}>
         <Text style={[styles.challengeText, {color: text2}]}>
@@ -125,6 +128,7 @@ const ChallengesScreen = ({ navigation }) => {
           setText1('grey');
           setText2('grey');
           setText3('black');
+          setNote('');
         }}
         style={[styles.challenge, {borderColor: border3}]}>
         <Text style={[styles.challengeText, {color: text3}]}>
@@ -133,14 +137,14 @@ const ChallengesScreen = ({ navigation }) => {
 
       <TouchableOpacity
         onPress={() => {
-          if (!select) setNotice('Please select a challenge.');
-          else navigation.navigate('Vote', select);
+          if (!select) setNote('Please select a challenge.');
+          else navigation.navigate('Details', select);
         }}
         style={styles.button}>
-        <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>
+        <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>  
       </TouchableOpacity>
 
-      <Text style={styles.notice}>{notice}</Text>
+      <Text style={styles.note}>{note}</Text>
 
       <TouchableOpacity
         onPress={() => {
@@ -254,9 +258,10 @@ const styles = StyleSheet.create({
     color: 'red',
   },
 
-  // notice message
-  notice: {
+  // note message
+  note: {
     marginTop: 10,
     marginBottom: 10,
+    fontFamily: 'WorkSans_700Bold',
   }
 });

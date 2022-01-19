@@ -17,7 +17,7 @@ LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 //Screen Imports
 import HomeScreen from './screens/HomeScreen';
-import VoteScreen from './screens/VoteScreen';
+import DetailsScreen from './screens/DetailsScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ErrorScreen from './screens/ErrorScreen';
@@ -47,7 +47,7 @@ const AppWithTabs = () => (
             : 'home-outline';
         } else if (route.name === 'Gallery') {
           iconName = focused ? 'images' : 'images-outline';
-        } else if (route.name === 'Vote') {
+        } else if (route.name === 'Details') {
           iconName = focused ? 'heart' : 'heart-outline';
         } else if (route.name === 'Challenges') {
           iconName = focused ? 'trophy' : 'trophy-outline';
@@ -65,7 +65,7 @@ const AppWithTabs = () => (
       tabBarInactiveTintColor: 'gray',
     })}>
     <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Vote" component={VoteScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Details" component={DetailsScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Gallery" component={GalleryScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
   </Tab.Navigator>

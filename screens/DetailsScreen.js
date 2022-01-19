@@ -11,7 +11,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
 
 
-const VoteScreen = ({route}) => {
+const DetailsScreen = ({ route }) => {
 
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
@@ -29,7 +29,7 @@ const VoteScreen = ({route}) => {
     );
 }
 
-export default VoteScreen;
+export default DetailsScreen;
 
 
 const styles = StyleSheet.create({
