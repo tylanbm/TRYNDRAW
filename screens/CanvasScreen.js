@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View, Dimensions } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View, Dimensions, Modal, Pressable } from "react-native";
 import { backgroundColor, borderColor, color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 import ViewShot from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
@@ -114,7 +114,7 @@ const CircleButton = ({iconName, onPress}) => (
 );
 
 
-const CanvasScreen = () => {
+const CanvasScreen = ({navigation}) => {
     const [selectedId, setSelectedId] = useState(null);
     const [selectedId2, setSelectedId2] = useState(null);
 
@@ -123,6 +123,7 @@ const CanvasScreen = () => {
     const storage = getStorage();
     
     const [pencilActive, setPencilActive] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
     
 
     let currentThickness = 10;
@@ -137,6 +138,22 @@ const CanvasScreen = () => {
             currentThickness = 0;
         currentThickness += 5;
         drawRef.current.setThickness(currentThickness);
+    }
+
+    const exitAndDelete = () => {
+        setModalVisible(false);
+        clearDrawing();
+        navigation.navigate('Home');
+    }
+
+    const publishAndExit = () => {
+        setModalVisible(false);
+        captureViewShot();
+        navigation.navigate('Home');
+    }
+
+    const toggleModalVisibility = () => {
+        setModalVisible(!modalVisible);
     }
 
     const downThickness = () => {
@@ -209,7 +226,7 @@ const CanvasScreen = () => {
             <CircleButton onPress={downThickness} iconName={"remove"} />
             <CircleButton onPress={removeLastPath} iconName={"arrow-undo"} />
             <CircleButton onPress={clearDrawing} iconName={"trash"} />
-            <CircleButton onPress={captureViewShot} iconName={"checkmark"} />
+            <CircleButton onPress={toggleModalVisibility} iconName={"checkmark"} />
         </View>    
     );
     
@@ -271,6 +288,43 @@ const CanvasScreen = () => {
                 
             </View>
 
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    //Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>What do you want to do?</Text>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={publishAndExit}
+                        >
+                            <Text style={styles.textStyle}>Publish Drawing & Exit</Text>
+                        </Pressable>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose, { marginTop: 16 }]}
+                            onPress={() => setModalVisible(!modalVisible)}
+                        >
+                            <Text style={styles.textStyle}>Keep Editing</Text>
+                        </Pressable>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose, { marginTop: 32, backgroundColor: 'red' }]}
+                            onPress={exitAndDelete}
+                        >
+                            <Text style={styles.textStyle}>Delete Drawing & Exit</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
+            
+
+
             <View style={styles.box3}>
                 <SafeAreaView style={{ alignItems: 'center'}}>
                     <ToolBar></ToolBar>
@@ -329,7 +383,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         color: "#515151DE",
     },
-     
+
     canvas: {
         flex:1,
         backgroundColor: "red",
@@ -377,6 +431,52 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: "row",
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "flex-end",
+        alignItems: "center",
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        width: screenWidth,
+        height: screenHeight/2,
+        alignItems: "center",
+        justifyContent: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        borderRadius: 20,
+        elevation: 2,
+        width: 200,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: "center",
+    },
+    buttonOpen: {
+        backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 48,
+        textAlign: "center",
+        fontSize: 24,
+    }
 });
 
 export default CanvasScreen;
