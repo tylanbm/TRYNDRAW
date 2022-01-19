@@ -4,16 +4,32 @@ import React from 'react';
 // import styles and features
 import { StyleSheet, Text, View } from 'react-native';
 
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
 
-const DetailsScreen = () => {
+// Google Fonts
+import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
+
+
+const VoteScreen = ({route}) => {
+
+    // check if imported Google Fonts were loaded
+    let [fontsLoaded] = useFonts({
+        WorkSans_700Bold,
+    });
+    if (!fontsLoaded) return <AppLoading />;
+
+    // slug from ChallengesScreen
+    const paramKey = route.params;
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Vote on this drawing!</Text>
+            <Text style={styles.title}>Vote on this drawing! {paramKey}</Text>
         </View>
     );
 }
 
-export default DetailsScreen;
+export default VoteScreen;
 
 
 const styles = StyleSheet.create({
@@ -28,8 +44,8 @@ const styles = StyleSheet.create({
     title: {
         marginTop: 20,
         marginBottom: 20,
-        fontSize: 40,
-        fontWeight: 'bold',
+        fontSize: 35,
+        fontFamily: 'WorkSans_700Bold',
         textAlign: 'center',
   },
 });

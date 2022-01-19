@@ -72,12 +72,6 @@ const AppWithTabs = () => (
 
 );
 
-const imgBack = <ImageBackground
-  style={{flex:1}}
-  source={require('./assets/splash.png')}
-  resizeMode='contain'
-/>
-
 /*
 function SplashScreenHome({navigation}) {
   setTimeout(() => {

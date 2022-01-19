@@ -20,8 +20,13 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 // import icon libraries
 import { Ionicons } from '@expo/vector-icons';
 
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
 
-// screen function
+// Google Fonts
+import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
+
+
 const SettingsScreen = () => {
 
     const auth = getAuth();
@@ -73,6 +78,12 @@ const SettingsScreen = () => {
         });
     }
 
+    // check if imported Google Fonts were loaded
+    let [fontsLoaded] = useFonts({
+        WorkSans_700Bold,
+    });
+    if (!fontsLoaded) return <AppLoading />;
+    
     return (
         <View style={styles.container}>
             <Image
@@ -165,7 +176,7 @@ const styles = StyleSheet.create({
     // 'Welcome back'
     title: {
         fontSize: 40,
-        fontWeight: 'bold',
+        fontFamily: 'WorkSans_700Bold',
         textAlign: 'center',
         marginBottom: 20,
     },
@@ -183,7 +194,7 @@ const styles = StyleSheet.create({
     // 'Let's Go!'
     signoutText: {
         fontSize: 35,
-        fontWeight: 'bold',
+        fontFamily: 'WorkSans_700Bold',
         color: 'deepskyblue',
     },
 
@@ -194,8 +205,8 @@ const styles = StyleSheet.create({
     },
 
     menu: {
-        fontWeight: 'bold',
         fontSize: 20,
+        fontFamily: 'WorkSans_700Bold',
         marginBottom: 10,
     },
 

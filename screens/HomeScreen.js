@@ -18,10 +18,11 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 // import Ionicons icon library
 import { Ionicons } from '@expo/vector-icons';
 
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
+
 // Google Fonts
-//import { useFonts,
-//  Roboto_400Regular, }
-//from '@expo-google-fonts/roboto';
+import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
 
 
 const HomeScreen = ({ navigation }) => {
@@ -50,9 +51,11 @@ const HomeScreen = ({ navigation }) => {
         getPic();
     }, []);
 
-    //let [fontsLoaded] = useFonts({
-    //    Roboto_400Regular
-    //});
+    // check if imported Google Fonts were loaded
+    let [fontsLoaded] = useFonts({
+       WorkSans_700Bold,
+    });
+    if (!fontsLoaded) return <AppLoading />;
 
     return (
         <View style={styles.container}>
@@ -90,17 +93,16 @@ const styles = StyleSheet.create({
 
     // welcome back
     title: {
-        fontSize: 40,
-        //fontFamily: 'Roboto_400Regular',
-        fontWeight: 'bold',
+        fontFamily: 'WorkSans_700Bold',
         textAlign: 'center',
+        fontSize: 35,
         marginBottom: 20,
     },
 
     // 'Start Drawing!'
     subtitle: {
         fontSize: 35,
-        fontWeight: 'bold',
+        fontFamily: 'WorkSans_700Bold',
         textAlign: 'center',
         marginTop: 70,
     },
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     // 'Let's Go!'
     buttonText: {
         fontSize: 35,
-        fontWeight: 'bold',
+        fontFamily: 'WorkSans_700Bold',
         color: 'deepskyblue',
     },
 

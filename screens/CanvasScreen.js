@@ -281,7 +281,6 @@ const CanvasScreen = () => {
         );
     };
 
-
     return (
         <View style={styles.mainContainer}>
             <View style={styles.box1}>

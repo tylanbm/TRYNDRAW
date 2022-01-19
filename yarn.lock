@@ -1067,9 +1067,19 @@
   "resolved" "https://registry.npmjs.org/@expo-google-fonts/inter/-/inter-0.2.2.tgz"
   "version" "0.2.2"
 
+"@expo-google-fonts/raleway@^0.2.2":
+  "integrity" "sha512-/MUWS14hN9K25PgS7viQwZwasijwL1plIs1gSFu03uyaMCoSMXXrp+Jc1Am51Gj7IomPfVqSOhrbkSfYTeq6cQ=="
+  "resolved" "https://registry.npmjs.org/@expo-google-fonts/raleway/-/raleway-0.2.2.tgz"
+  "version" "0.2.2"
+
 "@expo-google-fonts/roboto@^0.2.2":
   "integrity" "sha512-qP0oZsR8rTID5T9wEXSt9yCYMnKYKlvIlrJGGpd+t71Obt2J51+51PBpvxd5c8fpABEru3zx6ENmpU9lzwr8zw=="
   "resolved" "https://registry.npmjs.org/@expo-google-fonts/roboto/-/roboto-0.2.2.tgz"
+  "version" "0.2.2"
+
+"@expo-google-fonts/work-sans@^0.2.2":
+  "integrity" "sha512-m9DQ/GyWIDo96jyZoMXUBgJIkBwLt0q/ueiRT4owdk4kulVP0o11SYZeOKlCcGdTqfAES8Y7fzQtEW8fr8apng=="
+  "resolved" "https://registry.npmjs.org/@expo-google-fonts/work-sans/-/work-sans-0.2.2.tgz"
   "version" "0.2.2"
 
 "@expo/config-plugins@^4.0.2":

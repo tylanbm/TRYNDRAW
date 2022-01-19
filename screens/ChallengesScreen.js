@@ -16,6 +16,12 @@ import {
 // import Ionicons icon library
 import { Ionicons } from '@expo/vector-icons';
 
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
+
+// Google Fonts
+import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
+
 
 // slug generation format
 const slugOptions = {
@@ -37,8 +43,8 @@ const ChallengesScreen = ({ navigation }) => {
   const [slug2, setSlug2] = useState(generateSlug(3, slugOptions));
   const [slug3, setSlug3] = useState(generateSlug(3, slugOptions));
 
-  // challenge selection number
-  const [select, setSelect] = useState(0);
+  // selected slug
+  const [select, setSelect] = useState('');
 
   // icon checkmark change
   const [check1, setCheck1] = useState(no);
@@ -58,6 +64,12 @@ const ChallengesScreen = ({ navigation }) => {
   // notice to tell users if they need to select a challenge
   const [notice, setNotice] = useState('');
 
+  // check if imported Google Fonts were loaded
+  let [fontsLoaded] = useFonts({
+    WorkSans_700Bold,
+  });
+  if (!fontsLoaded) return <AppLoading />;
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>What do you want to draw?</Text>
@@ -65,7 +77,7 @@ const ChallengesScreen = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => {
           // set selection to 1st slug
-          setSelect(1);
+          setSelect(slug1);
           setCheck1(yes);
           setCheck2(no);
           setCheck3(no);
@@ -84,7 +96,7 @@ const ChallengesScreen = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => {
           // set selection to 2nd slug
-          setSelect(2);
+          setSelect(slug2);
           setCheck1(no);
           setCheck2(yes);
           setCheck3(no);
@@ -103,7 +115,7 @@ const ChallengesScreen = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => {
           // set selection to 3rd slug
-          setSelect(3);
+          setSelect(slug3);
           setCheck1(no);
           setCheck2(no);
           setCheck3(yes);
@@ -121,8 +133,8 @@ const ChallengesScreen = ({ navigation }) => {
 
       <TouchableOpacity
         onPress={() => {
-          if (select==0) setNotice('Please select a challenge.');
-          else navigation.navigate('Canvas');
+          if (!select) setNotice('Please select a challenge.');
+          else navigation.navigate('Vote', select);
         }}
         style={styles.button}>
         <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>
@@ -141,9 +153,7 @@ const ChallengesScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('Home');
-        }}
+        onPress={() => navigation.navigate('Home')}
         style={styles.home}>
         <Text style={styles.homeText}>{exit} Home</Text>
       </TouchableOpacity>
@@ -170,7 +180,7 @@ const styles = StyleSheet.create({
   // page title
   title: {
     fontSize: 40,
-    fontWeight: 'bold',
+    fontFamily: 'WorkSans_700Bold',
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -188,7 +198,7 @@ const styles = StyleSheet.create({
   // challenge selection button text
   challengeText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'WorkSans_700Bold',
   },
 
   // 'Start drawing!' button
@@ -205,7 +215,7 @@ const styles = StyleSheet.create({
   // 'Start drawing!'
   buttonText: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: 'WorkSans_700Bold',
     color: 'deepskyblue',
   },
 
@@ -221,7 +231,7 @@ const styles = StyleSheet.create({
 
   rerollText: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: 'WorkSans_700Bold',
     color: 'green',
   },
 
@@ -240,7 +250,7 @@ const styles = StyleSheet.create({
   // 'Back to Home'
   homeText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'WorkSans_700Bold',
     color: 'red',
   },
 
