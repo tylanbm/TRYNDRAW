@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 //Ignore warnings
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...', "Setting", "AsyncStorage"]); // Ignore log notification by message
-LogBox.ignoreAllLogs();//Ignore all log notifications
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 
 //Screen Imports
@@ -47,7 +47,7 @@ const AppWithTabs = () => (
             : 'home-outline';
         } else if (route.name === 'Gallery') {
           iconName = focused ? 'images' : 'images-outline';
-        } else if (route.name === 'Vote') {
+        } else if (route.name === 'Details') {
           iconName = focused ? 'heart' : 'heart-outline';
         } else if (route.name === 'Challenges') {
           iconName = focused ? 'trophy' : 'trophy-outline';
@@ -55,7 +55,7 @@ const AppWithTabs = () => (
          else if (route.name === 'Settings') {
           iconName = focused ? 'settings' : 'settings-outline';
         } else {
-          iconName = focused ? 'bug' : 'bug-outline'
+          iconName = focused ? 'bug' : 'bug-outline';
         }
 
         // You can return any component that you like here!
@@ -64,21 +64,13 @@ const AppWithTabs = () => (
       tabBarActiveTintColor: '#05a6f8',
       tabBarInactiveTintColor: 'gray',
     })}>
-    <Tab.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Home" component={HomeScreen} />
-    <Tab.Screen name='Challenges' component={ChallengesScreen} />
-    <Tab.Screen name="Vote" component={DetailsScreen} />
-    <Tab.Screen name="Gallery" component={GalleryScreen} />
-    <Tab.Screen name="Settings" component={SettingsScreen} />
+    <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Details" component={DetailsScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Gallery" component={GalleryScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
   </Tab.Navigator>
 
 );
-
-const imgBack = <ImageBackground
-  style={{flex:1}}
-  source={require('./assets/splash.png')}
-  resizeMode='contain'
-/>
 
 /*
 function SplashScreenHome({navigation}) {
@@ -98,7 +90,7 @@ function SplashScreenHome({navigation}) {
 function App() {
   
   //Keeps state of whether user is signed in or not
-  const [isSignedIn, setIsSignedIn] = useState('')
+  const [isSignedIn, setIsSignedIn] = useState('');
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -106,12 +98,12 @@ function App() {
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
       setIsSignedIn(true);
-      console.log("User currently signed in")
+      console.log("User currently signed in");
 
       return true;
       // ...
     } else {
-      console.log("User not signed in")
+      console.log("User not signed in");
       setIsSignedIn(false);
       return false;
 
@@ -126,6 +118,8 @@ function App() {
         {isSignedIn ? (
           <>
             <Stack.Screen name="HomeTabs" component={AppWithTabs} options={{headerShown: false}}/>
+            <Stack.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='Challenges' component={ChallengesScreen} options={{ headerShown: false }} />
           </>
         ) : (
           <>

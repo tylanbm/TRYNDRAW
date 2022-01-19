@@ -16,6 +16,12 @@ import {
 // import Ionicons icon library
 import { Ionicons } from '@expo/vector-icons';
 
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
+
+// Google Fonts
+import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
+
 
 // slug generation format
 const slugOptions = {
@@ -23,29 +29,27 @@ const slugOptions = {
   partsOfSpeech: ['adjective', 'adjective', 'noun'],
 }
 
-// generated slugs
-const slug1 = generateSlug(3, slugOptions);
-const slug2 = generateSlug(3, slugOptions);
-const slug3 = generateSlug(3, slugOptions);
-
 // icons
 const buttonIcon = <Ionicons name='arrow-forward' size={25} color='deepskyblue' />;
-const n = <Ionicons name='square-outline' size={20} color='black' />;
-const y = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
+const no = <Ionicons name='square-outline' size={20} color='black' />;
+const yes = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
+const exit = <Ionicons name='arrow-back' size={20} color='red' />;
 
 
-const ChallengesScreen = () => {
+const ChallengesScreen = ({ navigation }) => {
 
-  // challenge selection number
-  const [select, setSelect] = useState(0);
+  // generated slugs
+  const [slug1, setSlug1] = useState(generateSlug(3, slugOptions));
+  const [slug2, setSlug2] = useState(generateSlug(3, slugOptions));
+  const [slug3, setSlug3] = useState(generateSlug(3, slugOptions));
 
-  // display text below "Start Drawing!"
-  const [drawing, setDrawing] = useState('');
+  // selected slug
+  const [select, setSelect] = useState('');
 
   // icon checkmark change
-  const [check1, setCheck1] = useState(n);
-  const [check2, setCheck2] = useState(n);
-  const [check3, setCheck3] = useState(n);
+  const [check1, setCheck1] = useState(no);
+  const [check2, setCheck2] = useState(no);
+  const [check3, setCheck3] = useState(no);
 
   // text colour change
   const [text1, setText1] = useState('grey');
@@ -57,6 +61,16 @@ const ChallengesScreen = () => {
   const [border2, setBorder2] = useState('transparent');
   const [border3, setBorder3] = useState('transparent');
 
+  // note to tell users to select a challenge
+  const [note, setNote] = useState('Please select a challenge.');
+  const [noteColour, setNoteColour] = useState('black');
+
+  // check if imported Google Fonts were loaded
+  let [fontsLoaded] = useFonts({
+    WorkSans_700Bold,
+  });
+  if (!fontsLoaded) return <AppLoading />;
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>What do you want to draw?</Text>
@@ -64,16 +78,17 @@ const ChallengesScreen = () => {
       <TouchableOpacity
         onPress={() => {
           // set selection to 1st slug
-          setSelect(1);
-          setCheck1(y);
-          setCheck2(n);
-          setCheck3(n);
+          setSelect(slug1);
+          setCheck1(yes);
+          setCheck2(no);
+          setCheck3(no);
           setBorder1('deepskyblue');
           setBorder2('transparent');
           setBorder3('transparent');
           setText1('black');
           setText2('grey');
           setText3('grey');
+          setNote('');
         }}
         style={[styles.challenge, {borderColor: border1}]}>
         <Text style={[styles.challengeText, {color: text1}]}>
@@ -83,16 +98,17 @@ const ChallengesScreen = () => {
       <TouchableOpacity
         onPress={() => {
           // set selection to 2nd slug
-          setSelect(2);
-          setCheck1(n);
-          setCheck2(y);
-          setCheck3(n);
+          setSelect(slug2);
+          setCheck1(no);
+          setCheck2(yes);
+          setCheck3(no);
           setBorder1('transparent');
           setBorder2('deepskyblue');
           setBorder3('transparent');
           setText1('grey');
           setText2('black');
           setText3('grey');
+          setNote('');
         }}
         style={[styles.challenge, {borderColor: border2}]}>
         <Text style={[styles.challengeText, {color: text2}]}>
@@ -102,16 +118,17 @@ const ChallengesScreen = () => {
       <TouchableOpacity
         onPress={() => {
           // set selection to 3rd slug
-          setSelect(3);
-          setCheck1(n);
-          setCheck2(n);
-          setCheck3(y);
+          setSelect(slug3);
+          setCheck1(no);
+          setCheck2(no);
+          setCheck3(yes);
           setBorder1('transparent');
           setBorder2('transparent');
           setBorder3('deepskyblue');
           setText1('grey');
           setText2('grey');
           setText3('black');
+          setNote('');
         }}
         style={[styles.challenge, {borderColor: border3}]}>
         <Text style={[styles.challengeText, {color: text3}]}>
@@ -120,40 +137,40 @@ const ChallengesScreen = () => {
 
       <TouchableOpacity
         onPress={() => {
-          switch(select) {
-
-            // print option 1
-            case 1:
-              setDrawing('1');
-              break;
-
-            // print option 2
-            case 2:
-              setDrawing('2');
-              break;
-              
-            // print option 3
-            case 3:
-              setDrawing('3');
-              break;
-
-            // print invalid option
-            default:
-              setDrawing('Please select a challenge.');
-              break;
-          }
+          if (!select) setNote('Please select a challenge.');
+          else navigation.navigate('Details', select);
         }}
         style={styles.button}>
-        <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>
+        <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>  
       </TouchableOpacity>
 
-      <Text style={{fontSize: 15}}>{drawing}</Text>
+      <Text style={styles.note}>{note}</Text>
+
+      <TouchableOpacity
+        onPress={() => {
+          setSlug1(generateSlug(3, slugOptions));
+          setSlug2(generateSlug(3, slugOptions));
+          setSlug3(generateSlug(3, slugOptions));
+        }}
+        style={styles.reroll}>
+        <Text style={styles.rerollText}>Re-Roll</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Home')}
+        style={styles.home}>
+        <Text style={styles.homeText}>{exit} Home</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
 export default ChallengesScreen;
 
+
+// global padding
+let padChal = 10;
+let padExit = 5;
 
 const styles = StyleSheet.create({
   
@@ -167,7 +184,7 @@ const styles = StyleSheet.create({
   // page title
   title: {
     fontSize: 40,
-    fontWeight: 'bold',
+    fontFamily: 'WorkSans_700Bold',
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -179,32 +196,72 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 20,
     borderWidth: 2,
-    paddingLeft: 10,
+    paddingLeft: padChal,
   },
 
   // challenge selection button text
   challengeText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'WorkSans_700Bold',
   },
 
-  // 'START DRAWING' button
+  // 'Start drawing!' button
   button: {
     marginTop: 20,
     marginBottom: 10,
-    fontSize: 25,
-    fontWeight: 'bold',
     borderColor: 'deepskyblue',
     borderRadius: 20,
     borderWidth: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: padChal,
+    paddingRight: padChal,
   },
 
-  // 'START DRAWING!'
+  // 'Start drawing!'
   buttonText: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: 'WorkSans_700Bold',
     color: 'deepskyblue',
+  },
+
+  reroll: {
+    marginTop: 20,
+    marginBottom: 10,
+    borderColor: 'green',
+    borderRadius: 20,
+    borderWidth: 2,
+    paddingLeft: padChal,
+    paddingRight: padChal,
+  },
+
+  rerollText: {
+    fontSize: 25,
+    fontFamily: 'WorkSans_700Bold',
+    color: 'green',
+  },
+
+  // 'Back to Home' button
+  home: {
+    marginTop: 20,
+    borderColor: 'red',
+    borderRadius: 25,
+    borderWidth: 2,
+    paddingLeft: padExit,
+    paddingRight: padExit,
+    paddingTop: padExit,
+    paddingBottom: padExit,
+  },
+
+  // 'Back to Home'
+  homeText: {
+    fontSize: 20,
+    fontFamily: 'WorkSans_700Bold',
+    color: 'red',
+  },
+
+  // note message
+  note: {
+    marginTop: 10,
+    marginBottom: 10,
+    fontFamily: 'WorkSans_700Bold',
   }
-})
+});

@@ -1,23 +1,32 @@
-// import everything and ability to change consts
-import React, { useState } from 'react';
+// import React, initialized variable state, run async functions
+import React, { useState, useEffect, } from 'react';
 
 // import styles, text, view, buttons
 import { StyleSheet,
     Text,
     View,
+    Image,
     Button,
     TouchableOpacity } from 'react-native';
 
 // import authentication
 import { getAuth,
     signOut,
-    onAuthStateChanged } from "firebase/auth";
+    onAuthStateChanged } from 'firebase/auth';
+
+// import firebase storage
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 // import icon libraries
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
+
+// Google Fonts
+import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
 
 
-// screen function
 const SettingsScreen = () => {
 
     const auth = getAuth();
@@ -29,73 +38,120 @@ const SettingsScreen = () => {
     // set colours to button clicks
     const [iconColour1, setIconColour1] = useState('grey');
     const [iconColour2, setIconColour2] = useState('grey');
+    const [iconColour3, setIconColour3] = useState('grey');
     const [buttonColour1, setButtonColour1] = useState('grey');
     const [buttonColour2, setButtonColour2] = useState('grey');
+    const [buttonColour3, setButtonColour3] = useState('grey');
 
-    // heart icon for both buttons
-    const heart1 = <AntDesign name='heart' size={15} color={iconColour1} />;
-    const heart2 = <AntDesign name='heart' size={15} color={iconColour2} />;
+    // icons
+    const exitIcon = <Ionicons name='exit-outline' size={35} color='deepskyblue' />;
+    const heart1 = <Ionicons name='heart' size={20} color={iconColour1} />;
+    const heart2 = <Ionicons name='heart' size={20} color={iconColour2} />;
+    const heart3 = <Ionicons name='heart' size={20} color={iconColour3} />;
+    
+    // get username
+    let fullUser = user.email;
+    const username = fullUser.substring(0, fullUser.indexOf('@'));
+
+    // set up variables for image get
+    const storage = getStorage();
+    const [pic, setPic] = useState('');
+
+    // get and set profile pic from firebase storage
+    useEffect(() => {
+        const getPic = async() => {
+            let temp = await getDownloadURL(ref(storage, 'images/profilePic.jpg'));
+            setPic(temp.toString());
+        }
+        getPic();
+    }, []);
 
     // sign out button
     const signOutUser = () => {
         signOut(auth).then(() => {
-            // Sign-out successful.
-            console.log("Signed Out");
+            // Sign out successful.
+            console.log('Signed out');
             global.signedIn = false;
         }).catch((error) => {
             // An error happened.
+            console.log('Sign out error!');
         });
     }
 
+    // check if imported Google Fonts were loaded
+    let [fontsLoaded] = useFonts({
+        WorkSans_700Bold,
+    });
+    if (!fontsLoaded) return <AppLoading />;
+    
     return (
         <View style={styles.container}>
+            <Image
+                source={{uri: pic}}
+                style={styles.img}
+            />
+            <Text style={styles.title}>
+                Signed in as{'\n'}
+                {username}
+            </Text>
+            <TouchableOpacity
+                onPress={() => signOutUser()}
+                style={styles.signout}
+            >
+                <Text style={styles.signoutText}>Sign Out {exitIcon}</Text>
+            </TouchableOpacity>
 
-            {/* sign out button */}
-            <View style={{alignItems: 'center'}}>
-                <Button
-                    title="Sign Out"
-                    onPress={() => signOutUser()}
-                />
-            </View>
+            <View style={{marginTop: 50}}>
 
-            {/* divider line */}
-            <View style={styles.divider} />
-            <View style={{marginTop: 150}}>
-
-                {/* SETTINGS button */}
                 <TouchableOpacity
                     onPress={() => {
-                        setTextInfo('Set your things')
-                        setButtonColour1('green')
-                        setButtonColour2('grey')
-                        setIconColour1('green')
-                        setIconColour2('grey')
+                        setTextInfo('Edit your avatar.');
+                        setButtonColour1('green');
+                        setButtonColour2('grey');
+                        setButtonColour3('grey');
+                        setIconColour1('green');
+                        setIconColour2('grey');
+                        setIconColour3('grey');
                     }}
-                    style={styles.buttonStyle}
+                    style={styles.button}
                     >
-                    <Text style={{fontWeight: 'bold', color: buttonColour1}}>SETTINGS</Text>
+                    <Text style={[styles.menu, {color: buttonColour1}]}>Edit Avatar</Text>
                     <Text style={styles.icon}>{heart1}</Text>
                 </TouchableOpacity>
-
-                <View style={{marginTop: 10}}/>
                 
-                {/* APP INFO button */}
                 <TouchableOpacity
                     onPress={() => {
-                        setTextInfo('This is an app where you can draw things')
-                        setButtonColour1('grey')
-                        setButtonColour2('green')
-                        setIconColour1('grey')
-                        setIconColour2('green')
+                        setTextInfo('This is an app where you can draw things.');
+                        setButtonColour1('grey');
+                        setButtonColour2('green');
+                        setButtonColour3('grey');
+                        setIconColour1('grey');
+                        setIconColour2('green');
+                        setIconColour3('grey');
                     }}
-                    style={styles.buttonStyle}
+                    style={styles.button}
                     >
-                    <Text style={{fontWeight: 'bold', color: buttonColour2}}>APP INFO</Text>
+                    <Text style={[styles.menu, {color: buttonColour2}]}>App Info</Text>
                     <Text style={styles.icon}>{heart2}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    onPress={() => {
+                        setTextInfo('Where is the bug?');
+                        setButtonColour1('grey');
+                        setButtonColour2('grey');
+                        setButtonColour3('green');
+                        setIconColour1('grey');
+                        setIconColour2('grey');
+                        setIconColour3('green');
+                    }}
+                    style={styles.button}
+                    >
+                    <Text style={[styles.menu, {color: buttonColour3}]}>Report a Bug</Text>
+                    <Text style={styles.icon}>{heart3}</Text>
                 </TouchableOpacity>
             </View>
 
-            {/* info text at the bottom of the screen */}
             <View style={styles.info}>
                 <Text>{textInfo}</Text>
             </View>
@@ -106,24 +162,52 @@ const SettingsScreen = () => {
 export default SettingsScreen;
 
 
+// global padding
+let padOut = 10;
+
 const styles = StyleSheet.create({
 
-    // style for entire screen
+    // entire screen
     container: {
         flex: 1,
+        alignItems: 'center'
     },
 
-    // divider line below SIGN OUT button
-    divider: {
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
-        marginTop: 50,
+    // 'Welcome back'
+    title: {
+        fontSize: 40,
+        fontFamily: 'WorkSans_700Bold',
+        textAlign: 'center',
+        marginBottom: 20,
     },
 
-    // both buttons
-    buttonStyle: {
+    // 'Sign Out' button
+    signout: {
+        marginTop: 10,
+        borderColor: 'deepskyblue',
+        borderRadius: 20,
+        borderWidth: 2,
+        paddingLeft: padOut,
+        paddingRight: padOut,
+    },
+
+    // 'Let's Go!'
+    signoutText: {
+        fontSize: 35,
+        fontFamily: 'WorkSans_700Bold',
+        color: 'deepskyblue',
+    },
+
+    // menu buttons
+    button: {
         flexDirection: 'row',
         width: '95%',
+    },
+
+    menu: {
+        fontSize: 20,
+        fontFamily: 'WorkSans_700Bold',
+        marginBottom: 10,
     },
 
     // heart icon
@@ -134,7 +218,17 @@ const styles = StyleSheet.create({
 
     // info from button clicks
     info: {
-        marginTop: 100,
+        marginTop: 50,
         alignItems: 'center',
     },
-})
+
+    // profile image
+    img: {
+        width: 100,
+        aspectRatio: 1,
+        borderRadius: 100,
+        borderWidth: 2,
+        borderColor: 'grey',
+        marginTop: 25,
+    },
+});
