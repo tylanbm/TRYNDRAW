@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View, Dimensions } from "react-native";
 import { backgroundColor, borderColor, color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 import ViewShot from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
@@ -23,46 +23,48 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const db = getFirestore();
 
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+
 const COLORS = [
     {
         id: "1",
         title: "Red",
-        colorCode: 'red',
+        colorCode: '#FF5454',
     },
     {
         id: "2",
         title: "Orange",
-        colorCode: 'orange',
+        colorCode: '#FF8754',
     },
     {
         id: "3",
         title: "Yellow",
-        colorCode: 'yellow',
+        colorCode: '#FEEE97',
     },
     {
         id: "4",
         title: "Green",
-        colorCode: 'green',
+        colorCode: '#97FEA8',
     },
     {
         id: "5",
         title: "L-Blue",
-        colorCode: 'lightblue',
+        colorCode: '#73CCFE',
     },
     {
         id: "6",
         title: "Blue",
-        colorCode: 'blue',
+        colorCode: '#547AFF',
     },
     {
         id: "7",
         title: "Violet",
-        colorCode: 'violet',
+        colorCode: '#9F54FF',
     },
     {
         id: "8",
         title: "Black",
-        colorCode: 'black',
+        colorCode: '#494949',
     },
 ];
 
@@ -105,6 +107,13 @@ const Item = ({ item, onPress, backgroundColor, swatchColor, style }) => (
 );
 
 
+const CircleButton = ({iconName, onPress}) => (
+    <TouchableOpacity onPress={onPress} style={[styles.toolContainer]}>
+        <Ionicons name={iconName} style={[styles.toolIcon]}/>
+    </TouchableOpacity>
+);
+
+
 const CanvasScreen = () => {
     const [selectedId, setSelectedId] = useState(null);
     const [selectedId2, setSelectedId2] = useState(null);
@@ -113,7 +122,7 @@ const CanvasScreen = () => {
     const viewShot = useRef(ViewShot);
     const storage = getStorage();
     
-
+    const [pencilActive, setPencilActive] = useState(true);
     
 
     let currentThickness = 10;
@@ -124,12 +133,16 @@ const CanvasScreen = () => {
     }
 
     const upThickness = () => {
-        currentThickness -=5;
+        if(currentThickness ==1)
+            currentThickness = 0;
+        currentThickness += 5;
         drawRef.current.setThickness(currentThickness);
     }
 
     const downThickness = () => {
-        currentThickness += 5;
+        currentThickness -= 5;
+        if (currentThickness <= 0 )
+            currentThickness = 1;
         drawRef.current.setThickness(currentThickness);
     }
     
@@ -182,35 +195,29 @@ const CanvasScreen = () => {
 
     const ToolBar = () => (
         <View style={[styles.row]}>
-            <TouchableOpacity onPress={clearDrawing} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Reset</Text>
-            </TouchableOpacity>
+            <CircleButton onPress={console.log("Yay")} iconName={"pencil"}/>
+            <View style={{
+                transform: [
+                    { rotate: "45deg" },
 
-            <TouchableOpacity onPress={removeLastPath} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Undo</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity  style={[styles.item2]}>
-                <Text style={[styles.title]}>    -    </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity  style={[styles.item2]}>
-                <Text style={[styles.title]}>    +    </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={captureViewShot} style={[styles.item, backgroundColor]}>
-                <Text style={[styles.title]}>Done</Text>
-            </TouchableOpacity>
-
-        </View>
-        
+                ]
+            }}> 
+            <CircleButton onPress={console.log("Yay")} iconName={"tablet-portrait"} /> 
+            </View>
+            
+            <CircleButton onPress={upThickness} iconName={"add"} />
+            <CircleButton onPress={downThickness} iconName={"remove"} />
+            <CircleButton onPress={removeLastPath} iconName={"arrow-undo"} />
+            <CircleButton onPress={clearDrawing} iconName={"trash"} />
+            <CircleButton onPress={captureViewShot} iconName={"checkmark"} />
+        </View>    
     );
     
 
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? "#05a6f8" : "#F5F5F5";
         const color = item.colorCode;
-        const borderColor = item.id === selectedId ? "#05a6f8" : "lightgray";
+        const borderColor = item.id === selectedId ? "#05a6f8" : "#B9B9B9";
 
         return (
             <Item
@@ -218,7 +225,7 @@ const CanvasScreen = () => {
                 onPress={() => {setSelectedId(item.id); setColor(item.colorCode)}}
                 backgroundColor={{ backgroundColor }}
                 swatchColor={{color}}
-                style={{borderColor: borderColor, borderWidth: 2, padding: 3, borderRadius: 30, overflow: 'hidden', margin:2, marginHorizontal: 4, alignItems: 'center', justifyContent: 'center', alignContent: 'center', backgroundColor: 'white'}}
+                style={{borderColor: borderColor, borderWidth: 1, padding: 3, borderRadius: 30, overflow: 'hidden', margin:2, marginHorizontal: 4, alignItems: 'center', justifyContent: 'center', alignContent: 'center', backgroundColor: 'white'}}
             />
         );
     };
@@ -247,13 +254,13 @@ const CanvasScreen = () => {
                         options={{ format: "jpg", quality: 0.9 }} >
                         <Draw
                             ref={drawRef}
-                            height={300}
-                            width={300}
+                            height={screenWidth}
+                            width={screenWidth}
                             hideBottom={true}
                             initialValues={{
                                 color: "#B644D0",
-                                thickness: 10,
-                                opacity: 0.5,
+                                thickness: 5,
+                                opacity: 1,
                                 paths: []
                             }}
                             brushPreview="none"
@@ -288,7 +295,7 @@ const styles = StyleSheet.create({
     container: {
         alignContent: "center",
         justifyContent: "center",
-        margin: 40,
+        marginTop: 80,
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: "#D2D2D2"
@@ -300,6 +307,29 @@ const styles = StyleSheet.create({
     container2: {
         backgroundColor: "#F5F5F5",
     }, 
+    toolContainer: {
+        borderColor: "#B9B9B9",
+        borderWidth: 1, 
+        height: 44,
+        width: 44, 
+        marginHorizontal: 4,
+        borderRadius: 30, 
+        overflow: 'hidden', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        alignContent: 'center', 
+        backgroundColor: 'white'
+
+    },
+    toolIcon: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        marginHorizontal: 8,
+        fontSize: 24,
+        borderRadius: 30,
+        color: "#515151DE",
+    },
+     
     canvas: {
         flex:1,
         backgroundColor: "red",
