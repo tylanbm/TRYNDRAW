@@ -24,9 +24,9 @@ import { collection,
     setDoc,
     getFirestore,
     getDoc,
-    getDocs, } from 'firebase/firestore';
-    
-import { styleProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
+    getDocs,
+    onSnapshot,
+    query } from 'firebase/firestore';
 
 
 const db = getFirestore();
@@ -42,7 +42,6 @@ const setDataInDatabase = async() => {
     });
 }
 
-/*
 const uploadImg = async() => {
     // to be fixed
     const marioRef = ref(storage, 'gallery');
@@ -51,30 +50,7 @@ const uploadImg = async() => {
     uploadBytes(marioRef, marioImgRef, metadata).then(() => {
         console.log("Uploaded gallery file!");
     });
-}*/
-
-// const getURLs = async() => {
-//     const listRef = ref(storage, 'images');
-//     const urls = [];
-//     let index = 0;
-
-//     listAll(listRef).then((res) => {
-//         res.items.forEach(async(itemRef) => {
-//             let temp = await getDownloadURL(itemRef);
-//             temp = String(temp.toString());
-//             let img = {
-//                 id: index,
-//                 url: temp,
-//             }
-//             console.log(index + ": " + img.url);
-//             urls.push(img);
-//             index++;
-//         });
-//     }).catch((error) => {
-//         console.log("Image URL error!");
-//     });
-//     return urls;
-// }
+}
 
 const getData = async() => {
 
@@ -112,41 +88,6 @@ const getAllData = async() => {
     return tempData;
 }
 
-const datas = [
-    {
-        id: "0",
-        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario0.jpg?alt=media&token=520833ee-1590-45f6-95e8-eef6641069d8',
-    },
-    {
-        id: "1",
-        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario1.jpg?alt=media&token=e1fbaaa8-e0ef-44e0-93b0-fe0a3052bfcb',
-    },
-    {
-        id: "2",
-        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario4.jpg?alt=media&token=cf33a555-4f23-4e89-8f57-0b25c9d95063',
-    },
-    {
-        id: "3",
-        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario3.jpg?alt=media&token=208a07d6-3f17-4dbb-9900-c404832b382b',
-    },
-    {
-        id: "4",
-        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario2.jpg?alt=media&token=380a7b9d-a133-4f0e-886e-82a24f85f033',
-    },
-    {
-        id: "5",
-        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario5.jpg?alt=media&token=97041184-a60f-4b49-91dc-2be2ca62273c',
-    },
-    {
-        id: "6",
-        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario7.jpg?alt=media&token=7032d64d-7bb9-4bc3-9a3d-4f0965d36dfb',
-    },
-    {
-        id: "7",
-        url: 'https://firebasestorage.googleapis.com/v0/b/dart-bd1be.appspot.com/o/images%2Fmario6.jpg?alt=media&token=e865315d-318d-4c9b-bfa7-b88ec48706e5',
-    },
-];
-
 //const q = query(messagesRef, orderBy('createdAt'), limit(5));
 //const [messages] = useCollectionData(q);
 
@@ -165,18 +106,19 @@ const GalleryScreen = () => {
 
     const getURLs = async() => {
         const listRef = ref(storage, 'testImages');
-        let index = 0;
     
         listAll(listRef).then((res) => {
             res.items.forEach(async(itemRef) => {
                 let temp = await getDownloadURL(itemRef);
                 temp = temp.toString();
                 let img = {
-                    id: index,
+                    id: itemRef.name,
                     url: temp,
                 }
-                setImgs(getImgs => [...getImgs, img]);
-                index++;
+                if (!getImgs.some(obj => obj.id === img.id)) {
+                    console.log('hi');
+                    setImgs(getImgs => [...getImgs, img]);
+                }
             });
         }).catch((error) => {
             console.log("Image URL error!");
@@ -205,12 +147,19 @@ const GalleryScreen = () => {
     //     getGetAll();
     // }, []);
 
-    useEffect(() => {
-        const getDownload = async() => {
-            await getURLs();
-        }
+    const getDownload = async() => {
+        await getURLs();
+    }
+
+    // useEffect(() => {
+    //     getDownload();
+    // }, []);
+
+    const refresh = () => {
+        console.log('Reloading...');
         getDownload();
-    }, []);
+        console.log('Finished reloading');
+    }
 
     const [selectedId, setSelectedId] = useState(null);
 
@@ -242,7 +191,12 @@ const GalleryScreen = () => {
     };
 
     return (
-        <View>
+        <View style={{marginTop: 20}}>
+            <TouchableOpacity
+                onPress={() => refresh()}
+            >
+                <Text>Refresh</Text>
+            </TouchableOpacity>
             <SafeAreaView>
                 <FlatList
                     data={getImgs}

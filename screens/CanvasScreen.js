@@ -203,7 +203,6 @@ const CanvasScreen = ({navigation}) => {
 
             uploadImage(uri);
 
-
         })
     };
 
