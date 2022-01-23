@@ -1033,6 +1033,7 @@
     "to-fast-properties" "^2.0.0"
 
 "@benjeau/react-native-draw@git+https://github.com/BenJeau/react-native-draw.git":
+  "integrity" "sha512-srcW1W6eKpc9Cx+UgsMw/SX3fardnxm5Quz/8LMBkYaflfX0K7dJokh7PC8XQcjgKzxYgN5DruDODvB0LNfWGQ=="
   "resolved" "git+ssh://git@github.com/BenJeau/react-native-draw.git#05c85f0e903056fc6c3f6e6830f8a29546a539b1"
   "version" "0.5.0"
   dependencies:
@@ -3574,11 +3575,6 @@
   "integrity" "sha1-FQStJSMVjKpA20onh8sBQRmU6k8="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
-
-"fsevents@^2.1.2":
-  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
-  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
-  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="

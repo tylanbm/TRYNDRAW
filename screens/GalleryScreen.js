@@ -1,4 +1,3 @@
-
 // import React itself, change const state, use async methods
 import React, { useState, useEffect } from 'react';
 
@@ -26,8 +25,6 @@ import { collection,
     getDoc,
     getDocs, } from 'firebase/firestore';
 
-import { styleProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
-
 
 const db = getFirestore();
 const storage = getStorage();
@@ -42,7 +39,6 @@ const setDataInDatabase = async() => {
     });
 }
 
-/*
 const uploadImg = async() => {
     // to be fixed
     const marioRef = ref(storage, 'gallery');
@@ -51,30 +47,7 @@ const uploadImg = async() => {
     uploadBytes(marioRef, marioImgRef, metadata).then(() => {
         console.log("Uploaded gallery file!");
     });
-}*/
-
-// const getURLs = async() => {
-//     const listRef = ref(storage, 'images');
-//     const urls = [];
-//     let index = 0;
-
-//     listAll(listRef).then((res) => {
-//         res.items.forEach(async(itemRef) => {
-//             let temp = await getDownloadURL(itemRef);
-//             temp = String(temp.toString());
-//             let img = {
-//                 id: index,
-//                 url: temp,
-//             }
-//             console.log(index + ": " + img.url);
-//             urls.push(img);
-//             index++;
-//         });
-//     }).catch((error) => {
-//         console.log("Image URL error!");
-//     });
-//     return urls;
-// }
+}
 
 const getData = async() => {
 
@@ -130,7 +103,6 @@ const GalleryScreen = () => {
 
     const getURLs = async() => {
         const listRef = ref(storage, 'testImages');
-        let index = 0;
     
         listAll(listRef).then((res) => {
             res.items.forEach(async(itemRef) => {
@@ -140,8 +112,10 @@ const GalleryScreen = () => {
                     id: itemRef.name,
                     url: temp,
                 }
-                setImgs(getImgs => [...getImgs, img]);
-                index++;
+                if (!getImgs.some(obj => obj.id === img.id)) {
+                    console.log('hi');
+                    setImgs(getImgs => [...getImgs, img]);
+                }
             });
         }).catch((error) => {
             console.log("Image URL error!");
@@ -170,12 +144,19 @@ const GalleryScreen = () => {
     //     getGetAll();
     // }, []);
 
-    useEffect(() => {
-        const getDownload = async() => {
-            await getURLs();
-        }
+    const getDownload = async() => {
+        await getURLs();
+    }
+
+    // useEffect(() => {
+    //     getDownload();
+    // }, []);
+
+    const refresh = () => {
+        console.log('Reloading...');
         getDownload();
-    }, []);
+        console.log('Finished reloading');
+    }
 
     const [selectedId, setSelectedId] = useState(null);
 
@@ -207,7 +188,12 @@ const GalleryScreen = () => {
     };
 
     return (
-        <View>
+        <View style={{marginTop: 20}}>
+            <TouchableOpacity
+                onPress={() => refresh()}
+            >
+                <Text>Refresh</Text>
+            </TouchableOpacity>
             <SafeAreaView>
                 <FlatList
                     data={getImgs}
