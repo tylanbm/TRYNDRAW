@@ -20,6 +20,7 @@ import {
 } from 'firebase/firestore';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { auth } from "../firebaseConfig";
 
 const db = getFirestore();
 
@@ -146,9 +147,9 @@ const CanvasScreen = ({navigation}) => {
         navigation.navigate('Home');
     }
 
-    const publishAndExit = () => {
+    const publishAndExit = async () => {
         setModalVisible(false);
-        captureViewShot();
+        await captureViewShot();
         navigation.navigate('Home');
     }
 
@@ -173,7 +174,7 @@ const CanvasScreen = ({navigation}) => {
     }
     
     //A function that takes a snapshot of the canvas element and uploads image to firebase storage
-    const captureViewShot = () => {
+    const captureViewShot = async () => {
         viewShot.current.capture().then((uri) => {
             console.log("Do something with ", uri);
             //MediaLibrary.requestPermissionsAsync();
@@ -194,7 +195,10 @@ const CanvasScreen = ({navigation}) => {
                 //Generate blob from image URI
                 const blob = await response.blob();
                 //Create a new file in database that will represent image name
-                await setDoc(newImageRef, {});
+                await setDoc(newImageRef, { 
+                    imageAuthorUID: auth.currentUser.uid,
+                    imageAuthorUsername: auth.currentUser.displayName,
+                });
                 //Upload image blob to firebase storage
                 uploadBytes(storageRef, blob).then((snapshot) => {
                     console.log('Uploaded a blob or file!');
