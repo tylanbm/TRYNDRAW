@@ -95,7 +95,8 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 );
 
 
-const GalleryScreen = () => {
+
+const GalleryScreen = ({navigation}) => {
 
     const [getImgs, setImgs] = useState([]);
     const [fireData, setFireData] = useState([]);
@@ -113,7 +114,7 @@ const GalleryScreen = () => {
                     url: temp,
                 }
                 if (!getImgs.some(obj => obj.id === img.id)) {
-                    console.log('hi');
+                    //console.log('hi');
                     setImgs(getImgs => [...getImgs, img]);
                 }
             });
@@ -148,9 +149,16 @@ const GalleryScreen = () => {
         await getURLs();
     }
 
-    // useEffect(() => {
-    //     getDownload();
-    // }, []);
+    const openPhoto = (imageSource) => {
+        console.log("Yay!" + imageSource);
+        navigation.navigate('Image', {
+            imageSourceToLoad: imageSource.toString(),
+        });
+    }
+
+    useEffect(() => {
+        getDownload();
+        }, []);
 
     const refresh = () => {
         console.log('Reloading...');
@@ -172,10 +180,12 @@ const GalleryScreen = () => {
     };
 
     const renderImg = ({ item }) => {
+        const itemUrl = item.url;
         const id = item.id;
+
         return (
             <TouchableOpacity
-                onPress={() => console.log(id)}
+                onPress={() => openPhoto(itemUrl)}
                 style={styles.touchable}
                 >
                 <Image
