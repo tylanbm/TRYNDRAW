@@ -1,7 +1,21 @@
 import { StyleSheet, Text, View, TouchableOpacity,Image, Dimensions } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import IonButton from '../components/IonButton';
+
+// import Firestore docs
+import {
+    collection,
+    query,
+    where,
+    doc,
+    setDoc,
+    getFirestore,
+    getDoc,
+    getDocs,
+} from 'firebase/firestore';
+
+const db = getFirestore();
 
 
 const likeImage = () => {
@@ -18,10 +32,43 @@ const reportImage = () => {
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
+
+
+
 const ImageScreen = ({route, navigation}) => {
   
     //Url of image to load
-  const {imageSourceToLoad} = route.params;
+  const {imageSourceToLoad, imageId} = route.params;
+
+    const [imageAuthorUsername, setImageAuthorUserName] = useState("Default");
+    const [imageTitle, setImageTitle] = useState("Default");
+
+    const getImageData = async (imageId) => {
+
+        const docRef = doc(db, "uniqueImageNames", imageId.substring(0, imageId.indexOf('.')));
+        const docSnap = await getDoc(docRef);
+
+        console.log("ImageId:" + imageId.substring(0, imageId.indexOf('.')));
+
+        if (docSnap.exists()) {
+            console.log("Document data:", docSnap.data());
+            setImageAuthorUserName(String(docSnap.data().imageAuthorUsername.toString()));
+            setImageTitle(String(docSnap.data().imageTitle.toString()));
+            
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }
+  
+    useEffect(() => {
+        getImageData(imageId);
+    }, []);
+  
+
+  
+
+  //console.log("Got ID:" + imageId);
   
   return (
     <View>
@@ -29,7 +76,11 @@ const ImageScreen = ({route, navigation}) => {
             <Image
                 source={{ uri: imageSourceToLoad }} style={styles.authorProfilePhoto}
             />
-            <Text style={styles.authorNameText}>Username of Author</Text>
+            <View>
+                  <Text style={styles.imageNameText}>{imageTitle}</Text>
+                  <Text style={styles.authorNameText}>by {imageAuthorUsername}</Text>
+            </View>
+            
         </View>
         
         <View style={styles.imageContainer}>
@@ -86,6 +137,10 @@ const styles = StyleSheet.create({
         borderColor: 'black',
     },
     authorNameText: {
+        marginLeft: 8,
+        fontSize: 12,
+    },
+    imageNameText: {
         marginLeft: 8,
         fontSize: 14,
         fontWeight: 'bold',

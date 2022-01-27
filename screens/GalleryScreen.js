@@ -169,12 +169,11 @@ const GalleryScreen = ({navigation}) => {
     }
 
     // load imgs when gallery screen visited
-    
-    
-    const openPhoto = (imageSource) => {
+    const openPhoto = (imageSource, imageId) => {
         console.log("Yay!" + imageSource);
         navigation.navigate('Image', {
             imageSourceToLoad: imageSource.toString(),
+            imageId: imageId.toString(),
         });
     }
 
@@ -203,7 +202,7 @@ const GalleryScreen = ({navigation}) => {
 
         return (
             <TouchableOpacity
-                onPress={() => openPhoto(itemUrl)}
+                onPress={() => openPhoto(itemUrl,id)}
                 style={styles.touchable}
             >
                 <Image

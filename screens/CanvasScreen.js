@@ -121,6 +121,9 @@ const CanvasScreen = ({navigation, route}) => {
     const [selectedId, setSelectedId] = useState(null);
     const [selectedId2, setSelectedId2] = useState(null);
 
+    // slug from ChallengesScreen
+    const slug = route.params;
+
     const drawRef = useRef(DrawRef);
     const viewShot = useRef(ViewShot);
     const storage = getStorage();
@@ -200,6 +203,7 @@ const CanvasScreen = ({navigation, route}) => {
                 await setDoc(newImageRef, { 
                     imageAuthorUID: auth.currentUser.uid,
                     imageAuthorUsername: auth.currentUser.displayName,
+                    imageTitle: slug,
                 });
                 //Upload image blob to firebase storage
                 uploadBytes(storageRef, blob).then((snapshot) => {
@@ -251,8 +255,7 @@ const CanvasScreen = ({navigation, route}) => {
         );
     };
 
-    // slug from ChallengesScreen
-    const slug = route.params;
+    
 
     return (
         <View style={styles.mainContainer}>
