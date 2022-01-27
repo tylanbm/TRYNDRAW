@@ -165,6 +165,7 @@ const GalleryScreen = ({navigation}) => {
     // await async calls for getting img urls
     const getDownload = async() => {
         await getURLs();
+        console.log('finished reloading');
     }
 
     // load imgs when gallery screen visited
@@ -241,7 +242,7 @@ const GalleryScreen = ({navigation}) => {
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
-                            onRefresh={onRefresh}
+                            onRefresh={() => getDownload()}
                         />
                     }
                 />
