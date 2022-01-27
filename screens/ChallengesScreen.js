@@ -33,8 +33,8 @@ const slugOptions = {
 
 // icons
 const buttonIcon = <Ionicons name='arrow-forward' size={25} color='deepskyblue' />;
-const checkbox = <Ionicons name='square-outline' size={20} color='black' />;
-const emptybox = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
+const emptybox = <Ionicons name='square-outline' size={20} color='black' />;
+const checkbox = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
 const exitIcon = <Ionicons name='arrow-back' size={20} color='red' />;
 
 
