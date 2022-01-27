@@ -13,13 +13,10 @@ const firebaseConfig = {
     projectId: "dart-bd1be",
     storageBucket: "dart-bd1be.appspot.com",
     messagingSenderId: "436353280155",
-    appId: "1:436353280155:web:2ab90101ed1bb423403e3e"
+    appId: "1:436353280155:web:2ab90101ed1bb423403e3e",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Get ref to storage service
-const storage = getStorage(app);
 
 export const auth = getAuth(app);

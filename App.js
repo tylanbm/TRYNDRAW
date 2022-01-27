@@ -98,12 +98,12 @@ function App() {
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
       setIsSignedIn(true);
-      console.log("User currently signed in");
+      console.log("User currently signed in.");
 
       return true;
       // ...
     } else {
-      console.log("User not signed in");
+      console.log("User not signed in.");
       setIsSignedIn(false);
       return false;
 

@@ -20,11 +20,13 @@ const DetailsScreen = ({ route }) => {
     if (!fontsLoaded) return <AppLoading />;
 
     // slug from ChallengesScreen
-    const paramKey = route.params;
+    const wordSlug = route.params;
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Vote on this drawing! {paramKey}</Text>
+            <Text style={styles.title}>Vote on this drawing! {wordSlug}</Text>
+
+            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>
     );
 }

@@ -6,7 +6,6 @@ import { StyleSheet,
     Text,
     View,
     Image,
-    Button,
     TouchableOpacity } from 'react-native';
 
 // import authentication
@@ -48,10 +47,6 @@ const SettingsScreen = () => {
     const heart1 = <Ionicons name='heart' size={20} color={iconColour1} />;
     const heart2 = <Ionicons name='heart' size={20} color={iconColour2} />;
     const heart3 = <Ionicons name='heart' size={20} color={iconColour3} />;
-    
-    // get username
-    let fullUser = user.email;
-    const username = fullUser.substring(0, fullUser.indexOf('@'));
 
     // set up variables for image get
     const storage = getStorage();
@@ -92,7 +87,7 @@ const SettingsScreen = () => {
             />
             <Text style={styles.title}>
                 Signed in as{'\n'}
-                {username}
+                {'"'}{user.displayName}{'"'}
             </Text>
             <TouchableOpacity
                 onPress={() => signOutUser()}
@@ -155,6 +150,8 @@ const SettingsScreen = () => {
             <View style={styles.info}>
                 <Text>{textInfo}</Text>
             </View>
+
+            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>
     )
 }
@@ -175,7 +172,7 @@ const styles = StyleSheet.create({
 
     // 'Welcome back'
     title: {
-        fontSize: 40,
+        fontSize: 35,
         fontFamily: 'WorkSans_700Bold',
         textAlign: 'center',
         marginBottom: 20,
@@ -191,7 +188,7 @@ const styles = StyleSheet.create({
         paddingRight: padOut,
     },
 
-    // 'Let's Go!'
+    // 'Sign Out'
     signoutText: {
         fontSize: 35,
         fontFamily: 'WorkSans_700Bold',
@@ -230,5 +227,12 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'grey',
         marginTop: 25,
+    },
+
+    // light/dark mode
+    separator: {
+        marginVertical: 30,
+        height: 1,
+        width: '80%',
     },
 });

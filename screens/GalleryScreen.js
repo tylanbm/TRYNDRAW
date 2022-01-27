@@ -1,5 +1,5 @@
 // import React itself, change const state, use async methods
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 // import Firebase storage
 import { getStorage,
@@ -14,8 +14,8 @@ import { StyleSheet,
     Image,
     FlatList,
     SafeAreaView,
-    ActivityIndicator,
-    TouchableOpacity, } from 'react-native';
+    TouchableOpacity,
+    RefreshControl, } from 'react-native';
 
 // import Firestore docs
 import { collection,
@@ -23,7 +23,16 @@ import { collection,
     setDoc,
     getFirestore,
     getDoc,
-    getDocs, } from 'firebase/firestore';
+    getDocs,
+    waitForPendingWrites, } from 'firebase/firestore';
+
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
+
+// Google Fonts
+import { useFonts,
+    WorkSans_700Bold,
+} from '@expo-google-fonts/work-sans';
 
 
 const db = getFirestore();
@@ -97,28 +106,35 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 
 const GalleryScreen = () => {
 
+    // array for FlatList of images
     const [getImgs, setImgs] = useState([]);
-    const [fireData, setFireData] = useState([]);
-    const [getRefresh, setRefresh] = useState(false);
 
     const getURLs = async() => {
         const listRef = ref(storage, 'testImages');
     
+        // list all the images in testImages
         listAll(listRef).then((res) => {
+
+            // iterate through all testImages images
             res.items.forEach(async(itemRef) => {
+
+                // get data for img
                 let temp = await getDownloadURL(itemRef);
                 temp = temp.toString();
                 let img = {
                     id: itemRef.name,
                     url: temp,
                 }
+
+                // check if img is already in img array
                 if (!getImgs.some(obj => obj.id === img.id)) {
-                    console.log('hi');
+
+                    // if true, append to end of img array
                     setImgs(getImgs => [...getImgs, img]);
                 }
             });
         }).catch((error) => {
-            console.log("Image URL error!");
+            console.log(error.message);
         });
     }
 
@@ -144,19 +160,15 @@ const GalleryScreen = () => {
     //     getGetAll();
     // }, []);
 
+    // await async calls for getting img urls
     const getDownload = async() => {
         await getURLs();
     }
 
-    // useEffect(() => {
-    //     getDownload();
-    // }, []);
-
-    const refresh = () => {
-        console.log('Reloading...');
+    // load imgs when gallery screen visited
+    useEffect(() => {
         getDownload();
-        console.log('Finished reloading');
-    }
+    }, []);
 
     const [selectedId, setSelectedId] = useState(null);
 
@@ -175,9 +187,11 @@ const GalleryScreen = () => {
         const id = item.id;
         return (
             <TouchableOpacity
-                onPress={() => console.log(id)}
+                onPress={() => {
+                    console.log(id);
+                }}
                 style={styles.touchable}
-                >
+            >
                 <Image
                     source={{uri: item.url}}
                     style={styles.imgStyle}
@@ -187,27 +201,49 @@ const GalleryScreen = () => {
         );
     };
 
+    // refresh boolean state
+    const [refreshing, setRefreshing] = useState(false);
+
+    // when refreshing, get imgs from Firebase Storage
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        getDownload();
+        setRefreshing(false);
+    }, []);
+
+    // check if imported Google Fonts were loaded
+    let [fontsLoaded] = useFonts({
+        WorkSans_700Bold,
+    });
+    if (!fontsLoaded) return <AppLoading />;
+
     return (
         <View style={{marginTop: 20}}>
-            <TouchableOpacity
-                onPress={() => refresh()}
-            >
-                <Text>Refresh</Text>
-            </TouchableOpacity>
             <SafeAreaView>
                 <FlatList
                     data={getImgs}
                     renderItem={renderImg}
                     horizontal={false}
                     numColumns={2}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
                 />
             </SafeAreaView>
+
+            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>
     )
 }
 
 export default GalleryScreen;
 
+
+// global padding
+let padGo = 10;
 
 const styles = StyleSheet.create({
 

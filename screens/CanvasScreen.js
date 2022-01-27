@@ -115,7 +115,7 @@ const CircleButton = ({iconName, onPress}) => (
 );
 
 
-const CanvasScreen = ({navigation}) => {
+const CanvasScreen = ({navigation, route}) => {
     const [selectedId, setSelectedId] = useState(null);
     const [selectedId2, setSelectedId2] = useState(null);
 
@@ -212,9 +212,8 @@ const CanvasScreen = ({navigation}) => {
 
 
 
-
     const ToolBar = () => (
-        <View style={[styles.row]}>
+        <View style={styles.row}>
             <CircleButton onPress={console.log("Yay")} iconName={"pencil"}/>
             <View style={{
                 transform: [
@@ -222,7 +221,7 @@ const CanvasScreen = ({navigation}) => {
 
                 ]
             }}> 
-            <CircleButton onPress={console.log("Yay")} iconName={"tablet-portrait"} /> 
+            <CircleButton onPress={console.log("Yay")} iconName={"tablet-portrait"} />
             </View>
             
             <CircleButton onPress={upThickness} iconName={"add"} />
@@ -250,6 +249,9 @@ const CanvasScreen = ({navigation}) => {
         );
     };
 
+    // slug from ChallengesScreen
+    const slug = route.params;
+
     return (
         <View style={styles.mainContainer}>
             <View>
@@ -260,14 +262,16 @@ const CanvasScreen = ({navigation}) => {
                         keyExtractor={(item) => item.id}
                         extraData={selectedId}
                         horizontal={true}
-                    /> 
+                    />
                 </SafeAreaView>
             </View>
             
             <View style={styles.title}>
+                <Text style={styles.titleText}>You are drawing{'\n'}
+                "{slug}"</Text>
             </View>
+
             <View style={styles.box2}>
-            
                     <View style={styles.container}>
                     <ViewShot
                         ref={viewShot}
@@ -288,7 +292,6 @@ const CanvasScreen = ({navigation}) => {
                         />
                         </ViewShot>
                     </View>
-                
             </View>
 
 
@@ -325,7 +328,7 @@ const CanvasScreen = ({navigation}) => {
                     </View>
                 </View>
             </Modal>
-            
+
 
 
             <View style={styles.box3}>
@@ -347,13 +350,17 @@ const styles = StyleSheet.create({
     title: {
         alignContent: "center",
         justifyContent: "center",
-        fontSize: 44,
+    },
+    titleText: {
+        fontSize: 20,
+        fontFamily: 'WorkSans_700Bold',
+        textAlign: 'center',
     },
     
     container: {
         alignContent: "center",
         justifyContent: "center",
-        marginTop: 80,
+        marginTop: 40,
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: "#D2D2D2"
@@ -384,6 +391,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         marginHorizontal: 8,
         fontSize: 24,
+        fontFamily: 'WorkSans_700Bold',
         borderRadius: 30,
         color: "#515151DE",
     },
@@ -408,6 +416,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         paddingLeft: 1.5,
         fontSize: 32,
+        fontFamily: 'WorkSans_700Bold',
         borderRadius: 30,
     },
     item2: {
@@ -415,9 +424,6 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         marginHorizontal: 2,
         backgroundColor: "lightgray",
-    },
-    title: {
-        fontSize: 12,
     },
     box1: {
         flex: 1,
@@ -473,13 +479,14 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         color: "white",
-        fontWeight: "bold",
+        fontFamily: 'WorkSans_700Bold',
         textAlign: "center"
     },
     modalText: {
         marginBottom: 48,
         textAlign: "center",
         fontSize: 24,
+        fontFamily: 'WorkSans_700Bold',
     }
 });
 

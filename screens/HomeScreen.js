@@ -22,7 +22,9 @@ import { Ionicons } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 
 // Google Fonts
-import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
+import { useFonts,
+    WorkSans_700Bold,
+} from '@expo-google-fonts/work-sans';
 
 
 const HomeScreen = ({ navigation }) => {
@@ -33,10 +35,6 @@ const HomeScreen = ({ navigation }) => {
 
     // icons
     const buttonIcon = <Ionicons name='arrow-forward' size={35} color='deepskyblue' />;
-
-    // get username
-    let fullUser = user.email;
-    const username = fullUser.substring(0, fullUser.indexOf('@'));
 
     // set up variables for image get
     const storage = getStorage();
@@ -65,7 +63,7 @@ const HomeScreen = ({ navigation }) => {
             />
             <Text style={styles.title}>
                 Welcome back,{'\n'}
-                {username}!
+                {user.displayName}!
             </Text>
             <Text style={styles.subtitle}>Start Drawing!</Text>
             <TouchableOpacity
@@ -73,6 +71,8 @@ const HomeScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate('Challenges')}>
                 <Text style={styles.buttonText}>Let's Go! {buttonIcon}</Text>
             </TouchableOpacity>
+            
+            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>
     );
 }

@@ -20,7 +20,9 @@ import { Ionicons } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 
 // Google Fonts
-import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
+import { useFonts,
+  WorkSans_700Bold,
+} from '@expo-google-fonts/work-sans';
 
 
 // slug generation format
@@ -31,9 +33,9 @@ const slugOptions = {
 
 // icons
 const buttonIcon = <Ionicons name='arrow-forward' size={25} color='deepskyblue' />;
-const no = <Ionicons name='square-outline' size={20} color='black' />;
-const yes = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
-const exit = <Ionicons name='arrow-back' size={20} color='red' />;
+const checkbox = <Ionicons name='square-outline' size={20} color='black' />;
+const emptybox = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
+const exitIcon = <Ionicons name='arrow-back' size={20} color='red' />;
 
 
 const ChallengesScreen = ({ navigation }) => {
@@ -44,26 +46,22 @@ const ChallengesScreen = ({ navigation }) => {
   const [slug3, setSlug3] = useState(generateSlug(3, slugOptions));
 
   // selected slug
-  const [select, setSelect] = useState('');
+  const [selectedSlug, setSelectedSlug] = useState(slug1);
 
   // icon checkmark change
-  const [check1, setCheck1] = useState(no);
-  const [check2, setCheck2] = useState(no);
-  const [check3, setCheck3] = useState(no);
+  const [box1, setBox1] = useState(checkbox);
+  const [box2, setBox2] = useState(emptybox);
+  const [box3, setBox3] = useState(emptybox);
 
   // text colour change
-  const [text1, setText1] = useState('grey');
-  const [text2, setText2] = useState('grey');
-  const [text3, setText3] = useState('grey');
+  const [textColour1, setTextColour1] = useState('black');
+  const [textColour2, setTextColour2] = useState('grey');
+  const [textColour3, setTextColour3] = useState('grey');
 
   // border colour change
-  const [border1, setBorder1] = useState('transparent');
+  const [border1, setBorder1] = useState('deepskyblue');
   const [border2, setBorder2] = useState('transparent');
   const [border3, setBorder3] = useState('transparent');
-
-  // note to tell users to select a challenge
-  const [note, setNote] = useState('Please select a challenge.');
-  const [noteColour, setNoteColour] = useState('black');
 
   // check if imported Google Fonts were loaded
   let [fontsLoaded] = useFonts({
@@ -78,73 +76,67 @@ const ChallengesScreen = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => {
           // set selection to 1st slug
-          setSelect(slug1);
-          setCheck1(yes);
-          setCheck2(no);
-          setCheck3(no);
+          setSelectedSlug(slug1);
+          setBox1(checkbox);
+          setBox2(emptybox);
+          setBox3(emptybox);
           setBorder1('deepskyblue');
           setBorder2('transparent');
           setBorder3('transparent');
           setText1('black');
           setText2('grey');
           setText3('grey');
-          setNote('');
         }}
         style={[styles.challenge, {borderColor: border1}]}>
         <Text style={[styles.challengeText, {color: text1}]}>
-          {check1} "{slug1}"</Text>
+          {box1} "{slug1}"</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => {
           // set selection to 2nd slug
-          setSelect(slug2);
-          setCheck1(no);
-          setCheck2(yes);
-          setCheck3(no);
+          setSelectedSlug(slug2);
+          setBox1(emptybox);
+          setBox2(checkbox);
+          setBox3(emptybox);
           setBorder1('transparent');
           setBorder2('deepskyblue');
           setBorder3('transparent');
           setText1('grey');
           setText2('black');
           setText3('grey');
-          setNote('');
         }}
         style={[styles.challenge, {borderColor: border2}]}>
         <Text style={[styles.challengeText, {color: text2}]}>
-          {check2} "{slug2}"</Text>
+          {box2} "{slug2}"</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => {
           // set selection to 3rd slug
-          setSelect(slug3);
-          setCheck1(no);
-          setCheck2(no);
-          setCheck3(yes);
+          setSelectedSlug(slug3);
+          setBox1(emptybox);
+          setBox2(emptybox);
+          setBox3(checkbox);
           setBorder1('transparent');
           setBorder2('transparent');
           setBorder3('deepskyblue');
           setText1('grey');
           setText2('grey');
           setText3('black');
-          setNote('');
         }}
         style={[styles.challenge, {borderColor: border3}]}>
         <Text style={[styles.challengeText, {color: text3}]}>
-          {check3} "{slug3}"</Text>
+          {box3} "{slug3}"</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => {
-          if (!select) setNote('Please select a challenge.');
-          else navigation.navigate('Canvas', select);
+          navigation.navigate('Canvas', select);
         }}
         style={styles.button}>
         <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>  
       </TouchableOpacity>
-
-      <Text style={styles.note}>{note}</Text>
 
       <TouchableOpacity
         onPress={() => {
@@ -159,8 +151,10 @@ const ChallengesScreen = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => navigation.navigate('Home')}
         style={styles.home}>
-        <Text style={styles.homeText}>{exit} Home</Text>
+        <Text style={styles.homeText}>{exitIcon} Home</Text>
       </TouchableOpacity>
+
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
     </View>
   )
 }
@@ -257,11 +251,4 @@ const styles = StyleSheet.create({
     fontFamily: 'WorkSans_700Bold',
     color: 'red',
   },
-
-  // note message
-  note: {
-    marginTop: 10,
-    marginBottom: 10,
-    fontFamily: 'WorkSans_700Bold',
-  }
 });
