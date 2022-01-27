@@ -41,12 +41,17 @@ const exitIcon = <Ionicons name='arrow-back' size={20} color='red' />;
 const ChallengesScreen = ({ navigation }) => {
 
   // generated slugs
+  const slugs = [
+    generateSlug(3, slugOptions),
+    generateSlug(3, slugOptions),
+    generateSlug(3, slugOptions),
+  ]
   const [slug1, setSlug1] = useState(generateSlug(3, slugOptions));
   const [slug2, setSlug2] = useState(generateSlug(3, slugOptions));
   const [slug3, setSlug3] = useState(generateSlug(3, slugOptions));
 
   // selected slug
-  const [selectedSlug, setSelectedSlug] = useState(slug1);
+  const [selectedSlug, setSelectedSlug] = useState(slugs[0]);
 
   // icon checkmark change
   const [box1, setBox1] = useState(checkbox);

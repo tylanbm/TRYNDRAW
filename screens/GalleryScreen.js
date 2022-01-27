@@ -124,6 +124,7 @@ const GalleryScreen = ({navigation}) => {
                 temp = temp.toString();
                 let img = {
                     id: itemRef.name,
+                    //id: itemRef.substring(0, itemRef.indexOf('@'))
                     url: temp,
                 }
 

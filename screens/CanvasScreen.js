@@ -19,8 +19,6 @@ import {
     getDocs,
 } from 'firebase/firestore';
 
-
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { auth } from "../firebaseConfig";
 
@@ -223,7 +221,7 @@ const CanvasScreen = ({navigation, route}) => {
 
                 ]
             }}> 
-            <CircleButton onPress={console.log("Yay")} iconName={"tablet-portrait"} />
+            <CircleButton onPress={console.log("Yay")} iconName={"tablet-portrait"} /> 
             </View>
             
             <CircleButton onPress={upThickness} iconName={"add"} />
@@ -264,7 +262,7 @@ const CanvasScreen = ({navigation, route}) => {
                         keyExtractor={(item) => item.id}
                         extraData={selectedId}
                         horizontal={true}
-                    />
+                    /> 
                 </SafeAreaView>
             </View>
             
