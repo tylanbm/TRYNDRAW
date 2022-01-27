@@ -170,7 +170,7 @@ const GalleryScreen = ({navigation}) => {
     // load imgs when gallery screen visited
     
     
-        const openPhoto = (imageSource) => {
+    const openPhoto = (imageSource) => {
         console.log("Yay!" + imageSource);
         navigation.navigate('Image', {
             imageSourceToLoad: imageSource.toString(),
@@ -179,7 +179,7 @@ const GalleryScreen = ({navigation}) => {
 
     useEffect(() => {
         getDownload();
-        }, []);
+    }, []);
 
     
 

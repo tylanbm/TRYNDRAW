@@ -83,12 +83,12 @@ const ChallengesScreen = ({ navigation }) => {
           setBorder1('deepskyblue');
           setBorder2('transparent');
           setBorder3('transparent');
-          setText1('black');
-          setText2('grey');
-          setText3('grey');
+          setTextColour1('black');
+          setTextColour2('grey');
+          setTextColour3('grey');
         }}
         style={[styles.challenge, {borderColor: border1}]}>
-        <Text style={[styles.challengeText, {color: text1}]}>
+        <Text style={[styles.challengeText, {color: textColour1}]}>
           {box1} "{slug1}"</Text>
       </TouchableOpacity>
 
@@ -102,12 +102,12 @@ const ChallengesScreen = ({ navigation }) => {
           setBorder1('transparent');
           setBorder2('deepskyblue');
           setBorder3('transparent');
-          setText1('grey');
-          setText2('black');
-          setText3('grey');
+          setTextColour1('grey');
+          setTextColour2('black');
+          setTextColour3('grey');
         }}
         style={[styles.challenge, {borderColor: border2}]}>
-        <Text style={[styles.challengeText, {color: text2}]}>
+        <Text style={[styles.challengeText, {color: textColour2}]}>
           {box2} "{slug2}"</Text>
       </TouchableOpacity>
 
@@ -121,18 +121,18 @@ const ChallengesScreen = ({ navigation }) => {
           setBorder1('transparent');
           setBorder2('transparent');
           setBorder3('deepskyblue');
-          setText1('grey');
-          setText2('grey');
-          setText3('black');
+          setTextColour1('grey');
+          setTextColour2('grey');
+          setTextColour3('black');
         }}
         style={[styles.challenge, {borderColor: border3}]}>
-        <Text style={[styles.challengeText, {color: text3}]}>
+        <Text style={[styles.challengeText, {color: textColour3}]}>
           {box3} "{slug3}"</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('Canvas', select);
+          navigation.navigate('Canvas', selectedSlug);
         }}
         style={styles.button}>
         <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>  
