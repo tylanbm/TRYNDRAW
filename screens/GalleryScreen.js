@@ -104,7 +104,8 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 );
 
 
-const GalleryScreen = () => {
+
+const GalleryScreen = ({navigation}) => {
 
     // array for FlatList of images
     const [getImgs, setImgs] = useState([]);
@@ -130,6 +131,7 @@ const GalleryScreen = () => {
                 if (!getImgs.some(obj => obj.id === img.id)) {
 
                     // if true, append to end of img array
+                    //console.log('hi');
                     setImgs(getImgs => [...getImgs, img]);
                 }
             });
@@ -166,9 +168,20 @@ const GalleryScreen = () => {
     }
 
     // load imgs when gallery screen visited
+    
+    
+        const openPhoto = (imageSource) => {
+        console.log("Yay!" + imageSource);
+        navigation.navigate('Image', {
+            imageSourceToLoad: imageSource.toString(),
+        });
+    }
+
     useEffect(() => {
         getDownload();
-    }, []);
+        }, []);
+
+    
 
     const [selectedId, setSelectedId] = useState(null);
 
@@ -184,12 +197,12 @@ const GalleryScreen = () => {
     };
 
     const renderImg = ({ item }) => {
+        const itemUrl = item.url;
         const id = item.id;
+
         return (
             <TouchableOpacity
-                onPress={() => {
-                    console.log(id);
-                }}
+                onPress={() => openPhoto(itemUrl)}
                 style={styles.touchable}
             >
                 <Image

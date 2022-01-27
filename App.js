@@ -27,6 +27,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import CanvasScreen from './screens/CanvasScreen';
 import DebugScreen from './screens/DebugScreen';
 import TestCanvasScreen from './screens/TestCanvasScreen';
+import ImageScreen from './screens/ImageScreen';
 
 
 
@@ -120,6 +121,7 @@ function App() {
             <Stack.Screen name="HomeTabs" component={AppWithTabs} options={{headerShown: false}}/>
             <Stack.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
             <Stack.Screen name='Challenges' component={ChallengesScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='Image' component={ImageScreen} options={{ headerShown: true }} />
           </>
         ) : (
           <>
