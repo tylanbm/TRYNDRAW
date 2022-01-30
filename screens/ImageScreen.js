@@ -15,6 +15,16 @@ import {
     getDocs,
 } from 'firebase/firestore';
 
+import {
+    getStorage,
+    ref,
+    uploadString,
+    uploadBytes,
+    uploadBytesResumable,
+    getDownloadURL,
+} from 'firebase/storage';
+import { auth } from '../firebaseConfig';
+
 const db = getFirestore();
 
 
@@ -38,12 +48,21 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const ImageScreen = ({route, navigation}) => {
   
     //Url of image to load
-  const {imageSourceToLoad, imageId} = route.params;
+    const {imageSourceToLoad, imageId} = route.params;
+
+    //Set up storage
+    const storage = getStorage();
+    
+
 
     const [imageAuthorUsername, setImageAuthorUserName] = useState("Default");
     const [imageTitle, setImageTitle] = useState("Default");
+    const [authorImageUrl, setAuthorImageUrl] = useState("Default");
+    const [authorUid, setAuthorUid] = useState("Default");
 
     const getImageData = async (imageId) => {
+
+        
 
         const docRef = doc(db, "uniqueImageNames", imageId.substring(0, imageId.indexOf('.')));
         const docSnap = await getDoc(docRef);
@@ -51,9 +70,17 @@ const ImageScreen = ({route, navigation}) => {
         console.log("ImageId:" + imageId.substring(0, imageId.indexOf('.')));
 
         if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
+            //console.log("Document data:", docSnap.data());
             setImageAuthorUserName(String(docSnap.data().imageAuthorUsername.toString()));
             setImageTitle(String(docSnap.data().imageTitle.toString()));
+
+            const tempAuthorUid =  docSnap.data().imageAuthorUID.toString();
+            //For author profile photo
+            const pathReference = ref(storage, 'userProfileImages/' + tempAuthorUid);
+
+            let temp = await getDownloadURL(pathReference);
+            //console.log("Temp: " + temp);
+            setAuthorImageUrl(temp);
             
         } else {
             // doc.data() will be undefined in this case
@@ -74,7 +101,7 @@ const ImageScreen = ({route, navigation}) => {
     <View>
         <View style={styles.imageHeaderContainer}>
             <Image
-                source={{ uri: imageSourceToLoad }} style={styles.authorProfilePhoto}
+                source={{ uri: authorImageUrl }} style={styles.authorProfilePhoto}
             />
             <View>
                   <Text style={styles.imageNameText}>{imageTitle}</Text>

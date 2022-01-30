@@ -28,6 +28,7 @@ import CanvasScreen from './screens/CanvasScreen';
 import DebugScreen from './screens/DebugScreen';
 import TestCanvasScreen from './screens/TestCanvasScreen';
 import ImageScreen from './screens/ImageScreen';
+import CanvasUserImageScreen from './screens/CanvasUserImageScreen';
 
 
 
@@ -122,6 +123,7 @@ function App() {
             <Stack.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
             <Stack.Screen name='Challenges' component={ChallengesScreen} options={{ headerShown: false }} />
             <Stack.Screen name='Image' component={ImageScreen} options={{ headerShown: true }} />
+            <Stack.Screen name="CanvasUserImageScreen" component={CanvasUserImageScreen} options={{ headerShown: false }} />
           </>
         ) : (
           <>

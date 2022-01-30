@@ -26,7 +26,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
 
 
-const SettingsScreen = () => {
+const SettingsScreen = ({navigation}) => {
 
     const auth = getAuth();
     const user = auth.currentUser;
@@ -55,11 +55,16 @@ const SettingsScreen = () => {
     // get and set profile pic from firebase storage
     useEffect(() => {
         const getPic = async() => {
-            let temp = await getDownloadURL(ref(storage, 'images/profilePic.jpg'));
+            let temp = await getDownloadURL(ref(storage, 'userProfileImages/' + auth.currentUser.uid));
             setPic(temp.toString());
         }
         getPic();
     }, []);
+
+    //Go to screen so user can edit user image
+    const goToCanvasUserImageScreen = () => {
+        navigation.navigate('CanvasUserImageScreen');
+    }
 
     // sign out button
     const signOutUser = () => {
@@ -107,6 +112,7 @@ const SettingsScreen = () => {
                         setIconColour1('green');
                         setIconColour2('grey');
                         setIconColour3('grey');
+                        goToCanvasUserImageScreen();
                     }}
                     style={styles.button}
                     >

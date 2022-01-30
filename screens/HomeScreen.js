@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }) => {
     // get and set profile pic from firebase storage
     useEffect(() => {
         const getPic = async() => {
-            let temp = await getDownloadURL(ref(storage, 'images/profilePic.jpg'));
+            let temp = await getDownloadURL(ref(storage, 'userProfileImages/' + auth.currentUser.uid));
             setPic(temp.toString());
         }
         getPic();
