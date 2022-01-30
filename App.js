@@ -29,6 +29,7 @@ import DebugScreen from './screens/DebugScreen';
 import TestCanvasScreen from './screens/TestCanvasScreen';
 import ImageScreen from './screens/ImageScreen';
 import CanvasUserImageScreen from './screens/CanvasUserImageScreen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
 
@@ -115,6 +116,7 @@ function App() {
 
  //If user is signed in then render the app with tabs, otherwise send user to log in screen
   return (
+    <SafeAreaProvider>
     <NavigationContainer>
       <Stack.Navigator>
         {isSignedIn ? (
@@ -133,6 +135,7 @@ function App() {
         )}
       </Stack.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
   
   );
 }

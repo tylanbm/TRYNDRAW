@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity,Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, TextInput,KeyboardAvoidingView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import IonButton from '../components/IonButton';
@@ -24,6 +24,7 @@ import {
     getDownloadURL,
 } from 'firebase/storage';
 import { auth } from '../firebaseConfig';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const db = getFirestore();
 
@@ -40,6 +41,10 @@ const reportImage = () => {
     console.log("You reported the image");
 }
 
+const postComment = () => {
+    console.log("You posted a comment");
+}
+
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 
@@ -52,6 +57,9 @@ const ImageScreen = ({route, navigation}) => {
 
     //Set up storage
     const storage = getStorage();
+
+    //User comment
+    const [comment, setComment] = useState('');
     
 
 
@@ -98,7 +106,8 @@ const ImageScreen = ({route, navigation}) => {
   //console.log("Got ID:" + imageId);
   
   return (
-    <View>
+      <KeyboardAvoidingView behavior="padding">
+          <ScrollView>
         <View style={styles.imageHeaderContainer}>
             <Image
                 source={{ uri: authorImageUrl }} style={styles.authorProfilePhoto}
@@ -130,8 +139,24 @@ const ImageScreen = ({route, navigation}) => {
               </View>
         </View>
 
+        
+              <View style={styles.imageFooterContainer}>
+                  <View behavior="height" style={styles.inputContainer}>
+                      <TextInput
+                          style={styles.inputText}
+                          multiline={true}
+                          onChangeText={text => setComment(text)}
+                          placeholder="Add a comment..."
+                      />
+                  </View>
+                  <IonButton name="send" onPress={() => postComment()} color="cyan" />
+        </View>
+
         <Text>Comments</Text>
-    </View>
+          
+          
+          </ScrollView>
+      </KeyboardAvoidingView>
   );
 };
 
@@ -184,6 +209,22 @@ const styles = StyleSheet.create({
     reportButtonContainer: {
         padding: 4,
         marginLeft: "auto"
-    }
+    },
+    inputText: {
+        
+        padding: 10,
+        width: '100%',
+    },
+    inputContainer: {
+        marginTop: 20,
+        maxWidth: screenWidth * 0.9,
+        width: screenWidth * 0.9,
+        backgroundColor: 'white',
+        borderRadius: 30,
+        borderWidth: 2,
+        flexWrap: "wrap",
+        marginBottom: 20,
+        marginRight: 8,
+    },
 
 });
