@@ -202,6 +202,7 @@ const CanvasScreen = ({navigation, route}) => {
                     imageAuthorUsername: auth.currentUser.displayName,
                     imageTitle: slug,
                 });
+
                 //Upload image blob to firebase storage
                 uploadBytes(storageRef, blob).then((snapshot) => {
                     console.log('Uploaded a blob or file!');
