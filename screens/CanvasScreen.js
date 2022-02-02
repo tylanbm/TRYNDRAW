@@ -19,8 +19,6 @@ import {
     getDocs,
     serverTimestamp, } from 'firebase/firestore';
 
-
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { auth } from "../firebaseConfig";
 
