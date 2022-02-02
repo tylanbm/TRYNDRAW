@@ -201,6 +201,7 @@ const CanvasScreen = ({navigation, route}) => {
                     imageTitle: slug,
                     timestamp: serverTimestamp(),
                 });
+
                 //Upload image blob to firebase storage
                 uploadBytes(storageRef, blob).then((snapshot) => {
                     console.log('Uploaded a blob or file!');
