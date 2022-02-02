@@ -1,11 +1,15 @@
 // import React itself, change const state, use async methods
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState,
+    useEffect,
+    useCallback,
+    useRef, } from 'react';
 
 // import Firebase storage
 import { getStorage,
     ref,
     getDownloadURL,
-    listAll, } from 'firebase/storage';
+    listAll,
+    getMetadata, } from 'firebase/storage';
 
 // import React styles and features
 import { StyleSheet,
@@ -24,7 +28,10 @@ import { collection,
     getFirestore,
     getDoc,
     getDocs,
-    waitForPendingWrites, } from 'firebase/firestore';
+    query,
+    orderBy,
+    limit,
+    startAt, } from 'firebase/firestore';
 
 // make sure fonts are loaded
 import AppLoading from 'expo-app-loading';
@@ -110,34 +117,60 @@ const GalleryScreen = ({navigation}) => {
     // array for FlatList of images
     const [getImgs, setImgs] = useState([]);
 
-    const getURLs = async() => {
-        const listRef = ref(storage, 'testImages');
-    
-        // list all the images in testImages
-        listAll(listRef).then((res) => {
+    const docsRef = collection(db, "uniqueImageNames");
+    const imgsToLoad = 3;
+    let q = query(docsRef, orderBy('timestamp', 'desc'));
+    let querySnapshot = getDocs(q);
+    let last = 0;
 
+    const getURLs = async(querySnapshot, refresh) => {
+        for await (const item of querySnapshot.docs) {
             // iterate through all testImages images
-            res.items.forEach(async(itemRef) => {
+            const itemRef = ref(storage, 'testImages/' + item.id + '.jpg');
+            
+            // get data for img
+            let img = {
+                id: item.id,
+                time: item.data().timestamp,
+                url: await getDownloadURL(itemRef),
+            }
 
-                // get data for img
-                let temp = await getDownloadURL(itemRef);
-                temp = temp.toString();
-                let img = {
-                    id: itemRef.name,
-                    url: temp,
-                }
+            console.log(item.id + ': ' + item.data().timestamp);
 
-                // check if img is already in img array
-                if (!getImgs.some(obj => obj.id === img.id)) {
+            if (!getImgs.some(obj => obj.id === img.id)) {
 
-                    // if true, append to end of img array
-                    //console.log('hi');
-                    setImgs(getImgs => [...getImgs, img]);
-                }
-            });
-        }).catch((error) => {
-            console.log(error.message);
+                // if first time loading gallery, append to end of list
+                if (refresh) setImgs(getImgs => [img, ...getImgs]);
+
+                // else, append to front of list
+                else setImgs(getImgs => [...getImgs, img]);
+            }
+        }
+        return querySnapshot.docs[querySnapshot.docs.length];
+    }
+                
+     
+
+    const sortImgs = async() => {
+        
+        const temp = getImgs;
+
+        temp.sort((a,b) => {
+            const timeA = a.time;
+            const timeB = b.time;
+            const dateTimeA = timeA.indexOf('T');
+            const dateTimeB = timeB.indexOf('T');
+    
+            const dateA = new Date(timeA).valueOf();
+            const dateB = new Date(timeB).valueOf();
+            
+            if (dateA > dateB) {
+                return 1; // return -1 here for DESC order
+            }
+            return -1 // return 1 here for DESC Order
         });
+
+        return temp;
     }
 
     // useEffect(() => {
@@ -162,12 +195,6 @@ const GalleryScreen = ({navigation}) => {
     //     getGetAll();
     // }, []);
 
-    // await async calls for getting img urls
-    const getDownload = async() => {
-        await getURLs();
-        console.log('finished reloading');
-    }
-
     // load imgs when gallery screen visited
     const openPhoto = (imageSource, imageId) => {
         console.log("Yay!" + imageSource);
@@ -181,7 +208,30 @@ const GalleryScreen = ({navigation}) => {
         getDownload();
     }, []);
 
-    
+    // await async calls for getting img urls
+    const getDownload = async() => {
+        querySnapshot = await getDocs(q);
+        last = await getURLs(querySnapshot, false);
+    }
+
+    // await async calls for getting img urls
+    const getRefresh = async() => {
+        q = query(docsRef, orderBy('timestamp', 'asc'));
+        querySnapshot = await getDocs(q);
+        last = await getURLs(querySnapshot, true);
+    }
+
+    const getMoreDownload = async() => {
+        console.log(last);
+
+        q = query(docsRef, orderBy('timestamp', 'desc'),
+            startAt(last), limit(imgsToLoad));
+        querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            last = await getURLs(querySnapshot);
+        }
+    }
 
     const [selectedId, setSelectedId] = useState(null);
 
@@ -224,6 +274,12 @@ const GalleryScreen = ({navigation}) => {
         setRefreshing(false);
     }, []);
 
+    const onViewRef = useRef((viewableItems) => {
+        console.log('Half');
+        //getMoreDownload();
+    })
+    //const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 })
+
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
         WorkSans_700Bold,
@@ -241,9 +297,13 @@ const GalleryScreen = ({navigation}) => {
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
-                            onRefresh={() => getDownload()}
+                            onRefresh={() => getRefresh()}
                         />
                     }
+                    onViewableItemsChanged={onViewRef.current}
+                    viewabilityConfig={{
+                        itemVisiblePercentThreshold: 50,
+                    }}
                 />
             </SafeAreaView>
 

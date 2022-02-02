@@ -17,9 +17,7 @@ import {
     getFirestore,
     getDoc,
     getDocs,
-} from 'firebase/firestore';
-
-
+    serverTimestamp, } from 'firebase/firestore';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { auth } from "../firebaseConfig";
@@ -201,6 +199,7 @@ const CanvasScreen = ({navigation, route}) => {
                     imageAuthorUID: auth.currentUser.uid,
                     imageAuthorUsername: auth.currentUser.displayName,
                     imageTitle: slug,
+                    timestamp: serverTimestamp(),
                 });
                 //Upload image blob to firebase storage
                 uploadBytes(storageRef, blob).then((snapshot) => {
