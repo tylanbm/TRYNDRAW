@@ -112,13 +112,10 @@ const GalleryScreen = ({navigation}) => {
 
     const getURLs = async() => {
         const listRef = ref(storage, 'testImages');
-    
         // list all the images in testImages
         listAll(listRef).then((res) => {
-
             // iterate through all testImages images
             res.items.forEach(async(itemRef) => {
-
                 // get data for img
                 let temp = await getDownloadURL(itemRef);
                 temp = temp.toString();
@@ -126,7 +123,6 @@ const GalleryScreen = ({navigation}) => {
                     id: itemRef.name,
                     url: temp,
                 }
-
                 // check if img is already in img array
                 if (!getImgs.some(obj => obj.id === img.id)) {
 
