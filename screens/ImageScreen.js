@@ -182,7 +182,7 @@ const ImageScreen = ({route, navigation}) => {
         const docRef = doc(db, "uniqueImageNames", imageId.substring(0, imageId.indexOf('.')));
         const docSnap = await getDoc(docRef);
 
-        console.log("ImageId:" + imageId.substring(0, imageId.indexOf('.')));
+        console.log("ImageId: " + imageId.substring(0, imageId.indexOf('.')));
 
         if (docSnap.exists()) {
             //console.log("Document data:", docSnap.data());
