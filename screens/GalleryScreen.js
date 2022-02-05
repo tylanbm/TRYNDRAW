@@ -123,33 +123,52 @@ const GalleryScreen = ({navigation}) => {
     let querySnapshot = getDocs(q);
     let last = 0;
 
-    const getURLs = async(querySnapshot, refresh) => {
+    // initial load of gallery screen
+    const getURLsInit = async(querySnapshot) => {
         for await (const item of querySnapshot.docs) {
-            // iterate through all testImages images
-            const itemRef = ref(storage, 'testImages/' + item.id + '.jpg');
-            
-            // get data for img
-            let img = {
-                id: item.id,
-                time: item.data().timestamp,
-                url: await getDownloadURL(itemRef),
-            }
-
-            console.log(item.id + ': ' + item.data().timestamp);
-
-            if (!getImgs.some(obj => obj.id === img.id)) {
-
-                // if first time loading gallery, append to end of list
-                if (refresh) setImgs(getImgs => [img, ...getImgs]);
-
-                // else, append to front of list
-                else setImgs(getImgs => [...getImgs, img]);
-            }
+            let img = await getImg(item);
+            refreshFalse(img);
         }
         return querySnapshot.docs[querySnapshot.docs.length];
     }
-                
-     
+
+    // gallery screen refresh
+    const getURLsNew = async(querySnapshot) => {
+        for await (const item of querySnapshot.docs) {
+            let img = await getImg(item);
+            refreshTrue(img);
+        }
+        return querySnapshot.docs[querySnapshot.docs.length];
+    }
+
+    // getting all the imgs from storage
+    const getImg = async(item) => {
+        // iterate through all testImages images
+        const itemRef = ref(storage, 'testImages/' + item.id + '.jpg');
+            
+        // get data for img
+        let img = {
+            id: item.id,
+            time: item.data().timestamp,
+            url: await getDownloadURL(itemRef),
+        }
+
+        console.log(img.id + ': ' + img.time);
+
+        return img;
+    }
+
+    // append img to front of list
+    const refreshFalse = (img) => {
+        setImgs(getImgs => [...getImgs, img]);
+    }
+
+    // append img to end of list
+    const refreshTrue = (img) => {
+        if (!getImgs.some(obj => obj.id === img.id)) {
+            setImgs(getImgs => [img, ...getImgs]);
+        }
+    }
 
     const sortImgs = async() => {
         
@@ -180,13 +199,13 @@ const GalleryScreen = ({navigation}) => {
     //     getGetData();
     // })
 
-/*
-    useEffect(() => {
-        const getUpload = async() => {
-            await uploadImg();
-        }
-        getUpload();
-    }, [])*/
+
+    // useEffect(() => {
+    //     const getUpload = async() => {
+    //         await uploadImg();
+    //     }
+    //     getUpload();
+    // }, []);
 
     // useEffect(() => {
     //     const getGetAll = async() => {
@@ -204,6 +223,7 @@ const GalleryScreen = ({navigation}) => {
         });
     }
 
+    // initial load
     useEffect(() => {
         getDownload();
     }, []);
@@ -211,16 +231,17 @@ const GalleryScreen = ({navigation}) => {
     // await async calls for getting img urls
     const getDownload = async() => {
         querySnapshot = await getDocs(q);
-        last = await getURLs(querySnapshot, false);
+        last = await getURLsInit(querySnapshot);
     }
 
     // await async calls for getting img urls
     const getRefresh = async() => {
         q = query(docsRef, orderBy('timestamp', 'asc'));
         querySnapshot = await getDocs(q);
-        last = await getURLs(querySnapshot, true);
+        last = await getURLsNew(querySnapshot);
     }
 
+    // load new imgs when halfway through FlatList
     const getMoreDownload = async() => {
         console.log(last);
 
@@ -274,6 +295,7 @@ const GalleryScreen = ({navigation}) => {
         setRefreshing(false);
     }, []);
 
+    // load new imgs when halfway through FlatList
     const onViewRef = useRef((viewableItems) => {
         console.log('Half');
         //getMoreDownload();
