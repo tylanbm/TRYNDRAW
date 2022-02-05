@@ -135,7 +135,7 @@ const GalleryScreen = ({navigation}) => {
                 url: await getDownloadURL(itemRef),
             }
 
-            console.log(item.id + ': ' + item.data().timestamp);
+            //console.log(item.id + ': ' + item.data().timestamp);
 
             if (!getImgs.some(obj => obj.id === img.id)) {
 
@@ -275,7 +275,7 @@ const GalleryScreen = ({navigation}) => {
     }, []);
 
     const onViewRef = useRef((viewableItems) => {
-        console.log('Half');
+        //console.log('Half');
         //getMoreDownload();
     })
     //const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 })
