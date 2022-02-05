@@ -214,11 +214,16 @@ const GalleryScreen = ({navigation}) => {
         last = await getURLs(querySnapshot, false);
     }
 
+    // refresh boolean state
+    const [refreshing, setRefreshing] = useState(false);
+
     // await async calls for getting img urls
     const getRefresh = async() => {
+        setRefreshing(true);
         q = query(docsRef, orderBy('timestamp', 'asc'));
         querySnapshot = await getDocs(q);
         last = await getURLs(querySnapshot, true);
+        setRefreshing(false);
     }
 
     const getMoreDownload = async() => {
@@ -263,16 +268,6 @@ const GalleryScreen = ({navigation}) => {
             </TouchableOpacity>
         );
     };
-
-    // refresh boolean state
-    const [refreshing, setRefreshing] = useState(false);
-
-    // when refreshing, get imgs from Firebase Storage
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-        getDownload();
-        setRefreshing(false);
-    }, []);
 
     const onViewRef = useRef((viewableItems) => {
         //console.log('Half');
