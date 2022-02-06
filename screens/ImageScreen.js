@@ -55,12 +55,19 @@ const Item = ({ title, author, authorImage }) => {
     
     
     return (   
-        <View style={styles.item}>
-            <Image
-                source={{ uri: authorImage }} style={styles.authorProfilePhoto}
-            />
-            <Text style={styles.title}>{author}</Text>
-            <Text style={styles.title}>{title}</Text>
+        <View style={styles.commentContainer}>
+            <View style={styles.commentAuthorContainer}>
+                <Image
+                    source={{ uri: authorImage }} style={styles.authorProfilePhoto}
+                />
+                <View>
+                    <Text style={styles.commentAuthorNameText}>{author}</Text>
+                    <Text style={styles.commentText}>{title}</Text>
+                </View>
+                
+            </View>
+            
+            
         </View>
 )};
 
@@ -190,13 +197,13 @@ const ImageScreen = ({route, navigation}) => {
             
         } else {
             // doc.data() will be undefined in this case
-            console.log("No such document!");
+            console.log("No such    document!");
         }
         
     }
   
     useEffect(() => {
-        console.log("THIS BETTER WORK.:" + imageId)
+        //console.log("THIS BETTER WORK.:" + imageId)
         getImageData(imageId);
     }, []);
 
@@ -251,7 +258,6 @@ const ImageScreen = ({route, navigation}) => {
               <View style={styles.imageFooterContainer}>
                   <View behavior="height" style={styles.inputContainer}>
                       <TextInput
-                        ref={input => {this.textInput = input}}
                         style={styles.inputText}
                         multiline={true}
                         value = {getComment}
@@ -348,15 +354,23 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: StatusBar.currentHeight || 0,
     },
-    item: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
+    commentContainer: {
+        padding: 4,
+        marginVertical: 4,
+        marginHorizontal: 12,
     },
-    title: {
-        fontSize: 32,
+    commentText: {
+        fontSize: 12,
+        marginLeft: 8,
     },
+    commentAuthorContainer: {
+        flexDirection: 'row',
+    },
+    commentAuthorNameText: {
+        marginLeft: 8,
+        fontSize: 12,
+        fontWeight: 'bold'
+    }
     
 
 });
