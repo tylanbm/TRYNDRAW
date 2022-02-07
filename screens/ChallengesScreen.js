@@ -37,6 +37,9 @@ const emptybox = <Ionicons name='square-outline' size={20} color='black' />;
 const checkbox = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
 const exitIcon = <Ionicons name='arrow-back' size={20} color='red' />;
 
+/*generateSlug
+use slug to put into state
+*/
 
 const ChallengesScreen = ({ navigation }) => {
 
@@ -217,6 +220,7 @@ const styles = StyleSheet.create({
     color: 'deepskyblue',
   },
 
+  // 'Re-Roll' button
   reroll: {
     marginTop: 20,
     marginBottom: 10,
@@ -227,6 +231,7 @@ const styles = StyleSheet.create({
     paddingRight: padChal,
   },
 
+  // 'Re-Roll'
   rerollText: {
     fontSize: 25,
     fontFamily: 'WorkSans_700Bold',
