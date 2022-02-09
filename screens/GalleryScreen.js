@@ -185,7 +185,6 @@ const GalleryScreen = ({navigation}) => {
 
             dragging = false;
             loading = true;
-            refreshing = true;
             setIsEmpty(false);
             setImgs([]);
 
@@ -193,7 +192,6 @@ const GalleryScreen = ({navigation}) => {
             querySnapshot = await getDocs(q);
             last = await getURLs(querySnapshot);
 
-            refreshing = false;
             loading = false;
         }
         else console.log('Cannot refresh at this time.');
@@ -250,12 +248,12 @@ const GalleryScreen = ({navigation}) => {
         );
     };
 
-    // when refreshing, get imgs from Firebase Storage
-    const onRefresh = useCallback(() => {
-        refreshing = true;
-        getDownload();
-        refreshing = false;
-    }, []);
+    // // when refreshing, get imgs from Firebase Storage
+    // const onRefresh = useCallback(() => {
+    //     refreshing = true;
+    //     await getDownload();
+    //     refreshing = false;
+    // }, []);
 
     const handleOnEndReached = async() => {
         if (dragging && !isEmpty) {
@@ -277,7 +275,7 @@ const GalleryScreen = ({navigation}) => {
 
     const EndOfListComponent = () => (
         <TouchableOpacity
-            onPress={() => getRefresh()}
+            onPress={async() => await getRefresh()}
             style={styles.refresh}
         >
             <Text style={styles.footer}>End of gallery, click to refresh!</Text>
