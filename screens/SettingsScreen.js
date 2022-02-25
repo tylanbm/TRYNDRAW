@@ -5,8 +5,11 @@ import React, { useState, useEffect, } from 'react';
 import { StyleSheet,
     Text,
     View,
+    SafeAreaView,
     Image,
-    TouchableOpacity } from 'react-native';
+    TouchableOpacity,
+    FlatList,
+ } from 'react-native';
 
 // import authentication
 import { getAuth,
@@ -26,27 +29,18 @@ import AppLoading from 'expo-app-loading';
 import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
 
 
-const SettingsScreen = ({navigation}) => {
+const SettingsScreen = ({ navigation }) => {
 
+    // authorization
     const auth = getAuth();
     const user = auth.currentUser;
 
-    // set what the text says at the bottom of the screen
-    const [textInfo, setTextInfo] = useState('');
-
-    // set colours to button clicks
-    const [iconColour1, setIconColour1] = useState('grey');
-    const [iconColour2, setIconColour2] = useState('grey');
-    const [iconColour3, setIconColour3] = useState('grey');
-    const [buttonColour1, setButtonColour1] = useState('grey');
-    const [buttonColour2, setButtonColour2] = useState('grey');
-    const [buttonColour3, setButtonColour3] = useState('grey');
-
     // icons
-    const exitIcon = <Ionicons name='exit-outline' size={35} color='deepskyblue' />;
-    const heart1 = <Ionicons name='heart' size={20} color={iconColour1} />;
-    const heart2 = <Ionicons name='heart' size={20} color={iconColour2} />;
-    const heart3 = <Ionicons name='heart' size={20} color={iconColour3} />;
+    const signoutIcon = <Ionicons name='exit-outline' size={30} color='deepskyblue' />;
+    const editIcon = <Ionicons name='pencil' size={30} color='deepskyblue' />;
+    const settingsIcon = <Ionicons name='settings' size={30} color='deepskyblue' />;
+    const infoIcon = <Ionicons name='document-text' size={30} color='deepskyblue' />;
+    const reportIcon = <Ionicons name='flag' size={30} color='deepskyblue' />;
 
     // set up variables for image get
     const storage = getStorage();
@@ -61,11 +55,6 @@ const SettingsScreen = ({navigation}) => {
         getPic();
     }, []);
 
-    //Go to screen so user can edit user image
-    const goToCanvasUserImageScreen = () => {
-        navigation.navigate('CanvasUserImageScreen');
-    }
-
     // sign out button
     const signOutUser = () => {
         signOut(auth).then(() => {
@@ -77,6 +66,68 @@ const SettingsScreen = ({navigation}) => {
             console.log('Sign out error!');
         });
     }
+
+    const menu = [
+        {
+            id: 0,
+            text: 'Sign Out',
+            icon: signoutIcon,
+        },
+        {
+            id: 1,
+            text: 'Edit Avatar',
+            icon: editIcon,
+        },
+        {
+            id: 2,
+            text: 'Settings',
+            icon: settingsIcon,
+        },
+        {
+            id: 3,
+            text: 'App Info',
+            icon: infoIcon,
+        },
+        {
+            id: 4,
+            text: 'Report a Bug',
+            icon: reportIcon,
+        },
+    ];
+
+    const renderItem = ({ item }) => {
+        return (
+            <TouchableOpacity
+                onPress={() => {
+                    switch(item.id) {
+
+                        case 0: 
+                            signOutUser();
+                            break;
+
+                        case 1:
+                            navigation.navigate('CanvasUserImageScreen');
+                            break;
+
+                        case 2:
+                            console.log('Settings');
+                            break;
+
+                        case 3:
+                            console.log('App Info');
+                            break;
+
+                        case 4:
+                            console.log('Report a Bug');
+                            break;
+                    }
+                }}
+                style={styles.menu}
+            >
+              <Text style={styles.menuText}>{item.text} {item.icon}</Text>
+            </TouchableOpacity>
+        );
+    };
 
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
@@ -94,68 +145,13 @@ const SettingsScreen = ({navigation}) => {
                 Signed in as{'\n'}
                 {'"'}{user.displayName}{'"'}
             </Text>
-            <TouchableOpacity
-                onPress={() => signOutUser()}
-                style={styles.signout}
-            >
-                <Text style={styles.signoutText}>Sign Out {exitIcon}</Text>
-            </TouchableOpacity>
 
-            <View style={{marginTop: 50}}>
-
-                <TouchableOpacity
-                    onPress={() => {
-                        setTextInfo('Edit your avatar.');
-                        setButtonColour1('green');
-                        setButtonColour2('grey');
-                        setButtonColour3('grey');
-                        setIconColour1('green');
-                        setIconColour2('grey');
-                        setIconColour3('grey');
-                        goToCanvasUserImageScreen();
-                    }}
-                    style={styles.button}
-                    >
-                    <Text style={[styles.menu, {color: buttonColour1}]}>Edit Avatar</Text>
-                    <Text style={styles.icon}>{heart1}</Text>
-                </TouchableOpacity>
-                
-                <TouchableOpacity
-                    onPress={() => {
-                        setTextInfo('This is an app where you can draw things.');
-                        setButtonColour1('grey');
-                        setButtonColour2('green');
-                        setButtonColour3('grey');
-                        setIconColour1('grey');
-                        setIconColour2('green');
-                        setIconColour3('grey');
-                    }}
-                    style={styles.button}
-                    >
-                    <Text style={[styles.menu, {color: buttonColour2}]}>App Info</Text>
-                    <Text style={styles.icon}>{heart2}</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => {
-                        setTextInfo('Where is the bug?');
-                        setButtonColour1('grey');
-                        setButtonColour2('grey');
-                        setButtonColour3('green');
-                        setIconColour1('grey');
-                        setIconColour2('grey');
-                        setIconColour3('green');
-                    }}
-                    style={styles.button}
-                    >
-                    <Text style={[styles.menu, {color: buttonColour3}]}>Report a Bug</Text>
-                    <Text style={styles.icon}>{heart3}</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View style={styles.info}>
-                <Text>{textInfo}</Text>
-            </View>
+            <SafeAreaView style={{maxHeight: 400}}>
+                <FlatList
+                    data={menu}
+                    renderItem={renderItem}
+                />
+            </SafeAreaView>
 
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>
@@ -173,10 +169,10 @@ const styles = StyleSheet.create({
     // entire screen
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
     },
 
-    // 'Welcome back'
+    // 'Signed in as [username]'
     title: {
         fontSize: 35,
         fontFamily: 'WorkSans_700Bold',
@@ -184,9 +180,10 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
 
-    // 'Sign Out' button
-    signout: {
+    // menu buttons
+    menu: {
         marginTop: 10,
+        marginBottom: 10,
         borderColor: 'deepskyblue',
         borderRadius: 20,
         borderWidth: 2,
@@ -194,35 +191,12 @@ const styles = StyleSheet.create({
         paddingRight: padOut,
     },
 
-    // 'Sign Out'
-    signoutText: {
-        fontSize: 35,
+    // menu button text
+    menuText: {
+        fontSize: 30,
         fontFamily: 'WorkSans_700Bold',
         color: 'deepskyblue',
-    },
-
-    // menu buttons
-    button: {
-        flexDirection: 'row',
-        width: '95%',
-    },
-
-    menu: {
-        fontSize: 20,
-        fontFamily: 'WorkSans_700Bold',
-        marginBottom: 10,
-    },
-
-    // heart icon
-    icon: {
-        flex: 1,
-        textAlign: 'right',
-    },
-
-    // info from button clicks
-    info: {
-        marginTop: 50,
-        alignItems: 'center',
+        textAlign: 'center',
     },
 
     // profile image
