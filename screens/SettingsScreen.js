@@ -143,7 +143,7 @@ const SettingsScreen = ({ navigation }) => {
             />
             <Text style={styles.title}>
                 Signed in as{'\n'}
-                {'"'}{user.displayName}{'"'}
+                {user.displayName}
             </Text>
 
             <SafeAreaView style={{maxHeight: 400}}>
