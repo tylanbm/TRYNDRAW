@@ -21,6 +21,11 @@ import { StyleSheet,
     TouchableOpacity,
     RefreshControl, } from 'react-native';
 
+// import auth and account
+import { getAuth,
+    onAuthStateChanged }
+from 'firebase/auth';
+
 // import Firestore docs
 import { collection,
     doc,
@@ -31,6 +36,7 @@ import { collection,
     query,
     orderBy,
     limit,
+    where,
     startAt,
     startAfter } from 'firebase/firestore';
 
@@ -43,10 +49,15 @@ import { useFonts,
 } from '@expo-google-fonts/work-sans';
 
 
+// get data from Firebase
 const db = getFirestore();
 const storage = getStorage();
 const galleryRef = collection(db,"gallery");
 const docRef = doc(db, "gallery", "hello");
+
+// user auth
+const auth = getAuth();
+const user = auth.currentUser;
 
 const setDataInDatabase = async() => {
     await setDoc(doc(db, "characters", "mario2"), {
@@ -102,14 +113,15 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 // global variables (set once per app reload)
 const docsRef = collection(db, "uniqueImageNames");
 const imgsToLoad = 20;
-let q = query(docsRef, orderBy('timestamp', 'desc'), limit(imgsToLoad));
+let q = query(docsRef, orderBy('timestamp', 'desc'),
+    limit(imgsToLoad));
 let querySnapshot = getDocs(q);
 let last = 0;
 let dragging = false;
 let loading = false;
 let refreshing = false;
 
-const GalleryScreen = ({navigation}) => {
+const GalleryScreen = ({ navigation }) => {
 
     // array for FlatList of images
     const [getImgs, setImgs] = useState([]);
@@ -188,7 +200,8 @@ const GalleryScreen = ({navigation}) => {
             setIsEmpty(false);
             setImgs([]);
 
-            q = query(docsRef, orderBy('timestamp', 'desc'), limit(imgsToLoad));
+            q = query(docsRef, orderBy('timestamp', 'desc'),
+                limit(imgsToLoad));
             querySnapshot = await getDocs(q);
             last = await getURLs(querySnapshot);
 
@@ -204,7 +217,8 @@ const GalleryScreen = ({navigation}) => {
         loading = true;
 
         q = query(docsRef, orderBy('timestamp', 'desc'),
-            startAfter(last), limit(imgsToLoad));
+            startAfter(last),
+            limit(imgsToLoad));
         querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {

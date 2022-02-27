@@ -6,14 +6,20 @@ import { StyleSheet,
     Text,
     View,
     Image,
-    TouchableOpacity } from 'react-native';
+    FlatList,
+    TouchableOpacity }
+from 'react-native';
 
 // import auth and account
 import { getAuth,
-    onAuthStateChanged } from 'firebase/auth';
+    onAuthStateChanged }
+from 'firebase/auth';
 
 // import firebase storage
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import { getStorage,
+    ref,
+    getDownloadURL }
+from 'firebase/storage';
 
 // import Ionicons icon library
 import { Ionicons } from '@expo/vector-icons';
@@ -66,6 +72,9 @@ const HomeScreen = ({ navigation }) => {
                 {user.displayName}!
             </Text>
             <Text style={styles.subtitle}>Start Drawing!</Text>
+
+            
+
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => navigation.navigate('Challenges')}>
