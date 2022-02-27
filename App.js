@@ -30,6 +30,7 @@ import TestCanvasScreen from './screens/TestCanvasScreen';
 import ImageScreen from './screens/ImageScreen';
 import CanvasUserImageScreen from './screens/CanvasUserImageScreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import OnboardingScreen from './screens/OnboardingScreen';
 
 
 
@@ -129,6 +130,7 @@ function App() {
           </>
         ) : (
           <>
+            <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
           </>
