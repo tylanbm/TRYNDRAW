@@ -63,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
             const errorCode = error.code;
             console.log('logInUser error: ' + errorCode);
 
-            // all the possible different error codes
+            // error codes for the user
             switch (errorCode) {
 
                 case 'auth/invalid-email':
