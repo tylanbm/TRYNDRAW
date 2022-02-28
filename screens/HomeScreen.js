@@ -45,6 +45,7 @@ import { useFonts,
     WorkSans_700Bold,
     WorkSans_500Medium,
 } from '@expo-google-fonts/work-sans';
+import FullButton from '../components/FullButton';
 
 
 // get Firebase database and storage
@@ -238,11 +239,8 @@ const HomeScreen = ({ navigation }) => {
                 />
             </SafeAreaView>
 
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('Challenges')}>
-                <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>
-            </TouchableOpacity>
+            <FullButton onPress={() => navigation.navigate('Drawing Selection')} text={'Start drawing'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+            
             
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>

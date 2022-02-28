@@ -27,6 +27,7 @@ import AppLoading from 'expo-app-loading';
 
 // Google Fonts
 import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
+import FullButton from '../components/FullButton';
 
 
 const SettingsScreen = ({ navigation }) => {
@@ -153,6 +154,13 @@ const SettingsScreen = ({ navigation }) => {
                 />
             </SafeAreaView>
 
+            <FullButton onPress={() => navigation.navigate('Drawing Selection')} text={'Edit profile picture'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+
+            <FullButton onPress={() => navigation.navigate('Drawing Selection')} text={'App info'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+            
+            <FullButton onPress={() => navigation.navigate('Drawing Selection')} text={'Sign out'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+            
+
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>
     )
@@ -160,17 +168,12 @@ const SettingsScreen = ({ navigation }) => {
 
 export default SettingsScreen;
 
-
-// global padding
-let padOut = 10;
-
 const styles = StyleSheet.create({
 
-    // entire screen
     container: {
-        flex: 1,
-        alignItems: 'center',
-    },
+        flex:1,
+        marginHorizontal: 24,
+      },
 
     // 'Signed in as [username]'
     title: {
@@ -187,8 +190,6 @@ const styles = StyleSheet.create({
         borderColor: 'deepskyblue',
         borderRadius: 20,
         borderWidth: 2,
-        paddingLeft: padOut,
-        paddingRight: padOut,
     },
 
     // menu button text

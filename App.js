@@ -65,11 +65,10 @@ const AppWithTabs = () => (
         // You can return any component that you like here!
         return <Ionicons name={iconName} size={size} color={color} />;
       },
-      tabBarActiveTintColor: '#05a6f8',
-      tabBarInactiveTintColor: 'gray',
+      tabBarActiveTintColor: '#60B1B6',
+      tabBarInactiveTintColor: '#828299',
     })}>
     <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Details" component={DetailsScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Gallery" component={GalleryScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
   </Tab.Navigator>
@@ -124,7 +123,7 @@ function App() {
           <>
             <Stack.Screen name="HomeTabs" component={AppWithTabs} options={{headerShown: false}}/>
             <Stack.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Challenges' component={ChallengesScreen} options={{ headerShown: false }} />
+            <Stack.Screen name='Drawing Selection' component={ChallengesScreen} />
             <Stack.Screen name='Image' component={ImageScreen} options={{ headerShown: true }} />
             <Stack.Screen name="CanvasUserImageScreen" component={CanvasUserImageScreen} options={{ headerShown: false }} />
           </>

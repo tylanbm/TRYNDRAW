@@ -25,19 +25,18 @@ import AppLoading from 'expo-app-loading';
 import { useFonts,
   WorkSans_700Bold,
 } from '@expo-google-fonts/work-sans';
+import FullButton from '../components/FullButton';
 
 
 // slug generation format
 const slugOptions = {
-  format: 'title',
+  format: 'sentence',
   partsOfSpeech: ['adjective', 'adjective', 'noun'],
 }
 
 // icons
-const buttonIcon = <Ionicons name='arrow-forward' size={30} color='deepskyblue' />;
-const emptybox = <Ionicons name='square-outline' size={20} color='black' />;
-const checkbox = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
-const reload = <Ionicons name='reload' size={30} color='green' />;
+const emptybox = <Ionicons name='square-outline' size={20} color='#9AAAAC' />;
+const checkbox = <Ionicons name='checkbox' size={20} color='#60B1B6' />;
 
 /*generateSlug
 use slug to put into state
@@ -64,18 +63,32 @@ const ChallengesScreen = ({ navigation }) => {
     },
   ]);
 
+  const reroll = () => {
+    let temp_data = [...data];
+
+        for (let i=0; i<3; i++) {
+          let temp_elt = {...temp_data[i]};
+          temp_elt.slug = generateSlug(3, slugOptions);
+          temp_data[i] = temp_elt;
+        }
+
+    setData(temp_data);
+  }
+
   const renderItem = ({ item }) => {
-    const borderColor = item.id === selectedId ? 'deepskyblue' : 'transparent';
-    const textColor = item.id === selectedId ? 'black' : 'grey';
+    const borderColor = item.id === selectedId ? '#60B1B6' : 'transparent';
+    const textColor = item.id === selectedId ? '#60B1B6' : '#9AAAAC';
+    const textWeight = item.id === selectedId ? 'bold' : 'normal';
     const icon = item.id === selectedId ? checkbox : emptybox;
 
     return (
         <TouchableOpacity
             onPress={() => setSelectedId(item.id)}
-            style={[styles.challenge, {borderColor: borderColor}]}
+            style={[styles.challenge, {borderColor: borderColor}, {flexDirection:"row"}]}
         >
+          <Text>{icon}</Text>
           <Text style={[styles.challengeText,
-            {color: textColor}]}>{icon} "{item.slug}"</Text>
+            {color: textColor}, {fontWeight: textWeight}]}>{item.slug}</Text>
         </TouchableOpacity>
     );
   };
@@ -88,9 +101,11 @@ const ChallengesScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={{marginTop: 90}}/>
       <Text style={styles.title}>What do you want to draw?</Text>
-      
-      <SafeAreaView style={{maxHeight: 200}}>
+      <View style={{marginTop: 50}}/>
+
+      <SafeAreaView>
         <FlatList
           data={data}
           renderItem={renderItem}
@@ -98,14 +113,6 @@ const ChallengesScreen = ({ navigation }) => {
       </SafeAreaView>
 
       <View style={{alignItems: 'center'}}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Canvas', data[selectedId].slug);
-          }}
-          style={styles.start}>
-          <Text style={styles.startText}>Start Drawing! {buttonIcon}</Text>  
-        </TouchableOpacity>
-
         <TouchableOpacity
           onPress={() => {
             let temp_data = [...data];
@@ -118,10 +125,26 @@ const ChallengesScreen = ({ navigation }) => {
 
             setData(temp_data);
           }}
-          style={styles.reroll}>
-          <Text style={styles.rerollText}>Re-Roll {reload}</Text>
+          >
         </TouchableOpacity>
       </View>
+      
+      
+      <View style={{marginTop: 30}}/>
+      
+      <View style={{marginHorizontal: 32}}>
+        <FullButton onPress={() => reroll()} text={'Reroll selection'} backgroundColor={'white'} textColor={'#60B1B6'} borderColor={'#60B1B6'}></FullButton>
+      </View>
+
+      <View style={{marginTop: 80}}/>
+
+      
+        <FullButton onPress={() => {
+            navigation.navigate('Canvas', data[selectedId].slug);
+          }} text={'Start drawing'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}>
+        </FullButton>
+      
+      
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
     </View>
@@ -130,81 +153,35 @@ const ChallengesScreen = ({ navigation }) => {
 
 export default ChallengesScreen;
 
-
-// global padding
-let padChal = 15;
-//let padExit = 5;
-
 const styles = StyleSheet.create({
   
   // entire page
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    flex:1,
+    marginHorizontal: 24,
   },
-
+ 
   // page title
   title: {
     fontSize: 40,
-    fontFamily: 'WorkSans_700Bold',
+  //  fontFamily: 'WorkSans_700Bold',
     textAlign: 'center',
-    marginBottom: 20,
   },
 
   // individual challenge selection buttons
   challenge: {
-    marginTop: 10,
-    marginBottom: 10,
-    borderRadius: 20,
-    borderWidth: 2,
-    paddingLeft: padChal,
-    paddingRight: padChal,
+    marginBottom: 8,
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 16,
+    alignItems:"center"
   },
 
   // challenge selection button text
   challengeText: {
     fontSize: 20,
-    fontFamily: 'WorkSans_700Bold',
-  },
-
-  // 'Start drawing!' button
-  start: {
-    width: '75%',
-    marginTop: 20,
-    marginBottom: 10,
-    borderColor: 'deepskyblue',
-    borderRadius: 20,
-    borderWidth: 2,
-    paddingLeft: padChal,
-    paddingRight: padChal,
-  },
-
-  // 'Start drawing!'
-  startText: {
-    fontSize: 30,
-    fontFamily: 'WorkSans_700Bold',
-    textAlign: 'center',
-    color: 'deepskyblue',
-  },
-
-  // 'Re-Roll' button
-  reroll: {
-    width: '75%',
-    marginTop: 20,
-    marginBottom: 10,
-    borderColor: 'green',
-    borderRadius: 20,
-    borderWidth: 2,
-    paddingLeft: padChal,
-    paddingRight: padChal,
-  },
-
-  // 'Re-Roll'
-  rerollText: {
-    fontSize: 30,
-    fontFamily: 'WorkSans_700Bold',
-    textAlign: 'center',
-    color: 'green',
+    marginLeft: 8,
+ //   fontFamily: 'WorkSans_700Bold',
   },
 
   // // 'Back to Home' button
