@@ -191,8 +191,7 @@ const SignUpScreen = ({navigation}) => {
             <Text style={styles.subtitle}>Get drawing right away!</Text>
             <View style={{marginTop: 70}}/>
             <Text style={styles.inputTitle}>Username</Text>
-            <View style={[styles.inputContainer,
-                {borderColor: borderUsername}]}>
+            <View style={[styles.inputContainer,{borderColor: borderUsername}]}>
                 <TextInput
                     style={styles.inputText}
                     onChangeText={text => setUsername(text)}

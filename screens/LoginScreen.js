@@ -4,10 +4,15 @@ import { StyleSheet,
     TextInput,
     View,
     Text,
-    TouchableOpacity } from 'react-native';
+    TouchableOpacity,
+    Image } from 'react-native';
 import { auth } from '../firebaseConfig';
 import { createUserWithEmailAndPassword,
     signInWithEmailAndPassword } from 'firebase/auth';
+
+import { NativeModules } from 'react-native';
+const { StatusBarManager } = NativeModules;
+const height = StatusBarManager.HEIGHT;
 
 // make sure fonts are loaded
 import AppLoading from 'expo-app-loading';
@@ -16,6 +21,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts,
     WorkSans_700Bold,
 } from '@expo-google-fonts/work-sans';
+import FullButton from '../components/FullButton';
 
 
 const LoginScreen = ({ navigation }) => {
@@ -108,23 +114,24 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>TRYNDRAW</Text>
-            <Text style={styles.subtitle}>LOG IN</Text>
-
+            <View style={{marginTop: 90}}/>
+            <Text style={styles.title}>Log in</Text>
+            <Text style={styles.subtitle}>Get back to drawing!</Text>
+            <View style={{marginTop: 70}}/>
+            <Text style={styles.inputTitle}>Username</Text>
             <View style={[styles.inputContainer,
                 {borderColor: borderEmail}]}>
                 <TextInput
                     style={styles.inputText}
                     onChangeText={text => setEmail(text)}
-                    placeholder="Email"
                 />
             </View>
+            <Text style={styles.inputTitle}>Password</Text>
             <View style={[styles.inputContainer,
                 {borderColor: borderPassword}]}>
                 <TextInput
                     style={styles.inputText}
                     onChangeText={text => setPassword(text)}
-                    placeholder="Password"
                     secureTextEntry
                 />
             </View>
@@ -133,21 +140,24 @@ const LoginScreen = ({ navigation }) => {
                 <Text style={styles.error}>{errorMessage}</Text>
             </View>
 
-            <TouchableOpacity
-                style={[styles.button, {backgroundColor: 'dimgrey'}]}
-                onPress={() => logInUser()}
-            >
-                <Text style={styles.buttonText}>LOG IN</Text>
-            </TouchableOpacity>
-            
-            <Text style={styles.or}>----- or -----</Text>
+            <View style={{marginTop: 125}}/>
 
-            <TouchableOpacity
-                style={[styles.button, {backgroundColor: 'blueviolet'}]}
-                onPress={() => navigation.navigate('SignUp')}
-            >
-                <Text style={styles.buttonText}>JOIN</Text>
-            </TouchableOpacity>
+            <FullButton onPress={() => logInUser()} text={'Sign in'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+            
+            <View style={styles.subContainer}>
+                <TouchableOpacity onPress={() =>navigation.navigate('SignUp')}>
+                    <Text style={styles.textPoke1}>Don't have an account?</Text>
+                    <Text style={styles.textPoke2}>Sign up today!</Text>
+                </TouchableOpacity>
+                
+                
+                <Image
+                    style={styles.logo}
+                    source={require('../assets/logo.png')}
+                    />
+            </View>
+
+            
             
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
             { /*<SignUpButton screenName={'Root'} /> */}
@@ -166,45 +176,71 @@ let pad = 10;
 
 const styles = StyleSheet.create({
 
-    // whole screen
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex:1,
+        marginTop: height,
+        marginLeft: 24,
+        marginRight:24,
+        zIndex: 0,
     },
-
-    // 'TRYNDRAW'
+    subContainer:{
+        justifyContent: "center",
+        alignContent:'center',
+        alignItems: "center",
+        marginTop: 20,
+    },
     title: {
-        fontSize: 50,
-        fontFamily: 'WorkSans_700Bold',
-        marginTop: '10%',
+        fontSize: 32,
+    },
+    subtitle: {
+        fontSize: 20, 
+    },
+    inputTitle: {
+        fontSize: 14,
+        color: "#4F4E4C",
+        fontWeight: "bold",
+        marginTop: 8,
+        marginBottom: 2,
     },
 
-    // 'LOG IN'
-    subtitle: {
-        fontSize: 30,
-        fontFamily: 'WorkSans_700Bold',
-        paddingTop: '10%',
-        alignSelf: 'flex-start',
-        paddingLeft: '5%',
+    // light/dark mode
+    separator: {
+        marginVertical: 30,
+        height: 1,
+        width: '80%',
     },
 
     // text input
     inputContainer: {
-        marginTop: 20,
-        maxWidth: fullWidth * 0.9,
-        width: fullWidth * 0.9,
-        backgroundColor: '#E5E5E5',
-        borderRadius: 3.16,
-        borderWidth: 2,
+        backgroundColor: '#ECECEC',
+        borderRadius: 7,
+        borderWidth: 1,
+        padding: 0,
+    },
+    textPoke1: {
+        fontSize: 14,
+        color: "#7C8B8C",
+    },
+    textPoke2: {
+        fontSize: 14,
+        color: "#33999F",
+        fontWeight: "bold",
+        alignSelf: "center",
+        marginBottom: 20,
     },
 
     // text within text input
     inputText: {
-        height: 40,
-        padding: 10,
         width: '100%',
+        paddingLeft: 8,
+        height: 48,
     },
+    logo: {
+        width: 20,
+        height: 20,
+        
+    },
+    
 
     // error message
     error: {
@@ -215,35 +251,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
-    // 'LOGIN' and 'SIGN UP' buttons
+    // 'SIGN UP' button
     button: {
         backgroundColor: 'grey',
         borderColor: 'black',
         borderRadius: 10,
         borderWidth: 2,
-        paddingLeft: pad,
-        paddingRight: pad,
     },
 
-    // 'LOGIN' and 'SIGN UP'
+    // 'SIGN UP'
     buttonText: {
-        fontSize: 25,
+        fontSize: 30,
         fontFamily: 'WorkSans_700Bold',
         color: 'white',
-    },
-
-    // 'or' separator
-    or: {
-        marginTop: 20,
-        marginBottom: 20,
-        fontFamily: 'WorkSans_700Bold',
-        fontSize: 20,
-    },
-
-    // light/dark mode
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: '80%',
     },
 });
