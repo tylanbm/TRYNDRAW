@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginTop: 170,
+        marginHorizontal: 24,
     },
     spacing8: {
         marginTop: 8,
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     },
     vector: {
         width: screenWidth,
-        height: 331,
+        height: 335,
         alignSelf: 'flex-end'
     },
     container_row: {
@@ -97,11 +98,11 @@ const styles = StyleSheet.create({
         fontFamily: 'WorkSans_300Light',
     },
     bigText: {
-        marginTop: 140,
+        marginTop: 160,
         fontSize: 32,
     },
     smallText: {
-        fontSize: 20,
+        fontSize: 22,
         marginTop: 16,
     } 
 })
