@@ -10,8 +10,15 @@ import AppLoading from 'expo-app-loading';
 // Google Fonts
 import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
 
+// import account authentication
+import { auth } from "../firebaseConfig";
+
 
 const DetailsScreen = ({ route }) => {
+    
+    // get user details
+    const user = auth.currentUser;
+    const username = user.displayName;
 
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
@@ -24,7 +31,8 @@ const DetailsScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Vote on this drawing! {wordSlug}</Text>
+            <Text style={styles.title}>Vote on this drawing, {username}!
+                {wordSlug}</Text>
 
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>

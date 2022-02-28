@@ -6,7 +6,7 @@ import { StyleSheet,
     View,
     Text } from 'react-native';
 import { auth } from '../firebaseConfig';
-import { getAuth, updateProfile,
+import { updateProfile,
     createUserWithEmailAndPassword } from 'firebase/auth';
 
 // import Firestore docs

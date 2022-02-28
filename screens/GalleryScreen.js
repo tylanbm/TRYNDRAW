@@ -4,13 +4,6 @@ import React, { useState,
     useCallback,
     useRef, } from 'react';
 
-// import Firebase storage
-import { getStorage,
-    ref,
-    getDownloadURL,
-    listAll,
-    getMetadata, } from 'firebase/storage';
-
 // import React styles and features
 import { StyleSheet,
     Text,
@@ -20,6 +13,13 @@ import { StyleSheet,
     SafeAreaView,
     TouchableOpacity,
     RefreshControl, } from 'react-native';
+
+// import Firebase storage
+import { getStorage,
+    ref,
+    getDownloadURL,
+    listAll,
+    getMetadata, } from 'firebase/storage';
 
 // import Firestore docs
 import { collection,
@@ -31,8 +31,8 @@ import { collection,
     query,
     orderBy,
     limit,
-    startAt,
-    startAfter } from 'firebase/firestore';
+    startAfter }
+from 'firebase/firestore';
 
 // make sure fonts are loaded
 import AppLoading from 'expo-app-loading';
@@ -43,8 +43,10 @@ import { useFonts,
 } from '@expo-google-fonts/work-sans';
 
 
+// get Firebase database and storage
 const db = getFirestore();
 const storage = getStorage();
+const docsRef = collection(db, "uniqueImageNames");
 const galleryRef = collection(db,"gallery");
 const docRef = doc(db, "gallery", "hello");
 
@@ -99,17 +101,17 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 );
 
 
+
 // global variables (set once per app reload)
-const docsRef = collection(db, "uniqueImageNames");
 const imgsToLoad = 20;
-let q = query(docsRef, orderBy('timestamp', 'desc'), limit(imgsToLoad));
+let q = query(docsRef, limit(1));
 let querySnapshot = getDocs(q);
 let last = 0;
 let dragging = false;
 let loading = false;
 let refreshing = false;
 
-const GalleryScreen = ({navigation}) => {
+const GalleryScreen = ({ navigation }) => {
 
     // array for FlatList of images
     const [getImgs, setImgs] = useState([]);
@@ -173,6 +175,9 @@ const GalleryScreen = ({navigation}) => {
     // await async calls for getting img urls
     const getDownload = async() => {
         loading = true;
+        q = query(docsRef,
+            orderBy('timestamp', 'desc'),
+            limit(imgsToLoad));
         querySnapshot = await getDocs(q);
         last = await getURLs(querySnapshot);
         loading = false;
@@ -188,7 +193,9 @@ const GalleryScreen = ({navigation}) => {
             setIsEmpty(false);
             setImgs([]);
 
-            q = query(docsRef, orderBy('timestamp', 'desc'), limit(imgsToLoad));
+            q = query(docsRef,
+                orderBy('timestamp', 'desc'),
+                limit(imgsToLoad));
             querySnapshot = await getDocs(q);
             last = await getURLs(querySnapshot);
 
@@ -203,8 +210,10 @@ const GalleryScreen = ({navigation}) => {
 
         loading = true;
 
-        q = query(docsRef, orderBy('timestamp', 'desc'),
-            startAfter(last), limit(imgsToLoad));
+        q = query(docsRef,
+            orderBy('timestamp', 'desc'),
+            startAfter(last),
+            limit(imgsToLoad));
         querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
@@ -255,12 +264,11 @@ const GalleryScreen = ({navigation}) => {
     //     refreshing = false;
     // }, []);
 
+    // load more imgs when near end of list
     const handleOnEndReached = async() => {
         if (dragging && !isEmpty) {
-            console.log('Load new');
             await getMoreDownload();
         }
-        //console.log(isEmpty);
     }
 
     // check if imported Google Fonts were loaded
@@ -269,6 +277,7 @@ const GalleryScreen = ({navigation}) => {
     });
     if (!fontsLoaded) return <AppLoading />;
 
+    // "Loading..." when imgs are loading
     const LoadingComponent = () => (
         <Text style={styles.footer}>Loading...</Text>
     )
@@ -283,7 +292,7 @@ const GalleryScreen = ({navigation}) => {
     )
 
     return (
-        <View style={{marginTop: 20}}>
+        <View style={styles.container}>
             <SafeAreaView>
                 <FlatList
                     data={getImgs}
@@ -321,23 +330,29 @@ let padChal = 10;
 
 const styles = StyleSheet.create({
 
-    // Database FlatList
-    container1: {
-        flexDirection: 'column',
-        backgroundColor: "white",
+    // entire screen
+    container: {
+        flex: 1,
+        marginTop: 20,
     },
+
+    // // Database FlatList
+    // containerFlat: {
+    //     flexDirection: 'column',
+    //     backgroundColor: "white",
+    // },
 
     // items in FlatList
-    item: {
-        padding: 8.5,
-        marginVertical: 8,
-        marginHorizontal: 2,
-    },
+    // item: {
+    //     padding: 8.5,
+    //     marginVertical: 8,
+    //     marginHorizontal: 2,
+    // },
 
     // title for Database
-    titleStyle: {
-        fontSize: 12,
-    },
+    // titleStyle: {
+    //     fontSize: 12,
+    // },
 
     // image button
     touchable: {

@@ -11,10 +11,11 @@ import { StyleSheet,
     FlatList,
  } from 'react-native';
 
+// import account authentication
+import { auth } from "../firebaseConfig";
+
 // import authentication
-import { getAuth,
-    signOut,
-    onAuthStateChanged } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 
 // import firebase storage
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
@@ -31,8 +32,7 @@ import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
 
 const SettingsScreen = ({ navigation }) => {
 
-    // authorization
-    const auth = getAuth();
+    // get username
     const user = auth.currentUser;
 
     // icons
@@ -49,7 +49,7 @@ const SettingsScreen = ({ navigation }) => {
     // get and set profile pic from firebase storage
     useEffect(() => {
         const getPic = async() => {
-            let temp = await getDownloadURL(ref(storage, 'userProfileImages/' + auth.currentUser.uid));
+            let temp = await getDownloadURL(ref(storage, 'userProfileImages/' + user.uid));
             setPic(temp.toString());
         }
         getPic();

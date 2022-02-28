@@ -6,18 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="c79f43c6-e473-4371-90b7-322467d27372" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mario0.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mario1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mario2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mario3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mario4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mario5.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mario6.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/mario7.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/ChallengesScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChallengesScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebaseConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/firebaseConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/DebugScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/DebugScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/DetailsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/DetailsScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/GalleryScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/GalleryScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/HomeScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/SettingsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SettingsScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/SignUpScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SignUpScreen.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
