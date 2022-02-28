@@ -56,8 +56,8 @@ const AppWithTabs = () => (
         } else if (route.name === 'Challenges') {
           iconName = focused ? 'trophy' : 'trophy-outline';
         }
-         else if (route.name === 'Settings') {
-          iconName = focused ? 'settings' : 'settings-outline';
+         else if (route.name === 'Account') {
+          iconName = focused ? 'person' : 'person-outline';
         } else {
           iconName = focused ? 'bug' : 'bug-outline';
         }
@@ -70,7 +70,7 @@ const AppWithTabs = () => (
     })}>
     <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Gallery" component={GalleryScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Account" component={SettingsScreen} options={{ headerShown: false }} />
   </Tab.Navigator>
 
 );

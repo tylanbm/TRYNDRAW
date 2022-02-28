@@ -9,6 +9,7 @@ import { StyleSheet,
     Image,
     TouchableOpacity,
     FlatList,
+    Dimensions,
  } from 'react-native';
 
 // import authentication
@@ -28,6 +29,12 @@ import AppLoading from 'expo-app-loading';
 // Google Fonts
 import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
 import FullButton from '../components/FullButton';
+
+import { NativeModules } from 'react-native';
+const { StatusBarManager } = NativeModules;
+const height = StatusBarManager.HEIGHT;
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 
 const SettingsScreen = ({ navigation }) => {
@@ -96,39 +103,6 @@ const SettingsScreen = ({ navigation }) => {
         },
     ];
 
-    const renderItem = ({ item }) => {
-        return (
-            <TouchableOpacity
-                onPress={() => {
-                    switch(item.id) {
-
-                        case 0: 
-                            signOutUser();
-                            break;
-
-                        case 1:
-                            navigation.navigate('CanvasUserImageScreen');
-                            break;
-
-                        case 2:
-                            console.log('Settings');
-                            break;
-
-                        case 3:
-                            console.log('App Info');
-                            break;
-
-                        case 4:
-                            console.log('Report a Bug');
-                            break;
-                    }
-                }}
-                style={styles.menu}
-            >
-              <Text style={styles.menuText}>{item.text} {item.icon}</Text>
-            </TouchableOpacity>
-        );
-    };
 
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
@@ -137,7 +111,7 @@ const SettingsScreen = ({ navigation }) => {
     if (!fontsLoaded) return <AppLoading />;
     
     return (
-        <View style={styles.container}>
+        <View style={{marginTop:36}}>
             <Image
                 source={{uri: pic}}
                 style={styles.img}
@@ -147,18 +121,16 @@ const SettingsScreen = ({ navigation }) => {
                 {user.displayName}
             </Text>
 
-            <SafeAreaView style={{maxHeight: 400}}>
-                <FlatList
-                    data={menu}
-                    renderItem={renderItem}
-                />
-            </SafeAreaView>
+            <View style={styles.container}>
+                <FullButton onPress={() => navigation.navigate('CanvasUserImageScreen')} text={'Edit profile picture'} backgroundColor={'white'} textColor={'#60B1B6'} borderColor={'#60B1B6'}></FullButton>
+                <View style={{marginTop: 16}}/>
 
-            <FullButton onPress={() => navigation.navigate('Drawing Selection')} text={'Edit profile picture'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
-
-            <FullButton onPress={() => navigation.navigate('Drawing Selection')} text={'App info'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+                <FullButton onPress={() => console.log('App Info')} text={'App info'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+                <View style={{marginTop: 56}}/>
+                
+                <FullButton onPress={() => signOutUser()} text={'Sign out'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
             
-            <FullButton onPress={() => navigation.navigate('Drawing Selection')} text={'Sign out'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+            </View>
             
 
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
@@ -172,42 +144,26 @@ const styles = StyleSheet.create({
 
     container: {
         flex:1,
+        marginTop: height,
         marginHorizontal: 24,
-      },
+    },
 
     // 'Signed in as [username]'
     title: {
-        fontSize: 35,
-        fontFamily: 'WorkSans_700Bold',
+        fontSize: 24,
+     //   fontFamily: 'WorkSans_700Bold',
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: 12,
+        marginTop: 12,
     },
 
-    // menu buttons
-    menu: {
-        marginTop: 10,
-        marginBottom: 10,
-        borderColor: 'deepskyblue',
-        borderRadius: 20,
-        borderWidth: 2,
-    },
-
-    // menu button text
-    menuText: {
-        fontSize: 30,
-        fontFamily: 'WorkSans_700Bold',
-        color: 'deepskyblue',
-        textAlign: 'center',
-    },
 
     // profile image
     img: {
-        width: 100,
+        width: screenWidth,
         aspectRatio: 1,
-        borderRadius: 100,
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: 'grey',
-        marginTop: 25,
     },
 
     // light/dark mode

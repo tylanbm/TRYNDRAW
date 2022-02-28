@@ -171,17 +171,13 @@ export default LoginScreen;
 // full width of the window
 let fullWidth = Dimensions.get('window').width;
 
-// global padding
-let pad = 10;
 
 const styles = StyleSheet.create({
 
     container: {
         flex:1,
         marginTop: height,
-        marginLeft: 24,
-        marginRight:24,
-        zIndex: 0,
+        marginHorizontal: 24,
     },
     subContainer:{
         justifyContent: "center",

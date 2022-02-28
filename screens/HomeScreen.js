@@ -47,6 +47,10 @@ import { useFonts,
 } from '@expo-google-fonts/work-sans';
 import FullButton from '../components/FullButton';
 
+import { NativeModules } from 'react-native';
+const { StatusBarManager } = NativeModules;
+const height = StatusBarManager.HEIGHT;
+
 
 // get Firebase database and storage
 const db = getFirestore();
@@ -257,7 +261,9 @@ const styles = StyleSheet.create({
 
     // entire screen
     container: {
-        flex: 1,
+        flex:1,
+        marginTop: height,
+        marginHorizontal: 24,
     },
 
     // 'Welcome back'
