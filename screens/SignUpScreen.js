@@ -3,6 +3,7 @@ import { StyleSheet,
     Dimensions,
     TextInput,
     TouchableOpacity,
+    Image,
     View,
     Text } from 'react-native';
 import { auth } from '../firebaseConfig';
@@ -20,6 +21,9 @@ import {
     getDoc,
     getDocs,
 } from 'firebase/firestore';
+import { NativeModules } from 'react-native';
+const { StatusBarManager } = NativeModules;
+const height = StatusBarManager.HEIGHT;
 
 // make sure fonts are loaded
 import AppLoading from 'expo-app-loading';
@@ -28,6 +32,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts,
     WorkSans_700Bold,
 } from '@expo-google-fonts/work-sans';
+import FullButton from '../components/FullButton';
 
 
 const db = getFirestore();
@@ -39,7 +44,7 @@ const setUsernameInDatabase = async (userUID, usernameInput) => {
 }
 
 
-const SignUpScreen = () => {
+const SignUpScreen = ({navigation}) => {
 
     // username, email, password
     const [username, setUsername] = useState('');
@@ -181,33 +186,32 @@ const SignUpScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>TRYNDRAW</Text>
-
-            <Text style={styles.subtitle}>JOIN</Text>
-
-            <View style={[styles.inputContainer,
-                {borderColor: borderUsername}]}>
+            <View style={{marginTop: 90}}/>
+            <Text style={styles.title}>Sign Up</Text>
+            <Text style={styles.subtitle}>Get drawing right away!</Text>
+            <View style={{marginTop: 70}}/>
+            <Text style={styles.inputTitle}>Username</Text>
+            <View style={[styles.inputContainer,{borderColor: borderUsername}]}>
                 <TextInput
                     style={styles.inputText}
                     onChangeText={text => setUsername(text)}
-                    placeholder="Username"
                 />
             </View>
-
+            
+            <Text style={styles.inputTitle}>Email</Text>
             <View style={[styles.inputContainer,
                 {borderColor: borderEmail}]}>
                 <TextInput
                     style={styles.inputText}
                     onChangeText={text => setEmail(text)}
-                    placeholder="Email"
                 />
             </View>
+            <Text style={styles.inputTitle}>Password</Text>
             <View style={[styles.inputContainer,
                 {borderColor: borderPassword}]}>
                 <TextInput
                     style={styles.inputText}
                     onChangeText={text => setPassword(text)}
-                    placeholder="Password"
                     secureTextEntry
                 />
             </View>
@@ -216,12 +220,24 @@ const SignUpScreen = () => {
                 <Text style={styles.error}>{errorMessage}</Text>
             </View>
 
-            <TouchableOpacity
-                style={[styles.button, {backgroundColor: 'blueviolet'}]}
-                onPress={() => register()}
-            >
-                <Text style={styles.buttonText}>SIGN UP</Text>
-            </TouchableOpacity>
+            <View style={{marginTop: 50}}/>
+
+            <FullButton onPress={() => register()} text={'Create account'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+            
+            <View style={styles.subContainer}>
+                <TouchableOpacity onPress={() =>navigation.navigate('Login')}>
+                    <Text style={styles.textPoke1}>Already have an account?</Text>
+                    <Text style={styles.textPoke2}> Sign in</Text>
+                </TouchableOpacity>
+                
+                
+                <Image
+                    style={styles.logo}
+                    source={require('../assets/logo.png')}
+                    />
+            </View>
+            
+            
 
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>
@@ -234,32 +250,35 @@ export default SignUpScreen;
 // full width of screen
 let fullWidth = Dimensions.get('window').width;
 
-// global padding
-let pad = 10;
 
 const styles = StyleSheet.create({
 
     // entire screen
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex:1,
+        marginTop: height,
+        marginLeft: 24,
+        marginRight:24,
+        zIndex: 0,
     },
-
-    // 'TRYNDRAW'
+    subContainer:{
+        justifyContent: "center",
+        alignContent:'center',
+        alignItems: "center",
+        marginTop: 20,
+    },
     title: {
-        fontSize: 50,
-        fontFamily: 'WorkSans_700Bold',
-        marginTop: '10%',
+        fontSize: 32,
     },
-
-    // 'JOIN'
     subtitle: {
-        fontSize: 30,
-        fontFamily: 'WorkSans_700Bold',
-        paddingTop: '10%',
-        alignSelf: 'flex-start',
-        paddingLeft: '5%',
+        fontSize: 20, 
+    },
+    inputTitle: {
+        fontSize: 14,
+        color: "#4F4E4C",
+        fontWeight: "bold",
+        marginTop: 8,
+        marginBottom: 2,
     },
 
     // light/dark mode
@@ -271,20 +290,35 @@ const styles = StyleSheet.create({
 
     // text input
     inputContainer: {
-        marginTop: 20,
-        maxWidth: fullWidth * 0.9,
-        width: fullWidth * 0.9,
-        backgroundColor: '#E5E5E5',
-        borderRadius: 3.16,
-        borderWidth: 2,
+        backgroundColor: '#ECECEC',
+        borderRadius: 7,
+        borderWidth: 1,
+        padding: 0,
+    },
+    textPoke1: {
+        fontSize: 14,
+        color: "#7C8B8C",
+    },
+    textPoke2: {
+        fontSize: 14,
+        color: "#33999F",
+        fontWeight: "bold",
+        alignSelf: "center",
+        marginBottom: 20,
     },
 
     // text within text input
     inputText: {
-        height: 40,
-        padding: 10,
         width: '100%',
+        paddingLeft: 8,
+        height: 48,
     },
+    logo: {
+        width: 20,
+        height: 20,
+        
+    },
+    
 
     // error message
     error: {
@@ -301,8 +335,6 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 10,
         borderWidth: 2,
-        paddingLeft: pad,
-        paddingRight: pad,
     },
 
     // 'SIGN UP'
