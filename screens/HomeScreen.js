@@ -54,7 +54,7 @@ const docsRef = collection(db, "uniqueImageNames");
 
 // global variables (set once per app reload)
 const imgsToLoad = 10;
-let q = query(docsRef, limit(1));
+let q = query(docsRef, limit(2));
 let querySnapshot = getDocs(q);
 let last = 0;
 let dragging = false;
@@ -71,7 +71,8 @@ const HomeScreen = ({ navigation }) => {
     const buttonIcon = <Ionicons
         name='arrow-forward'
         size={30}
-        color='deepskyblue' />;
+        color='deepskyblue'
+    />;
 
     // set up variables for image get
     const storage = getStorage();
@@ -284,7 +285,6 @@ const styles = StyleSheet.create({
         flex: 2,
         fontFamily: 'WorkSans_500Medium',
         paddingLeft: padGo,
-        paddingRight: padGo,
         textAlign: 'left',
         color: 'rgba(43,43,40,1)',
     },
@@ -292,8 +292,9 @@ const styles = StyleSheet.create({
     // 'View all' button
     viewDrawings: {
         flex: 1,
+        paddingRight: padGo,
         position: 'absolute',
-        bottom: 10,
+        bottom: 8,
         right: 0,
     },
 

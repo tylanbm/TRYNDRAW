@@ -7,10 +7,10 @@ const FullButton = (props) => {
     <TouchableOpacity onPress={props.onPress} style={[styles.container, {backgroundColor:props.backgroundColor},{borderColor:props.borderColor}]}>
       <Text style={[{color:props.textColor},{alignSelf: 'center'}]}>{props.text}</Text>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default FullButton
+export default FullButton;
 
 const styles = StyleSheet.create({
   container: {
@@ -21,5 +21,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 48,
-  }
-})
+  },
+});
