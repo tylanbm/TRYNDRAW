@@ -16,6 +16,7 @@ import { StyleSheet,
     Text,
     View,
     Image,
+    ImageBackground,
     FlatList,
     SafeAreaView,
     TouchableOpacity,
@@ -109,7 +110,7 @@ let dragging = false;
 let loading = false;
 let refreshing = false;
 
-const GalleryScreen = ({navigation}) => {
+const GalleryScreen = ({ navigation }) => {
 
     // array for FlatList of images
     const [getImgs, setImgs] = useState([]);
@@ -127,6 +128,7 @@ const GalleryScreen = ({navigation}) => {
             // get data for img
             let img = {
                 id: item.id,
+                name: item.data().imageTitle,
                 time: item.data().timestamp,
                 url: await getDownloadURL(itemRef),
             }
@@ -239,11 +241,16 @@ const GalleryScreen = ({navigation}) => {
                 onPress={() => openPhoto(itemUrl,id)}
                 style={styles.touchable}
             >
-                <Image
+                <ImageBackground
                     source={{uri: item.url}}
-                    style={styles.imgStyle}
+                    style={styles.imgDimensions}
+                    imageStyle={styles.imgStyle}
                     key={id}
-                />
+                >
+                    <View style={styles.textOverlay}>
+                        <Text style={styles.imgText}>{item.name}</Text>
+                    </View>
+                </ImageBackground>
             </TouchableOpacity>
         );
     };
@@ -283,7 +290,7 @@ const GalleryScreen = ({navigation}) => {
     )
 
     return (
-        <View style={{marginTop: 20}}>
+        <View style={styles.container}>
             <SafeAreaView>
                 <FlatList
                     data={getImgs}
@@ -321,18 +328,24 @@ let padChal = 10;
 
 const styles = StyleSheet.create({
 
-    // Database FlatList
-    container1: {
-        flexDirection: 'column',
-        backgroundColor: "white",
+    // entire page
+    container: {
+        flex: 1,
+        marginTop: 20,
     },
 
-    // items in FlatList
-    item: {
-        padding: 8.5,
-        marginVertical: 8,
-        marginHorizontal: 2,
-    },
+    // Database FlatList
+    // container1: {
+    //     flexDirection: 'column',
+    //     backgroundColor: "white",
+    // },
+
+    // items in old FlatList
+    // item: {
+    //     padding: 8.5,
+    //     marginVertical: 8,
+    //     marginHorizontal: 2,
+    // },
 
     // title for Database
     titleStyle: {
@@ -343,12 +356,20 @@ const styles = StyleSheet.create({
     touchable: {
         width: '50%',
         aspectRatio: 1,
+        borderRadius: 5,
+    },
+
+    // dimensions of images in FlatList
+    imgDimensions: {
+        width: '100%',
+        aspectRatio: 1,
     },
 
     // images in FlatList
     imgStyle: {
-        width: '100%',
-        aspectRatio: 1,
+        borderRadius: 5,
+        borderColor: 'grey',
+        borderWidth: 1,
     },
 
     // refresh button
@@ -367,5 +388,25 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'WorkSans_700Bold',
         textAlign: 'center',
+    },
+
+    // view style of text overlayed on img
+    textOverlay: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(149,175,178,0.8)',
+        borderRadius: 5,
+    },
+
+    // text style of text overlayed on img
+    imgText: {
+        fontSize: 22,
+        fontFamily: 'WorkSans_500Medium',
+        textAlign: 'center',
+        color: 'white',
     },
 });
