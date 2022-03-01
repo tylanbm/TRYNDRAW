@@ -12,9 +12,10 @@ import { StyleSheet,
  } from 'react-native';
 
 // import authentication
-import { getAuth,
-    signOut,
-    onAuthStateChanged } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
+
+// import account authentication
+import { auth } from "../firebaseConfig";
 
 // import firebase storage
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
@@ -32,8 +33,8 @@ import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
 const SettingsScreen = ({ navigation }) => {
 
     // authorization
-    const auth = getAuth();
     const user = auth.currentUser;
+    const username = user.displayName;
 
     // icons
     const signoutIcon = <Ionicons name='exit-outline' size={30} color='deepskyblue' />;
@@ -143,7 +144,7 @@ const SettingsScreen = ({ navigation }) => {
             />
             <Text style={styles.title}>
                 Signed in as{'\n'}
-                {user.displayName}
+                {username}
             </Text>
 
             <SafeAreaView style={{maxHeight: 400}}>

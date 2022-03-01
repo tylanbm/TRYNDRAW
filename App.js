@@ -22,6 +22,7 @@ import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ErrorScreen from './screens/ErrorScreen';
 import GalleryScreen from './screens/GalleryScreen';
+import DrawingsScreen from './screens/DrawingsScreen';
 import ChallengesScreen from './screens/ChallengesScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import CanvasScreen from './screens/CanvasScreen';
@@ -68,10 +69,26 @@ const AppWithTabs = () => (
       tabBarActiveTintColor: '#05a6f8',
       tabBarInactiveTintColor: 'gray',
     })}>
-    <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Details" component={DetailsScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Gallery" component={GalleryScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
+    <Tab.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{ headerShown: false }}
+    />
+    <Tab.Screen
+      name="Details"
+      component={DetailsScreen}
+      options={{ headerShown: false }}
+    />
+    <Tab.Screen
+      name="Gallery"
+      component={GalleryScreen}
+      options={{ headerShown: false }}
+    />
+    <Tab.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={{ headerShown: false }}
+    />
   </Tab.Navigator>
 
 );
@@ -122,17 +139,54 @@ function App() {
       <Stack.Navigator>
         {isSignedIn ? (
           <>
-            <Stack.Screen name="HomeTabs" component={AppWithTabs} options={{headerShown: false}}/>
-            <Stack.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Challenges' component={ChallengesScreen} options={{ headerShown: false }} />
-            <Stack.Screen name='Image' component={ImageScreen} options={{ headerShown: true }} />
-            <Stack.Screen name="CanvasUserImageScreen" component={CanvasUserImageScreen} options={{ headerShown: false }} />
+            <Stack.Screen
+              name='HomeTabs'
+              component={AppWithTabs}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name='Canvas'
+              component={CanvasScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='Challenges'
+              component={ChallengesScreen}
+              options={{ headerShown: true }}
+            />
+            <Stack.Screen
+              name='Image'
+              component={ImageScreen}
+              options={{ headerShown: true }}
+            />
+            <Stack.Screen
+              name='My Drawings'
+              component={DrawingsScreen}
+              options={{ headerShown: true }}
+            />
+            <Stack.Screen
+              name='CanvasUserImageScreen'
+              component={CanvasUserImageScreen}
+              options={{ headerShown: false }}
+            />
           </>
         ) : (
           <>
-            <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
+            <Stack.Screen
+              name='Onboarding'
+              component={OnboardingScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='Login'
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='SignUp'
+              component={SignUpScreen}
+              options={{ headerShown: false }}
+            />
           </>
         )}
       </Stack.Navigator>

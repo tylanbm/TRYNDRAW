@@ -145,7 +145,7 @@ const LoginScreen = ({ navigation }) => {
             <FullButton onPress={() => logInUser()} text={'Sign in'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
             
             <View style={styles.subContainer}>
-                <TouchableOpacity onPress={() =>navigation.navigate('SignUp')}>
+                <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
                     <Text style={styles.textPoke1}>Don't have an account?</Text>
                     <Text style={styles.textPoke2}>Sign up today!</Text>
                 </TouchableOpacity>

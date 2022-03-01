@@ -15,7 +15,6 @@ import { getStorage,
 import { StyleSheet,
     Text,
     View,
-    Image,
     ImageBackground,
     FlatList,
     SafeAreaView,
@@ -41,7 +40,11 @@ import AppLoading from 'expo-app-loading';
 // Google Fonts
 import { useFonts,
     WorkSans_700Bold,
+    WorkSans_500Medium,
 } from '@expo-google-fonts/work-sans';
+
+// standardized button style
+import FullButton from '../components/FullButton';
 
 
 const db = getFirestore();
@@ -103,7 +106,9 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 // global variables (set once per app reload)
 const docsRef = collection(db, "uniqueImageNames");
 const imgsToLoad = 20;
-let q = query(docsRef, orderBy('timestamp', 'desc'), limit(imgsToLoad));
+let q = query(docsRef,
+    orderBy('timestamp', 'desc'),
+    limit(imgsToLoad));
 let querySnapshot = getDocs(q);
 let last = 0;
 let dragging = false;
@@ -117,10 +122,10 @@ const GalleryScreen = ({ navigation }) => {
 
     // check if the current snapshot is empty
     const [isEmpty, setIsEmpty] = useState(false);
-
+// querySnapshot.forEach(async(item) => {
     // initial load of gallery screen
     const getURLs = async(querySnapshot) => {
-        querySnapshot.forEach(async(item) => {
+         querySnapshot.forEach(async(item) => {
 
             // iterate through all testImages images
             const itemRef = ref(storage, 'testImages/' + item.id + '.jpg');
@@ -137,8 +142,8 @@ const GalleryScreen = ({ navigation }) => {
             setImgs(getImgs => [...getImgs, img]);
         })
 
-        let output = querySnapshot.docs[querySnapshot.docs.length-1];
-        return output;
+        let output = querySnapshot.docs;
+        return output[output.length-1];
     }
 
     // const sortImgs = async() => {
@@ -190,7 +195,9 @@ const GalleryScreen = ({ navigation }) => {
             setIsEmpty(false);
             setImgs([]);
 
-            q = query(docsRef, orderBy('timestamp', 'desc'), limit(imgsToLoad));
+            q = query(docsRef,
+                orderBy('timestamp', 'desc'),
+                limit(imgsToLoad));
             querySnapshot = await getDocs(q);
             last = await getURLs(querySnapshot);
 
@@ -205,8 +212,10 @@ const GalleryScreen = ({ navigation }) => {
 
         loading = true;
 
-        q = query(docsRef, orderBy('timestamp', 'desc'),
-            startAfter(last), limit(imgsToLoad));
+        q = query(docsRef,
+            orderBy('timestamp', 'desc'),
+            startAfter(last),
+            limit(imgsToLoad));
         querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
@@ -248,7 +257,10 @@ const GalleryScreen = ({ navigation }) => {
                     key={id}
                 >
                     <View style={styles.textOverlay}>
-                        <Text style={styles.imgText}>{item.name}</Text>
+                        <Text
+                            style={styles.imgText}
+                            numberOfLines={2}
+                        >{item.name}</Text>
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
@@ -273,21 +285,25 @@ const GalleryScreen = ({ navigation }) => {
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
         WorkSans_700Bold,
+        WorkSans_500Medium,
     });
     if (!fontsLoaded) return <AppLoading />;
 
+    // when images are still loading
     const LoadingComponent = () => (
         <Text style={styles.footer}>Loading...</Text>
-    )
+    );
 
+    // reached the end of the list
     const EndOfListComponent = () => (
-        <TouchableOpacity
+        <FullButton
             onPress={async() => await getRefresh()}
-            style={styles.refresh}
-        >
-            <Text style={styles.footer}>End of gallery, click to refresh!</Text>
-        </TouchableOpacity>
-    )
+            text={'End of gallery, tap to refresh!'}
+            backgroundColor={'#60B1B6'}
+            textColor={'white'}
+            borderColor={'transparent'}>
+        </FullButton>
+    );
 
     return (
         <View style={styles.container}>
@@ -386,7 +402,7 @@ const styles = StyleSheet.create({
     // footer of FlatList
     footer: {
         fontSize: 20,
-        fontFamily: 'WorkSans_700Bold',
+        fontFamily: 'WorkSans_500Medium',
         textAlign: 'center',
     },
 
@@ -396,7 +412,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        alignItems: 'center',
+        height: '28%',
         justifyContent: 'center',
         backgroundColor: 'rgba(149,175,178,0.8)',
         borderRadius: 5,

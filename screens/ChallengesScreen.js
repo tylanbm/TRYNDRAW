@@ -64,6 +64,18 @@ const ChallengesScreen = ({ navigation }) => {
     },
   ]);
 
+  const reroll = () => {
+    let temp_data = [...data];
+
+        for (let i=0; i<3; i++) {
+          let temp_elt = {...temp_data[i]};
+          temp_elt.slug = generateSlug(3, slugOptions);
+          temp_data[i] = temp_elt;
+        }
+
+    setData(temp_data);
+  }
+
   const renderItem = ({ item }) => {
     const borderColor = item.id === selectedId ? 'deepskyblue' : 'transparent';
     const textColor = item.id === selectedId ? 'black' : 'grey';
@@ -107,17 +119,7 @@ const ChallengesScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => {
-            let temp_data = [...data];
-
-            for (let i=0; i<3; i++) {
-              let temp_elt = {...temp_data[i]};
-              temp_elt.slug = generateSlug(3, slugOptions);
-              temp_data[i] = temp_elt;
-            }
-
-            setData(temp_data);
-          }}
+          onPress={() => reroll()}
           style={styles.reroll}>
           <Text style={styles.rerollText}>Re-Roll {reload}</Text>
         </TouchableOpacity>

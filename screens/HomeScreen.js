@@ -46,16 +46,16 @@ import { useFonts,
     WorkSans_500Medium,
 } from '@expo-google-fonts/work-sans';
 
+// standardized button style
+import FullButton from '../components/FullButton';
+
 
 // get Firebase database and storage
 const db = getFirestore();
 const storage = getStorage();
 const docsRef = collection(db, "uniqueImageNames");
 
-// global variables (set once per app reload)
-const imgsToLoad = 10;
-let q = query(docsRef, limit(2));
-let querySnapshot = getDocs(q);
+// global variables
 let last = 0;
 let dragging = false;
 let loading = false;
@@ -80,6 +80,9 @@ const HomeScreen = ({ navigation }) => {
 
     // array for FlatList of images
     const [getImgs, setImgs] = useState([]);
+
+    // length of FlatList of images
+    const getLength = getImgs.length;
 
     // check if the current snapshot is empty
     const [isEmpty, setIsEmpty] = useState(false);
@@ -111,9 +114,6 @@ const HomeScreen = ({ navigation }) => {
             // append all images to end of list
             setImgs(getImgs => [...getImgs, img]);
         })
-
-        let output = querySnapshot.docs[querySnapshot.docs.length-1];
-        return output;
     }
 
     // load imgs when gallery screen visited
@@ -133,35 +133,12 @@ const HomeScreen = ({ navigation }) => {
     // await async calls for getting img urls
     const getDownload = async() => {
         loading = true;
-        q = query(docsRef,
+        let q = query(docsRef,
             orderBy('timestamp', 'desc'),
             where('imageAuthorUsername', '==', username),
-            limit(imgsToLoad));
-        querySnapshot = await getDocs(q);
+            limit(2));
+        let querySnapshot = await getDocs(q);
         last = await getURLs(querySnapshot);
-        loading = false;
-    }
-
-    // load new imgs when halfway through FlatList
-    const getMoreDownload = async() => {
-        console.log('Loading more...');
-
-        loading = true;
-
-        q = query(docsRef,
-            orderBy('timestamp', 'desc'),
-            where('imageAuthorUsername', '==', username),
-            startAfter(last),
-            limit(imgsToLoad));
-        querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-            last = await getURLs(querySnapshot);
-        }
-        else if (querySnapshot.empty) {
-            setIsEmpty(true);
-        }
-
         loading = false;
     }
 
@@ -181,19 +158,15 @@ const HomeScreen = ({ navigation }) => {
                     key={id}
                 >
                     <View style={styles.textOverlay}>
-                        <Text style={styles.imgText}>{item.name}</Text>
+                        <Text
+                            style={styles.imgText}
+                            numberOfLines={2}
+                            >{item.name}</Text>
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
         );
     };
-
-    // load more imgs when near end of list
-    const handleOnEndReached = async() => {
-        if (dragging && !isEmpty) {
-            await getMoreDownload();
-        }
-    }
 
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
@@ -220,30 +193,39 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.subtitle}>My Drawings</Text>
                 <TouchableOpacity
                     style={styles.viewDrawings}
-                    onPress={() => console.log('My Drawings')}
+                    onPress={() => navigation.navigate('My Drawings')}
                 >
                     <Text style={styles.viewAll}>View all</Text>
                 </TouchableOpacity>
             </View>
 
-            <SafeAreaView style={{maxHeight: 200}}>
-                <FlatList
-                    data={getImgs}
-                    renderItem={renderImg}
-                    horizontal={true}
-                    onEndReached={async() => await handleOnEndReached()}
-                    onEndReachedThreshold={0.5}
-                    onScrollBeginDrag={() => {
-                        dragging = true;
-                    }}
-                />
-            </SafeAreaView>
+            {getLength == 0 && (
+                <View style={styles.flatPlace}>
+                    <Text style={styles.textPlace}>
+                        Loading your drawings...
+                    </Text>
+                </View>
+            )}
 
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('Challenges')}>
-                <Text style={styles.buttonText}>Start Drawing! {buttonIcon}</Text>
-            </TouchableOpacity>
+            {getLength > 0 && (
+                <SafeAreaView style={styles.flatView}>
+                    <FlatList
+                        data={getImgs}
+                        renderItem={renderImg}
+                        horizontal={true}
+                    />
+                </SafeAreaView>
+            )}
+                
+            <View style={{marginTop: '20%'}}>
+                <FullButton
+                    onPress={() => navigation.navigate('Challenges')}
+                    text={'Start drawing!'}
+                    backgroundColor={'#60B1B6'}
+                    textColor={'white'}
+                    borderColor={'transparent'}>
+                </FullButton>
+            </View>
             
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>
@@ -261,6 +243,17 @@ const styles = StyleSheet.create({
     // entire screen
     container: {
         flex: 1,
+    },
+
+    // profile image
+    profile: {
+        width: 80,
+        aspectRatio: 1,
+        borderRadius: 100,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.25)',
+        marginTop: 25,
+        alignItems: 'center',
     },
 
     // 'Welcome back'
@@ -306,40 +299,31 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
 
-    // 'Start Drawing!' button
-    button: {
-        marginTop: 90,
-        borderColor: 'deepskyblue',
-        borderRadius: 20,
-        borderWidth: 2,
-        paddingLeft: padGo,
-        paddingRight: padGo,
+    // FlatList placeholder view
+    flatPlace: {
+        height: '31.2%',
+        marginLeft: '3%',
     },
 
-    // 'Start Drawing!'
-    buttonText: {
-        fontSize: 30,
-        fontFamily: 'WorkSans_700Bold',
-        color: 'deepskyblue',
+    // FlatList placeholder text
+    textPlace: {
+        marginTop: '20%',
+        fontFamily: 'WorkSans_500Medium',
+        fontSize: 25,
+        textAlign: 'center',
+        justifyContent: 'center',
     },
 
-    // profile image
-    profile: {
-        width: 80,
-        aspectRatio: 1,
-        borderRadius: 100,
-        borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.25)',
-        marginTop: 25,
-        alignItems: 'center',
+    // FlatList view
+    flatView: {
+        maxHeight: '31.5%',
+        marginLeft: '3%',
     },
 
     // image button
     touchable: {
-        height: '100%',
+        height: '99%',
         aspectRatio: 1,
-        marginLeft: 10,
-        marginRight: 10,
         borderRadius: 5,
     },
 
@@ -362,7 +346,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        alignItems: 'center',
+        height: '30%',
         justifyContent: 'center',
         backgroundColor: 'rgba(149,175,178,0.8)',
         borderRadius: 5,
