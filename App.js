@@ -137,9 +137,9 @@ function App() {
               <Stack.Screen name='Drawing Selection' component={ChallengesScreen} />
               <Stack.Screen name='Image' component={ImageScreen} options={{ headerShown: true }} />
               <Stack.Screen
-              name='My Drawings'
-              component={DrawingsScreen}
-              options={{ headerShown: true }}
+                name='My Drawings'
+                component={DrawingsScreen}
+                options={{ headerShown: true }}
               />
               <Stack.Screen name="CanvasUserImageScreen" component={CanvasUserImageScreen} options={{ headerShown: false }} />
             </>

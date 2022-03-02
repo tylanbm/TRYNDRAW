@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     // entire screen
     container: {
         flex:1,
-        marginHorizontal: 24,
+        marginHorizontal: 20,
     },
 
     // profile image
@@ -274,10 +274,9 @@ const styles = StyleSheet.create({
     // 'View all' button
     viewDrawings: {
         flex: 1,
-        paddingRight: 0,
         position: 'absolute',
         bottom: 8,
-        right: 0,
+        right: 5,
     },
 
     // 'View all'
@@ -313,12 +312,11 @@ const styles = StyleSheet.create({
     // FlatList view
     flatView: {
         maxHeight: '31.5%',
-        marginLeft: '3%',
     },
 
     // image button
     touchable: {
-        height: '99%',
+        height: '98%',
         aspectRatio: 1,
         borderRadius: 5,
     },
