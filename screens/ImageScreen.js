@@ -52,8 +52,6 @@ const TestComments = [
 
 const Item = ({ title, author, authorImage }) => {
     
-    
-    
     return (   
         <View style={styles.commentContainer}>
             <View style={styles.commentAuthorContainer}>
@@ -64,10 +62,7 @@ const Item = ({ title, author, authorImage }) => {
                     <Text style={styles.commentAuthorNameText}>{author}</Text>
                     <Text style={styles.commentText}>{title}</Text>
                 </View>
-                
             </View>
-            
-            
         </View>
 )};
 
@@ -294,7 +289,6 @@ const styles = StyleSheet.create({
         borderBottomColor: "gray",
     },
     image: {
-
         width:screenWidth,
         height:screenWidth+2,
     },

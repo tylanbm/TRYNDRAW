@@ -47,11 +47,6 @@ import { useFonts,
 } from '@expo-google-fonts/work-sans';
 import FullButton from '../components/FullButton';
 
-import { NativeModules } from 'react-native';
-const { StatusBarManager } = NativeModules;
-const height = StatusBarManager.HEIGHT;
-
-
 // get Firebase database and storage
 const db = getFirestore();
 const storage = getStorage();
@@ -253,16 +248,11 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen;
 
-
-// global padding
-let padGo = 10;
-
 const styles = StyleSheet.create({
 
     // entire screen
     container: {
         flex:1,
-        marginTop: height,
         marginHorizontal: 24,
     },
 
@@ -287,8 +277,6 @@ const styles = StyleSheet.create({
         fontSize: 32,
         flex: 2,
         fontFamily: 'WorkSans_500Medium',
-        paddingLeft: padGo,
-        paddingRight: padGo,
         textAlign: 'left',
         color: 'rgba(43,43,40,1)',
     },
@@ -315,8 +303,6 @@ const styles = StyleSheet.create({
         borderColor: 'deepskyblue',
         borderRadius: 20,
         borderWidth: 2,
-        paddingLeft: padGo,
-        paddingRight: padGo,
     },
 
     // 'Start Drawing!'

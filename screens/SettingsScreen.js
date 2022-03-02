@@ -30,10 +30,6 @@ import AppLoading from 'expo-app-loading';
 import { useFonts, WorkSans_700Bold } from '@expo-google-fonts/work-sans';
 import FullButton from '../components/FullButton';
 
-import { NativeModules } from 'react-native';
-const { StatusBarManager } = NativeModules;
-const height = StatusBarManager.HEIGHT;
-
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 
@@ -111,7 +107,7 @@ const SettingsScreen = ({ navigation }) => {
     if (!fontsLoaded) return <AppLoading />;
     
     return (
-        <View style={{marginTop:36}}>
+        <View>
             <Image
                 source={{uri: pic}}
                 style={styles.img}
@@ -126,7 +122,7 @@ const SettingsScreen = ({ navigation }) => {
                 <View style={{marginTop: 16}}/>
 
                 <FullButton onPress={() => console.log('App Info')} text={'App info'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
-                <View style={{marginTop: 56}}/>
+                <View style={{marginTop: 36}}/>
                 
                 <FullButton onPress={() => signOutUser()} text={'Sign out'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
             
@@ -144,7 +140,6 @@ const styles = StyleSheet.create({
 
     container: {
         flex:1,
-        marginTop: height,
         marginHorizontal: 24,
     },
 
