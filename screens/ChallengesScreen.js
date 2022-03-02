@@ -34,10 +34,26 @@ const slugOptions = {
 }
 
 // icons
-const buttonIcon = <Ionicons name='arrow-forward' size={30} color='deepskyblue' />;
-const emptybox = <Ionicons name='square-outline' size={20} color='black' />;
-const checkbox = <Ionicons name='checkbox' size={20} color='deepskyblue' />;
-const reload = <Ionicons name='reload' size={30} color='green' />;
+const buttonIcon = <Ionicons
+  name='arrow-forward'
+  size={30}
+  color='deepskyblue'
+/>;
+const emptybox = <Ionicons
+  name='square-outline'
+  size={20}
+  color='black'
+/>;
+const checkbox = <Ionicons
+  name='checkbox'
+  size={20}
+  color='deepskyblue'
+/>;
+const reload = <Ionicons
+  name='reload'
+  size={30}
+  color='green'
+/>;
 
 /*generateSlug
 use slug to put into state

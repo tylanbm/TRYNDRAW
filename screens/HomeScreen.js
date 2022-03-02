@@ -101,11 +101,12 @@ const HomeScreen = ({ navigation }) => {
         querySnapshot.forEach(async(item) => {
 
             // iterate through all testImages images
-            const itemRef = ref(storage, 'testImages/' + item.id + '.jpg');
+            const itemId = item.id;
+            const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
             
             // get data for img
             let img = {
-                id: item.id,
+                id: itemId,
                 name: item.data().imageTitle,
                 time: item.data().timestamp,
                 url: await getDownloadURL(itemRef),
@@ -144,18 +145,18 @@ const HomeScreen = ({ navigation }) => {
 
     const renderImg = ({ item }) => {
         const itemUrl = item.url;
-        const id = item.id;
+        const itemId = item.id;
 
         return (
             <TouchableOpacity
-                onPress={() => openPhoto(itemUrl,id)}
+                onPress={() => openPhoto(itemUrl, itemId)}
                 style={styles.touchable}
             >
                 <ImageBackground
-                    source={{uri: item.url}}
+                    source={{uri: itemUrl}}
                     style={styles.imgDimensions}
                     imageStyle={styles.imgStyle}
-                    key={id}
+                    key={itemId}
                 >
                     <View style={styles.textOverlay}>
                         <Text

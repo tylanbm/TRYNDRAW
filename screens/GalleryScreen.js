@@ -128,11 +128,12 @@ const GalleryScreen = ({ navigation }) => {
          querySnapshot.forEach(async(item) => {
 
             // iterate through all testImages images
-            const itemRef = ref(storage, 'testImages/' + item.id + '.jpg');
+            const itemId = item.id;
+            const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
             
             // get data for img
             let img = {
-                id: item.id,
+                id: itemId,
                 name: item.data().imageTitle,
                 time: item.data().timestamp,
                 url: await getDownloadURL(itemRef),

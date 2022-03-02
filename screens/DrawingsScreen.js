@@ -19,6 +19,7 @@ import { StyleSheet,
 import { getStorage,
     ref,
     getDownloadURL,
+    deleteObject,
 } from 'firebase/storage';
 
 // import Firestore docs
@@ -29,7 +30,12 @@ import { collection,
     orderBy,
     where,
     limit,
+    doc,
+    deleteDoc,
 } from 'firebase/firestore';
+
+// import Ionicons icon library
+import { Ionicons } from '@expo/vector-icons';
 
 // import account authentication
 import { auth } from "../firebaseConfig";
@@ -48,13 +54,18 @@ import { useFonts,
 const db = getFirestore();
 const storage = getStorage();
 
+// icons
+const deleteIcon = <Ionicons
+    name='trash-bin'
+    size={30}
+    color='rgba(255,156,156,1)'
+/>;
+
 
 // global variables (set once per app reload)
 const docsRef = collection(db, 'uniqueImageNames');
 let q = query(docsRef, limit(1));
 let querySnapshot = getDocs(q);
-let last = 0;
-let dragging = false;
 let loading = false;
 
 
@@ -67,19 +78,17 @@ const DrawingsScreen = ({ navigation }) => {
     // array for FlatList of images
     const [getImgs, setImgs] = useState([]);
 
-    // check if the current snapshot is empty
-    const [isEmpty, setIsEmpty] = useState(false);
-
     // initial load of gallery screen
     const getURLs = async(querySnapshot) => {
         for await (const item of querySnapshot.docs) {
 
             // iterate through all testImages images
-            const itemRef = ref(storage, 'testImages/' + item.id + '.jpg');
+            const itemId = item.id;
+            const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
             
             // get data for img
             let img = {
-                id: item.id,
+                id: itemId,
                 name: item.data().imageTitle,
                 time: item.data().timestamp,
                 url: await getDownloadURL(itemRef),
@@ -88,9 +97,6 @@ const DrawingsScreen = ({ navigation }) => {
             // append all images to end of list
             setImgs(getImgs => [...getImgs, img]);
         }
-
-        let output = querySnapshot.docs;
-        return output[output.length-1];
     }
 
     // load imgs when gallery screen visited
@@ -99,6 +105,30 @@ const DrawingsScreen = ({ navigation }) => {
         navigation.navigate('Image', {
             imageSourceToLoad: imageSource.toString(),
             imageId: imageId.toString(),
+        });
+    }
+
+    // delete an image from the FlatList
+    const onDeleteObject = async(item, itemId) => {
+        const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
+
+        // delete image from FlatList
+        let temp_imgs = [...getImgs];
+        temp_imgs.splice(temp_imgs.indexOf(item), 1);
+        setImgs(temp_imgs);
+
+        // delete image data from database
+        await deleteDoc(doc(db, 'uniqueImageNames', itemId.toString())).then(() => {
+            console.log('Deleted doc ' + itemId);
+        }).catch((error) => {
+            console.log('Doc ' + itemId + ' error: ' + error.code);
+        });
+
+        // delete image from storage
+        deleteObject(itemRef).then(() => {
+            console.log('Deleted image ' + itemId);
+        }).catch((error) => {
+            console.log('Image ' + itemId + ' error: ' + error.code);
         });
     }
 
@@ -114,30 +144,39 @@ const DrawingsScreen = ({ navigation }) => {
             orderBy('timestamp', 'desc'),
             where('imageAuthorUsername', '==', username));
         querySnapshot = await getDocs(q);
-        last = await getURLs(querySnapshot);
+        await getURLs(querySnapshot);
         loading = false;
     }
 
     const renderImg = ({ item }) => {
         const itemUrl = item.url;
-        const id = item.id;
+        const itemId = item.id;
 
         return (
             <TouchableOpacity
-                onPress={() => openPhoto(itemUrl,id)}
+                onPress={() => openPhoto(itemUrl, itemId)}
                 style={styles.touchable}
             >
                 <ImageBackground
-                    source={{uri: item.url}}
+                    source={{uri: itemUrl}}
                     style={styles.imgDimensions}
                     imageStyle={styles.imgStyle}
-                    key={id}
+                    key={itemId}
                 >
                     <View style={styles.textOverlay}>
                         <Text
                             style={styles.imgText}
                             numberOfLines={2}
                         >{item.name}</Text>
+                        <TouchableOpacity
+                            onPress={async() => await onDeleteObject(item, itemId)}
+                            style={styles.imgButton}
+                        >
+                            <Text
+                                style={styles.deleteIcon}
+                                numberOfLines={1}
+                            >{deleteIcon}</Text>
+                        </TouchableOpacity>
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
@@ -151,20 +190,6 @@ const DrawingsScreen = ({ navigation }) => {
     });
     if (!fontsLoaded) return <AppLoading />;
 
-    const LoadingComponent = () => (
-        <Text style={styles.footer}>Loading...</Text>
-    );
-
-    const EndOfListComponent = () => (
-        <FullButton
-            onPress={() => console.log('Scroll to top')}
-            text={'End of gallery, tap to scroll to top!'}
-            backgroundColor={'#60B1B6'}
-            textColor={'white'}
-            borderColor={'transparent'}>
-        </FullButton>
-    );
-
 
     return (
         <View style={styles.container}>
@@ -172,10 +197,6 @@ const DrawingsScreen = ({ navigation }) => {
                 <FlatList
                     data={getImgs}
                     renderItem={renderImg}
-                    ListFooterComponent={() => {
-                        if (!isEmpty) return <LoadingComponent />
-                        else return <EndOfListComponent />;
-                    }}
                 />
             </SafeAreaView>
 
@@ -223,42 +244,37 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
 
-    // refresh button
-    refresh: {
-        marginTop: 20,
-        marginBottom: 10,
-        borderColor: 'deepskyblue',
-        borderRadius: 20,
-        borderWidth: 2,
-        paddingLeft: padChal,
-        paddingRight: padChal,
-    },
-
-    // footer of FlatList
-    footer: {
-        fontSize: 20,
-        fontFamily: 'WorkSans_500Medium',
-        textAlign: 'center',
-    },
-
     // view style of text overlayed on img
     textOverlay: {
-        flex: 2,
+        flexDirection: 'row',
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
         height: '10%',
-        justifyContent: 'center',
         backgroundColor: 'rgba(149,175,178,0.8)',
         borderRadius: 5,
     },
 
     // text style of text overlayed on img
     imgText: {
+        flex: 2,
         fontSize: 22,
         fontFamily: 'WorkSans_500Medium',
-        textAlign: 'center',
+        textAlign: 'left',
         color: 'white',
+        paddingLeft: 10,
+        paddingTop: 5,
+    },
+
+    imgDelete: {
+        flex: 1,
+    },
+
+    deleteIcon: {
+        paddingRight: 5,
+        paddingTop: 5,
+        textAlign: 'right',
+        justifyContent: 'center',
     },
 });
