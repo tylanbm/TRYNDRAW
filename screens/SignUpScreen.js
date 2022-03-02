@@ -21,9 +21,6 @@ import {
     getDoc,
     getDocs,
 } from 'firebase/firestore';
-import { NativeModules } from 'react-native';
-const { StatusBarManager } = NativeModules;
-const height = StatusBarManager.HEIGHT;
 
 // make sure fonts are loaded
 import AppLoading from 'expo-app-loading';
@@ -256,10 +253,7 @@ const styles = StyleSheet.create({
     // entire screen
     container: {
         flex:1,
-        marginTop: height,
-        marginLeft: 24,
-        marginRight:24,
-        zIndex: 0,
+        marginHorizontal: 24,
     },
     subContainer:{
         justifyContent: "center",

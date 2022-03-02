@@ -45,10 +45,7 @@ import { useFonts,
     WorkSans_700Bold,
     WorkSans_500Medium,
 } from '@expo-google-fonts/work-sans';
-
-// standardized button style
 import FullButton from '../components/FullButton';
-
 
 // get Firebase database and storage
 const db = getFirestore();
@@ -219,14 +216,9 @@ const HomeScreen = ({ navigation }) => {
             )}
                 
             <View style={{marginTop: '20%'}}>
-                <FullButton
-                    onPress={() => navigation.navigate('Challenges')}
-                    text={'Start drawing!'}
-                    backgroundColor={'#60B1B6'}
-                    textColor={'white'}
-                    borderColor={'transparent'}>
-                </FullButton>
+                <FullButton onPress={() => navigation.navigate('Drawing Selection')} text={'Start drawing'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
             </View>
+            
             
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>
@@ -235,15 +227,12 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen;
 
-
-// global padding
-let padGo = 10;
-
 const styles = StyleSheet.create({
 
     // entire screen
     container: {
-        flex: 1,
+        flex:1,
+        marginHorizontal: 24,
     },
 
     // profile image
@@ -278,7 +267,6 @@ const styles = StyleSheet.create({
         fontSize: 32,
         flex: 2,
         fontFamily: 'WorkSans_500Medium',
-        paddingLeft: padGo,
         textAlign: 'left',
         color: 'rgba(43,43,40,1)',
     },
@@ -286,7 +274,7 @@ const styles = StyleSheet.create({
     // 'View all' button
     viewDrawings: {
         flex: 1,
-        paddingRight: padGo,
+        paddingRight: 0,
         position: 'absolute',
         bottom: 8,
         right: 0,
@@ -304,6 +292,13 @@ const styles = StyleSheet.create({
     flatPlace: {
         height: '31.2%',
         marginLeft: '3%',
+    },
+    // 'Start Drawing!' button
+    button: {
+        marginTop: 90,
+        borderColor: 'deepskyblue',
+        borderRadius: 20,
+        borderWidth: 2,
     },
 
     // FlatList placeholder text

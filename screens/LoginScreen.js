@@ -10,10 +10,6 @@ import { auth } from '../firebaseConfig';
 import { createUserWithEmailAndPassword,
     signInWithEmailAndPassword } from 'firebase/auth';
 
-import { NativeModules } from 'react-native';
-const { StatusBarManager } = NativeModules;
-const height = StatusBarManager.HEIGHT;
-
 // make sure fonts are loaded
 import AppLoading from 'expo-app-loading';
 
@@ -118,7 +114,7 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.title}>Log in</Text>
             <Text style={styles.subtitle}>Get back to drawing!</Text>
             <View style={{marginTop: 70}}/>
-            <Text style={styles.inputTitle}>Username</Text>
+            <Text style={styles.inputTitle}>Email</Text>
             <View style={[styles.inputContainer,
                 {borderColor: borderEmail}]}>
                 <TextInput
@@ -171,17 +167,12 @@ export default LoginScreen;
 // full width of the window
 let fullWidth = Dimensions.get('window').width;
 
-// global padding
-let pad = 10;
 
 const styles = StyleSheet.create({
 
     container: {
         flex:1,
-        marginTop: height,
-        marginLeft: 24,
-        marginRight:24,
-        zIndex: 0,
+        marginHorizontal: 24,
     },
     subContainer:{
         justifyContent: "center",

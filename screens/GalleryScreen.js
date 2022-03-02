@@ -348,7 +348,6 @@ const styles = StyleSheet.create({
     // entire page
     container: {
         flex: 1,
-        marginTop: 20,
     },
 
     // Database FlatList

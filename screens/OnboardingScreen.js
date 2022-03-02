@@ -9,11 +9,6 @@ import { useFonts, WorkSans_700Bold,WorkSans_100Thin, WorkSans_300Light } from '
 import FullButton from '../components/FullButton';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-
-
-const { StatusBarManager } = NativeModules;
-const height = StatusBarManager.HEIGHT;
-
 const OnboardingScreen = ({navigation}) => {
     
     const TestButton = () => {
@@ -63,9 +58,7 @@ const styles = StyleSheet.create({
     
     container: {
         flex:1,
-        marginTop: height,
         marginLeft: 24,
-        zIndex: 0,
     },
     container2: {
         flex:1,
