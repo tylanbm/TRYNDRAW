@@ -28,6 +28,7 @@ import {
 import { auth } from '../firebaseConfig';
 import { ScrollView } from 'react-native-gesture-handler';
 import { async } from '@firebase/util';
+import FullButton from '../components/FullButton';
 
 const db = getFirestore();
 
@@ -218,39 +219,60 @@ const ImageScreen = ({route, navigation}) => {
   return (
       <KeyboardAvoidingView behavior="padding">
           <ScrollView>
-        <View style={styles.imageHeaderContainer}>
-            <Image
-                source={{ uri: authorImageUrl }} style={styles.authorProfilePhoto}
-            />
-            <View>
-                  <Text style={styles.imageNameText}>{imageTitle}</Text>
-                  <Text style={styles.authorNameText}>by {imageAuthorUsername}</Text>
-            </View>
             
-        </View>
-        
-        <View style={styles.imageContainer}>
-            <TouchableOpacity onPress={() => console.log("Touched photo")}>
+            <View style={styles.imageContainer}>
+                <TouchableOpacity onPress={() => console.log("Touched photo")}>
+                    <Image
+                        source={{ uri: imageSourceToLoad }} style={styles.image}
+                    />
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.imageHeaderContainer}>
                 <Image
-                    source={{ uri: imageSourceToLoad }} style={styles.image}
+                    source={{ uri: authorImageUrl }} style={styles.authorProfilePhoto}
                 />
-            </TouchableOpacity>
-        </View>
+                <View>
+                    <Text style={styles.imageNameText}>{imageTitle}</Text>
+                    <Text style={styles.authorNameText}>by {imageAuthorUsername}</Text>
+                </View>
 
-        <View style={styles.imageFooterContainer}>
-              <View style={styles.buttonContainer}>
-                <IonButton name="heart" onPress={() => likeImage()} color="gray" style={styles.buttonContainer} />
-              </View>
-              <View style={styles.buttonContainer}>
-                  <IonButton name="thumbs-down" onPress={() => dislikeImage()} color="gray" />
-              </View>
-              <View style={styles.reportButtonContainer}>
-                  <IonButton name="flag" onPress={() => reportImage()} color="red" />
-              </View>
-        </View>
+                <View style={styles.imageFooterContainer}>
+                <View style={styles.buttonContainer}>
+                    <IonButton name="heart" onPress={() => likeImage()} color="gray" style={styles.buttonContainer} />
+                </View>
+                <View style={styles.buttonContainer}>
+                    <IonButton name="thumbs-down" onPress={() => dislikeImage()} color="gray" />
+                </View>
+                <View style={styles.reportButtonContainer}>
+                    <IonButton name="flag" onPress={() => reportImage()} color="red" />
+                </View>
+            </View>
+                
+            </View>
 
-        
-              <View style={styles.imageFooterContainer}>
+            
+
+        <View style={styles.commentsContainer}>
+            <View style={{marginTop: 12}}/>
+            <Text style={styles.commentsTitle}>0 Comments</Text>
+
+            <View style={{marginTop: 12}}/>
+
+            <FlatList
+                data={getDownloadedComments}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+            />
+
+            <FullButton onPress={() => {}} text={'Load more comments'} backgroundColor={'white'} textColor={'#60B1B6'} borderColor={'#60B1B6'}></FullButton>
+
+            <View style={{marginTop: 16}}/>
+                
+
+            <FullButton onPress={() => {}} text={'Add a comment'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+
+            <View style={styles.imageFooterContainer}>
                   <View behavior="height" style={styles.inputContainer}>
                       <TextInput
                         style={styles.inputText}
@@ -262,19 +284,10 @@ const ImageScreen = ({route, navigation}) => {
                       />
                   </View>
                   <IonButton name="send" onPress={() => {postComment(getComment); clearText(getComment)}} color="cyan" />
+            </View>
+            
         </View>
-
-        <Text>Comments</Text>
-             
-                  <FlatList
-                      data={getDownloadedComments}
-                      renderItem={renderItem}
-                      keyExtractor={item => item.id}
-                  />
-              
-          
-          
-          </ScrollView>
+        </ScrollView>
       </KeyboardAvoidingView>
   );
 };
@@ -282,6 +295,14 @@ const ImageScreen = ({route, navigation}) => {
 export default ImageScreen;
 
 const styles = StyleSheet.create({
+    commentsTitle: {
+        fontSize: 16,
+    },
+    
+    commentsContainer: {
+        flex:1,
+        marginHorizontal: 24,  
+    },
     imageContainer: {
         borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
@@ -296,6 +317,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignContent: 'center',
         alignItems: 'center',
+        borderTopWidth: 0,
+        borderBottomWidth: 0.5,
+        borderBottomColor: "gray",
     },
     authorProfilePhoto: {
         marginLeft: 4,
@@ -320,6 +344,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         flexGrow: 1,
+        marginRight: 24,
     },
     buttonContainer: {
         padding: 4,
@@ -336,7 +361,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         marginTop: 20,
         maxWidth: screenWidth * 0.9,
-        width: screenWidth * 0.9,
+        width: screenWidth * 0.8,
         backgroundColor: 'white',
         borderRadius: 30,
         borderWidth: 2,

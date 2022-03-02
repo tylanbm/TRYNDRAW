@@ -13,4 +13,10 @@ const IonButton = (props) => {
 
 export default IonButton;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container:{
+    backgroundColor: 'white',
+    borderRadius: 300,
+    borderWidth: 0,
+  }
+});
