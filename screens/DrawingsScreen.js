@@ -78,8 +78,8 @@ const DrawingsScreen = ({ navigation }) => {
     const [getImgs, setImgs] = useState([]);
 
     // initial load of gallery screen
-    const getURLs = async(querySnapshot) => {
-        for await (const item of querySnapshot.docs) {
+    const getURLs = async(queryArray) => {
+        for await (const item of queryArray) {
 
             // iterate through all testImages images
             const itemId = item.id;
@@ -143,7 +143,7 @@ const DrawingsScreen = ({ navigation }) => {
             orderBy('timestamp', 'desc'),
             where('imageAuthorUsername', '==', username));
         querySnapshot = await getDocs(q);
-        await getURLs(querySnapshot);
+        await getURLs(querySnapshot.docs);
         loading = false;
     }
 
