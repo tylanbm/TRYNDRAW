@@ -34,9 +34,6 @@ import { collection,
     startAfter }
 from 'firebase/firestore';
 
-// import Ionicons icon library
-import { Ionicons } from '@expo/vector-icons';
-
 // make sure fonts are loaded
 import AppLoading from 'expo-app-loading';
 
@@ -64,13 +61,6 @@ const HomeScreen = ({ navigation }) => {
     const user = auth.currentUser;
     const username = user.displayName;
 
-    // icons
-    const buttonIcon = <Ionicons
-        name='arrow-forward'
-        size={30}
-        color='deepskyblue'
-    />;
-
     // set up variables for image get
     const storage = getStorage();
     const [pic, setPic] = useState('');
@@ -80,9 +70,6 @@ const HomeScreen = ({ navigation }) => {
 
     // length of FlatList of images
     const getLength = getImgs.length;
-
-    // check if the current snapshot is empty
-    const [isEmpty, setIsEmpty] = useState(false);
 
     // get and set profile pic from firebase storage
     useEffect(() => {
@@ -216,7 +203,13 @@ const HomeScreen = ({ navigation }) => {
             )}
                 
             <View style={{marginTop: '20%'}}>
-                <FullButton onPress={() => navigation.navigate('Drawing Selection')} text={'Start drawing'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+                <FullButton
+                    onPress={() => navigation.navigate('Drawing Selection')}
+                    text={'Start drawing'}
+                    backgroundColor={'#60B1B6'}
+                    textColor={'white'}
+                    borderColor={'transparent'}>
+                </FullButton>
             </View>
             
             
@@ -232,17 +225,17 @@ const styles = StyleSheet.create({
     // entire screen
     container: {
         flex:1,
-        marginHorizontal: 20,
+        marginHorizontal: '5%',
     },
 
     // profile image
     profile: {
-        width: 80,
+        width: '20%',
         aspectRatio: 1,
         borderRadius: 100,
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0.25)',
-        marginTop: 25,
+        marginTop: '5%',
         alignItems: 'center',
     },
 
@@ -251,15 +244,15 @@ const styles = StyleSheet.create({
         fontFamily: 'WorkSans_500Medium',
         textAlign: 'center',
         fontSize: 22,
-        marginBottom: 20,
+        marginBottom: '10%',
         color: 'rgba(43,43,40,1)',
     },
 
     // view style for the subtitle
     subView: {
         flexDirection: 'row',
-        marginTop: 16,
-        marginBottom: 8,
+        marginTop: '5%',
+        marginBottom: '4%',
     },
 
     // 'My Drawings'
@@ -294,7 +287,6 @@ const styles = StyleSheet.create({
     },
     // 'Start Drawing!' button
     button: {
-        marginTop: 90,
         borderColor: 'deepskyblue',
         borderRadius: 20,
         borderWidth: 2,
@@ -340,7 +332,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        height: '30%',
+        height: '35%',
         justifyContent: 'center',
         backgroundColor: 'rgba(149,175,178,0.8)',
         borderRadius: 5,
@@ -352,5 +344,7 @@ const styles = StyleSheet.create({
         fontFamily: 'WorkSans_500Medium',
         textAlign: 'center',
         color: 'white',
+        marginLeft: '3%',
+        marginRight: '3%',
     },
 });

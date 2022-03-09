@@ -84,11 +84,14 @@ const ChallengesScreen = ({ navigation }) => {
     return (
         <TouchableOpacity
             onPress={() => setSelectedId(item.id)}
-            style={[styles.challenge, {borderColor: borderColor}, {flexDirection:"row"}]}
+            style={[styles.challenge,
+              {borderColor: borderColor,
+              flexDirection: 'row'}]}
         >
           <Text>{icon}</Text>
           <Text style={[styles.challengeText,
-            {color: textColor}, {fontWeight: textWeight}]}>{item.slug}</Text>
+            {color: textColor,
+            fontWeight: textWeight}]}>{item.slug}</Text>
         </TouchableOpacity>
     );
   };
@@ -101,9 +104,7 @@ const ChallengesScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{marginTop: 90}}/>
       <Text style={styles.title}>What do you want to draw?</Text>
-      <View style={{marginTop: 50}}/>
 
       <SafeAreaView>
         <FlatList
@@ -128,20 +129,25 @@ const ChallengesScreen = ({ navigation }) => {
           >
         </TouchableOpacity>
       </View>
-      
-      
-      <View style={{marginTop: 30}}/>
-      
-      <View style={{marginHorizontal: 32}}>
-        <FullButton onPress={() => reroll()} text={'Reroll selection'} backgroundColor={'white'} textColor={'#60B1B6'} borderColor={'#60B1B6'}></FullButton>
+
+      <View style={styles.reroll}>
+        <FullButton
+          onPress={() => reroll()}
+          text={'Reroll selection'}
+          backgroundColor={'white'}
+          textColor={'#60B1B6'}
+          borderColor={'#60B1B6'}>
+        </FullButton>
       </View>
 
-      <View style={{marginTop: 80}}/>
-
-      
-        <FullButton onPress={() => {
-            navigation.navigate('Canvas', data[selectedId].slug);
-          }} text={'Start drawing'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}>
+      <View style={{marginTop: '20%'}}/>
+        <FullButton
+          onPress={() => {
+            navigation.navigate('Canvas', data[selectedId].slug)}}
+          text={'Start drawing'}
+          backgroundColor={'#60B1B6'}
+          textColor={'white'}
+          borderColor={'transparent'}>
         </FullButton>
       
       
@@ -157,49 +163,36 @@ const styles = StyleSheet.create({
   
   // entire page
   container: {
-    flex:1,
+    flex: 1,
     marginHorizontal: 24,
   },
  
   // page title
   title: {
+    marginTop: '10%',
+    marginBottom: '10%',
     fontSize: 40,
-  //  fontFamily: 'WorkSans_700Bold',
     textAlign: 'center',
   },
 
   // individual challenge selection buttons
   challenge: {
-    marginBottom: 8,
+    marginBottom: '2%',
     borderRadius: 5,
     borderWidth: 1,
-    padding: 16,
-    alignItems:"center"
+    padding: '4%',
+    alignItems: 'center',
   },
 
   // challenge selection button text
   challengeText: {
     fontSize: 20,
-    marginLeft: 8,
- //   fontFamily: 'WorkSans_700Bold',
+    marginLeft: '2%',
   },
 
-  // // 'Back to Home' button
-  // home: {
-  //   marginTop: 20,
-  //   borderColor: 'red',
-  //   borderRadius: 25,
-  //   borderWidth: 2,
-  //   paddingLeft: padExit,
-  //   paddingRight: padExit,
-  //   paddingTop: padExit,
-  //   paddingBottom: padExit,
-  // },
-
-  // // 'Back to Home'
-  // homeText: {
-  //   fontSize: 20,
-  //   fontFamily: 'WorkSans_700Bold',
-  //   color: 'red',
-  // },
+  // reroll button
+  reroll: {
+    marginTop: '7%',
+    marginHorizontal: '9%',
+  }
 });

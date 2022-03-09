@@ -122,7 +122,7 @@ const GalleryScreen = ({ navigation }) => {
 
     // check if the current snapshot is empty
     const [isEmpty, setIsEmpty] = useState(false);
-// querySnapshot.forEach(async(item) => {
+
     // initial load of gallery screen
     const getURLs = async(querySnapshot) => {
          querySnapshot.forEach(async(item) => {
@@ -340,9 +340,6 @@ const GalleryScreen = ({ navigation }) => {
 export default GalleryScreen;
 
 
-// global padding
-let padChal = 10;
-
 const styles = StyleSheet.create({
 
     // entire page
@@ -388,17 +385,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
 
-    // refresh button
-    refresh: {
-        marginTop: 20,
-        marginBottom: 10,
-        borderColor: 'deepskyblue',
-        borderRadius: 20,
-        borderWidth: 2,
-        paddingLeft: padChal,
-        paddingRight: padChal,
-    },
-
     // footer of FlatList
     footer: {
         fontSize: 20,
@@ -424,5 +410,7 @@ const styles = StyleSheet.create({
         fontFamily: 'WorkSans_500Medium',
         textAlign: 'center',
         color: 'white',
+        marginLeft: '3%',
+        marginRight: '3%',
     },
 });

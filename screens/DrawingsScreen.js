@@ -12,7 +12,6 @@ import { StyleSheet,
     FlatList,
     SafeAreaView,
     TouchableOpacity,
-    RefreshControl,
 } from 'react-native';
 
 // import Firebase storage
@@ -208,15 +207,11 @@ const DrawingsScreen = ({ navigation }) => {
 export default DrawingsScreen;
 
 
-// global padding
-let padChal = 10;
-
 const styles = StyleSheet.create({
 
     // entire page
     container: {
         flex: 1,
-        marginTop: 20,
     },
 
     // title for Database
@@ -263,8 +258,8 @@ const styles = StyleSheet.create({
         fontFamily: 'WorkSans_500Medium',
         textAlign: 'left',
         color: 'white',
-        paddingLeft: 10,
-        paddingTop: 5,
+        paddingLeft: '2%',
+        paddingTop: '1%',
     },
 
     imgDelete: {
@@ -272,9 +267,9 @@ const styles = StyleSheet.create({
     },
 
     deleteIcon: {
-        paddingRight: 5,
-        paddingTop: 5,
         textAlign: 'right',
         justifyContent: 'center',
+        paddingRight: '1%',
+        paddingTop: '1%',
     },
 });

@@ -1,5 +1,7 @@
 // import React, initialized variable state, run async functions
-import React, { useState, useEffect, } from 'react';
+import React,
+    { useState,
+    useEffect, } from 'react';
 
 // import styles, text, view, buttons
 import { StyleSheet,
@@ -19,10 +21,10 @@ import { signOut } from 'firebase/auth';
 import { auth } from "../firebaseConfig";
 
 // import firebase storage
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-
-// import icon libraries
-import { Ionicons } from '@expo/vector-icons';
+import { getStorage,
+    ref,
+    getDownloadURL }
+from 'firebase/storage';
 
 // make sure fonts are loaded
 import AppLoading from 'expo-app-loading';
@@ -39,13 +41,6 @@ const SettingsScreen = ({ navigation }) => {
     // authorization
     const user = auth.currentUser;
     const username = user.displayName;
-
-    // icons
-    const signoutIcon = <Ionicons name='exit-outline' size={30} color='deepskyblue' />;
-    const editIcon = <Ionicons name='pencil' size={30} color='deepskyblue' />;
-    const settingsIcon = <Ionicons name='settings' size={30} color='deepskyblue' />;
-    const infoIcon = <Ionicons name='document-text' size={30} color='deepskyblue' />;
-    const reportIcon = <Ionicons name='flag' size={30} color='deepskyblue' />;
 
     // set up variables for image get
     const storage = getStorage();
@@ -72,34 +67,6 @@ const SettingsScreen = ({ navigation }) => {
         });
     }
 
-    const menu = [
-        {
-            id: 0,
-            text: 'Sign Out',
-            icon: signoutIcon,
-        },
-        {
-            id: 1,
-            text: 'Edit Avatar',
-            icon: editIcon,
-        },
-        {
-            id: 2,
-            text: 'Settings',
-            icon: settingsIcon,
-        },
-        {
-            id: 3,
-            text: 'App Info',
-            icon: infoIcon,
-        },
-        {
-            id: 4,
-            text: 'Report a Bug',
-            icon: reportIcon,
-        },
-    ];
-
 
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
@@ -120,13 +87,14 @@ const SettingsScreen = ({ navigation }) => {
 
             <View style={styles.container}>
                 <FullButton onPress={() => navigation.navigate('CanvasUserImageScreen')} text={'Edit profile picture'} backgroundColor={'white'} textColor={'#60B1B6'} borderColor={'#60B1B6'}></FullButton>
-                <View style={{marginTop: 16}}/>
-
-                <FullButton onPress={() => console.log('App Info')} text={'App info'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
-                <View style={{marginTop: 36}}/>
                 
-                <FullButton onPress={() => signOutUser()} text={'Sign out'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
-            
+                <View style={{marginTop: '1%'}}>
+                    <FullButton onPress={() => console.log('App Info')} text={'App info'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+                </View>
+
+                <View style={{marginTop: '10%'}}>
+                    <FullButton onPress={() => signOutUser()} text={'Sign out'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+                </View>
             </View>
             
 
@@ -140,17 +108,16 @@ export default SettingsScreen;
 const styles = StyleSheet.create({
 
     container: {
-        flex:1,
-        marginHorizontal: 24,
+        flex: 1,
+        marginHorizontal: '5%',
     },
 
-    // 'Signed in as [username]'
+    // 'Signed in as'
     title: {
         fontSize: 24,
-     //   fontFamily: 'WorkSans_700Bold',
         textAlign: 'center',
-        marginBottom: 12,
-        marginTop: 12,
+        marginTop: '2%',
+        marginBottom: '2%',
     },
 
 
@@ -164,7 +131,7 @@ const styles = StyleSheet.create({
 
     // light/dark mode
     separator: {
-        marginVertical: 30,
+        marginVertical: '10%',
         height: 1,
         width: '80%',
     },
