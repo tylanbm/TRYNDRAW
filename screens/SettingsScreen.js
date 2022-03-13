@@ -88,7 +88,7 @@ const SettingsScreen = ({ navigation }) => {
             <View style={styles.container}>
                 <FullButton onPress={() => navigation.navigate('CanvasUserImageScreen')} text={'Edit profile picture'} backgroundColor={'white'} textColor={'#60B1B6'} borderColor={'#60B1B6'}></FullButton>
                 
-                <View style={{marginTop: '1%'}}>
+                <View style={{marginTop: '0%'}}>
                     <FullButton onPress={() => console.log('App Info')} text={'App info'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
                 </View>
 

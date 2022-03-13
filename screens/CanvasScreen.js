@@ -194,18 +194,22 @@ const CanvasScreen = ({navigation, route}) => {
                 const response = await fetch(imageUri);
                 //Generate blob from image URI
                 const blob = await response.blob();
+
+                //Upload image blob to firebase storage
+                await uploadBytes(storageRef, blob).then((snapshot) => {
+                    console.log('Uploaded a blob or file!');
+                });
+
                 //Create a new file in database that will represent image name
-                await setDoc(newImageRef, { 
+                await setDoc(newImageRef, {
                     imageAuthorUID: auth.currentUser.uid,
                     imageAuthorUsername: auth.currentUser.displayName,
                     imageTitle: slug,
                     timestamp: serverTimestamp(),
                 });
+                //.then(() => console.log('Document set'));
 
-                //Upload image blob to firebase storage
-                uploadBytes(storageRef, blob).then((snapshot) => {
-                    console.log('Uploaded a blob or file!');
-                });
+                
             }
 
             uploadImage(uri);

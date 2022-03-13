@@ -132,10 +132,11 @@ const GalleryScreen = ({ navigation }) => {
             const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
             
             // get data for img
+            let itemData = item.data();
             let img = {
                 id: itemId,
-                name: item.data().imageTitle,
-                time: item.data().timestamp,
+                name: itemData.imageTitle,
+                time: itemData.timestamp,
                 url: await getDownloadURL(itemRef),
             }
 

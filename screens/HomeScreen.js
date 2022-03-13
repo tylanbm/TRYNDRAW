@@ -31,7 +31,7 @@ import { collection,
     orderBy,
     where,
     limit,
-    startAfter }
+    onSnapshot, }
 from 'firebase/firestore';
 
 // make sure fonts are loaded
@@ -49,13 +49,8 @@ const db = getFirestore();
 const storage = getStorage();
 const docsRef = collection(db, "uniqueImageNames");
 
-// global variables
-let last = 0;
-let dragging = false;
-let loading = false;
 
 const HomeScreen = ({ navigation }) => {
-
 
     // user auth
     const user = auth.currentUser;
@@ -82,23 +77,24 @@ const HomeScreen = ({ navigation }) => {
 
     // initial load of My Drawings
     const getURLs = async(querySnapshot) => {
-        querySnapshot.forEach(async(item) => {
+        for await (const item of querySnapshot.docs) {
 
             // iterate through all testImages images
             const itemId = item.id;
             const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
             
             // get data for img
-            let img = {
+            const itemData = item.data();
+            const img = {
                 id: itemId,
-                name: item.data().imageTitle,
-                time: item.data().timestamp,
+                name: itemData.imageTitle,
+                time: itemData.timestamp,
                 url: await getDownloadURL(itemRef),
             }
 
             // append all images to end of list
             setImgs(getImgs => [...getImgs, img]);
-        })
+        }
     }
 
     // load imgs when gallery screen visited
@@ -112,20 +108,26 @@ const HomeScreen = ({ navigation }) => {
 
     // initial load
     useEffect(() => {
-        getDownload();
-    }, []);
-
-    // await async calls for getting img urls
-    const getDownload = async() => {
-        loading = true;
-        let q = query(docsRef,
+        // const q = query(docsRef,
+        //     orderBy('timestamp', 'desc'),
+        //     where('imageAuthorUsername', '==', username),
+        //     limit(2));
+        
+        const updateQuery = onSnapshot(query(docsRef,
             orderBy('timestamp', 'desc'),
             where('imageAuthorUsername', '==', username),
-            limit(2));
-        let querySnapshot = await getDocs(q);
-        last = await getURLs(querySnapshot);
-        loading = false;
-    }
+            limit(2)),
+            { includeMetadataChanges: true },
+            async(querySnapshot) => {
+            const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
+            if (source == 'Server') {
+                console.log(source + ' Update ' + new Date().getSeconds());
+                setImgs([]);
+                await getURLs(querySnapshot);
+            }
+            
+        });
+    }, []);
 
     const renderImg = ({ item }) => {
         const itemUrl = item.url;
