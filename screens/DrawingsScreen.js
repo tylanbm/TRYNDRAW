@@ -12,7 +12,6 @@ import { StyleSheet,
     FlatList,
     SafeAreaView,
     TouchableOpacity,
-    RefreshControl,
 } from 'react-native';
 
 // import Firebase storage
@@ -62,6 +61,7 @@ const deleteIcon = <Ionicons
 />;
 
 
+
 // global variables (set once per app reload)
 const docsRef = collection(db, 'uniqueImageNames');
 let q = query(docsRef, limit(1));
@@ -79,18 +79,19 @@ const DrawingsScreen = ({ navigation }) => {
     const [getImgs, setImgs] = useState([]);
 
     // initial load of gallery screen
-    const getURLs = async(querySnapshot) => {
-        for await (const item of querySnapshot.docs) {
+    const getURLs = async(queryArray) => {
+        for (const item of queryArray) {
 
             // iterate through all testImages images
             const itemId = item.id;
             const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
             
             // get data for img
+            let itemData = item.data();
             let img = {
                 id: itemId,
-                name: item.data().imageTitle,
-                time: item.data().timestamp,
+                name: itemData.imageTitle,
+                time: itemData.timestamp,
                 url: await getDownloadURL(itemRef),
             }
 
@@ -108,24 +109,27 @@ const DrawingsScreen = ({ navigation }) => {
         });
     }
 
+
+
     // delete an image from the FlatList
-    const onDeleteObject = async(item, itemId) => {
+    const onDeleteObject = async(itemId) => {
         const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
+        const docRef = doc(db, 'uniqueImageNames', itemId);
 
         // delete image from FlatList
-        let temp_imgs = [...getImgs];
-        temp_imgs.splice(temp_imgs.indexOf(item), 1);
-        setImgs(temp_imgs);
+        const tempImgs = [...getImgs];
+        tempImgs.splice(itemId, 1);
+        setImgs(tempImgs);
 
         // delete image data from database
-        await deleteDoc(doc(db, 'uniqueImageNames', itemId.toString())).then(() => {
+        await deleteDoc(docRef).then(async() => {
             console.log('Deleted doc ' + itemId);
         }).catch((error) => {
             console.log('Doc ' + itemId + ' error: ' + error.code);
         });
 
         // delete image from storage
-        deleteObject(itemRef).then(() => {
+        await deleteObject(itemRef).then(() => {
             console.log('Deleted image ' + itemId);
         }).catch((error) => {
             console.log('Image ' + itemId + ' error: ' + error.code);
@@ -144,7 +148,7 @@ const DrawingsScreen = ({ navigation }) => {
             orderBy('timestamp', 'desc'),
             where('imageAuthorUsername', '==', username));
         querySnapshot = await getDocs(q);
-        await getURLs(querySnapshot);
+        await getURLs(querySnapshot.docs);
         loading = false;
     }
 
@@ -169,7 +173,7 @@ const DrawingsScreen = ({ navigation }) => {
                             numberOfLines={2}
                         >{item.name}</Text>
                         <TouchableOpacity
-                            onPress={async() => await onDeleteObject(item, itemId)}
+                            onPress={async() => await onDeleteObject(itemId)}
                             style={styles.imgButton}
                         >
                             <Text
@@ -208,15 +212,11 @@ const DrawingsScreen = ({ navigation }) => {
 export default DrawingsScreen;
 
 
-// global padding
-let padChal = 10;
-
 const styles = StyleSheet.create({
 
     // entire page
     container: {
         flex: 1,
-        marginTop: 20,
     },
 
     // title for Database
@@ -263,8 +263,8 @@ const styles = StyleSheet.create({
         fontFamily: 'WorkSans_500Medium',
         textAlign: 'left',
         color: 'white',
-        paddingLeft: 10,
-        paddingTop: 5,
+        paddingLeft: '2%',
+        paddingTop: '1%',
     },
 
     imgDelete: {
@@ -272,9 +272,9 @@ const styles = StyleSheet.create({
     },
 
     deleteIcon: {
-        paddingRight: 5,
-        paddingTop: 5,
         textAlign: 'right',
         justifyContent: 'center',
+        paddingRight: '1%',
+        paddingTop: '1%',
     },
 });
