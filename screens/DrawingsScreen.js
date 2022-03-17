@@ -33,9 +33,6 @@ import { collection,
     deleteDoc,
 } from 'firebase/firestore';
 
-// import Ionicons icon library
-import { Ionicons } from '@expo/vector-icons';
-
 // import account authentication
 import { auth } from "../firebaseConfig";
 
@@ -48,19 +45,14 @@ import { useFonts,
     WorkSans_500Medium,
 } from '@expo-google-fonts/work-sans';
 
+// button and image styles
+import IonButton from '../components/IonButton';
+import ImageButton from '../components/ImageButton';
+
 
 // get Database and Storage
 const db = getFirestore();
 const storage = getStorage();
-
-// icons
-const deleteIcon = <Ionicons
-    name='trash-bin'
-    size={30}
-    color='rgba(255,156,156,1)'
-/>;
-
-
 
 // global variables (set once per app reload)
 const docsRef = collection(db, 'uniqueImageNames');
@@ -122,18 +114,12 @@ const DrawingsScreen = ({ navigation }) => {
         setImgs(tempImgs);
 
         // delete image data from database
-        await deleteDoc(docRef).then(async() => {
-            console.log('Deleted doc ' + itemId);
-        }).catch((error) => {
-            console.log('Doc ' + itemId + ' error: ' + error.code);
-        });
+        await deleteDoc(docRef);
+        console.log('Deleted doc ' + itemId);
 
         // delete image from storage
-        await deleteObject(itemRef).then(() => {
-            console.log('Deleted image ' + itemId);
-        }).catch((error) => {
-            console.log('Image ' + itemId + ' error: ' + error.code);
-        });
+        await deleteObject(itemRef);
+        console.log('Deleted image ' + itemId);
     }
 
     // initial load
@@ -153,44 +139,32 @@ const DrawingsScreen = ({ navigation }) => {
     }
 
     const renderImg = ({ item }) => {
-        const itemUrl = item.url;
         const itemId = item.id;
 
         return (
-            <TouchableOpacity
-                onPress={() => openPhoto(itemUrl, itemId)}
-                style={styles.touchable}
-            >
-                <ImageBackground
-                    source={{uri: itemUrl}}
-                    style={styles.imgDimensions}
-                    imageStyle={styles.imgStyle}
-                    key={itemId}
-                >
-                    <View style={styles.textOverlay}>
-                        <Text
-                            style={styles.imgText}
-                            numberOfLines={2}
-                        >{item.name}</Text>
-                        <TouchableOpacity
-                            onPress={async() => await onDeleteObject(itemId)}
-                            style={styles.imgButton}
-                        >
-                            <Text
-                                style={styles.deleteIcon}
-                                numberOfLines={1}
-                            >{deleteIcon}</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ImageBackground>
-            </TouchableOpacity>
+            <ImageButton
+                navigation={navigation}
+                url={item.url}
+                id={itemId}
+                name={item.name}
+                touchable={styles.touchable}
+                overlay={styles.overlay}
+                imgText={styles.imgText}
+                icon={<IonButton
+                    name='trash-bin'
+                    onPress={async() => await onDeleteObject(itemId)}
+                    color='rgba(255,156,156,1)'
+                    size={40}
+                    style={styles.icon}
+                    />}
+              />
         );
     };
 
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
-        WorkSans_700Bold,
-        WorkSans_500Medium,
+        'Bold': WorkSans_700Bold,
+        'Medium': WorkSans_500Medium,
     });
     if (!fontsLoaded) return <AppLoading />;
 
@@ -231,21 +205,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
-    // dimensions of images in FlatList
-    imgDimensions: {
-        width: '100%',
-        aspectRatio: 1,
-    },
-
-    // images in FlatList
-    imgStyle: {
-        borderRadius: 5,
-        borderColor: 'grey',
-        borderWidth: 1,
-    },
-
     // view style of text overlayed on img
-    textOverlay: {
+    overlay: {
         flexDirection: 'row',
         position: 'absolute',
         bottom: 0,
@@ -260,21 +221,15 @@ const styles = StyleSheet.create({
     imgText: {
         flex: 2,
         fontSize: 22,
-        fontFamily: 'WorkSans_500Medium',
+        fontFamily: 'Medium',
         textAlign: 'left',
         color: 'white',
         paddingLeft: '2%',
         paddingTop: '1%',
     },
 
-    imgDelete: {
-        flex: 1,
-    },
-
-    deleteIcon: {
-        textAlign: 'right',
-        justifyContent: 'center',
-        paddingRight: '1%',
-        paddingTop: '1%',
-    },
+    // delete icon
+    icon: {
+         marginRight: '5%',
+     },
 });

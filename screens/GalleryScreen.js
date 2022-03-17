@@ -34,17 +34,18 @@ import { collection,
     startAt,
     startAfter } from 'firebase/firestore';
 
-// make sure fonts are loaded
-import AppLoading from 'expo-app-loading';
-
 // Google Fonts
 import { useFonts,
     WorkSans_700Bold,
     WorkSans_500Medium,
 } from '@expo-google-fonts/work-sans';
 
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
+
 // standardized button style
 import FullButton from '../components/FullButton';
+import ImageButton from '../components/ImageButton';
 
 
 const db = getFirestore();
@@ -244,28 +245,17 @@ const GalleryScreen = ({ navigation }) => {
     };
 
     const renderImg = ({ item }) => {
-        const itemUrl = item.url;
-        const id = item.id;
-
         return (
-            <TouchableOpacity
-                onPress={() => openPhoto(itemUrl,id)}
-                style={styles.touchable}
-            >
-                <ImageBackground
-                    source={{uri: item.url}}
-                    style={styles.imgDimensions}
-                    imageStyle={styles.imgStyle}
-                    key={id}
-                >
-                    <View style={styles.textOverlay}>
-                        <Text
-                            style={styles.imgText}
-                            numberOfLines={2}
-                        >{item.name}</Text>
-                    </View>
-                </ImageBackground>
-            </TouchableOpacity>
+            <ImageButton
+                navigation={navigation}
+                url={item.url}
+                id={item.id}
+                name={item.name}
+                touchable={styles.touchable}
+                overlay={styles.overlay}
+                imgText={styles.imgText}
+                icon={null}
+            />
         );
     };
 
@@ -286,8 +276,8 @@ const GalleryScreen = ({ navigation }) => {
 
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
-        WorkSans_700Bold,
-        WorkSans_500Medium,
+        'Bold': WorkSans_700Bold,
+        'Medium': WorkSans_500Medium,
     });
     if (!fontsLoaded) return <AppLoading />;
 
@@ -366,6 +356,13 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
 
+    // footer of FlatList
+    footer: {
+        fontSize: 20,
+        fontFamily: 'Medium',
+        textAlign: 'center',
+    },
+
     // image button
     touchable: {
         width: '50%',
@@ -373,33 +370,13 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
-    // dimensions of images in FlatList
-    imgDimensions: {
-        width: '100%',
-        aspectRatio: 1,
-    },
-
-    // images in FlatList
-    imgStyle: {
-        borderRadius: 5,
-        borderColor: 'grey',
-        borderWidth: 1,
-    },
-
-    // footer of FlatList
-    footer: {
-        fontSize: 20,
-        fontFamily: 'WorkSans_500Medium',
-        textAlign: 'center',
-    },
-
     // view style of text overlayed on img
-    textOverlay: {
+    overlay: {
+        height: '28%',
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        height: '28%',
         justifyContent: 'center',
         backgroundColor: 'rgba(149,175,178,0.8)',
         borderRadius: 5,
@@ -408,7 +385,7 @@ const styles = StyleSheet.create({
     // text style of text overlayed on img
     imgText: {
         fontSize: 22,
-        fontFamily: 'WorkSans_500Medium',
+        fontFamily: 'Medium',
         textAlign: 'center',
         color: 'white',
         marginLeft: '3%',

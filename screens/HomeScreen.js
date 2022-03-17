@@ -9,7 +9,8 @@ import { StyleSheet,
     Image,
     ImageBackground,
     FlatList,
-    TouchableOpacity } from 'react-native';
+    TouchableOpacity
+} from 'react-native';
 
 // import account authentication
 import { auth } from "../firebaseConfig";
@@ -17,8 +18,8 @@ import { auth } from "../firebaseConfig";
 // import firebase storage
 import { getStorage,
     ref,
-    getDownloadURL }
-from 'firebase/storage';
+    getDownloadURL
+} from 'firebase/storage';
 
 // import Firestore docs
 import { collection,
@@ -31,18 +32,22 @@ import { collection,
     orderBy,
     where,
     limit,
-    onSnapshot, }
-from 'firebase/firestore';
-
-// make sure fonts are loaded
-import AppLoading from 'expo-app-loading';
+    onSnapshot,
+} from 'firebase/firestore';
 
 // Google Fonts
 import { useFonts,
     WorkSans_700Bold,
     WorkSans_500Medium,
 } from '@expo-google-fonts/work-sans';
+
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
+
+// button and image styles
 import FullButton from '../components/FullButton';
+import ImageButton from '../components/ImageButton';
+
 
 // get Firebase database and storage
 const db = getFirestore();
@@ -56,8 +61,7 @@ const HomeScreen = ({ navigation }) => {
     const user = auth.currentUser;
     const username = user.displayName;
 
-    // set up variables for image get
-    const storage = getStorage();
+    // set up image get
     const [pic, setPic] = useState('');
 
     // array for FlatList of images
@@ -97,15 +101,6 @@ const HomeScreen = ({ navigation }) => {
         }
     }
 
-    // load imgs when gallery screen visited
-    const openPhoto = (imageSource, imageId) => {
-        console.log("Yay!" + imageSource);
-        navigation.navigate('Image', {
-            imageSourceToLoad: imageSource.toString(),
-            imageId: imageId.toString(),
-        });
-    }
-
     // initial load
     useEffect(() => {
         // const q = query(docsRef,
@@ -119,48 +114,37 @@ const HomeScreen = ({ navigation }) => {
             limit(2)),
             { includeMetadataChanges: true },
             async(querySnapshot) => {
-            const source = querySnapshot.metadata.hasPendingWrites ? "Local" : "Server";
+            const source = querySnapshot.metadata.hasPendingWrites ? 'Local' : 'Server';
             if (source == 'Server') {
                 console.log(source + ' Update ' + new Date().getSeconds());
                 setImgs([]);
                 await getURLs(querySnapshot);
             }
-            
         });
     }, []);
 
     const renderImg = ({ item }) => {
-        const itemUrl = item.url;
-        const itemId = item.id;
-
         return (
-            <TouchableOpacity
-                onPress={() => openPhoto(itemUrl, itemId)}
-                style={styles.touchable}
-            >
-                <ImageBackground
-                    source={{uri: itemUrl}}
-                    style={styles.imgDimensions}
-                    imageStyle={styles.imgStyle}
-                    key={itemId}
-                >
-                    <View style={styles.textOverlay}>
-                        <Text
-                            style={styles.imgText}
-                            numberOfLines={2}
-                            >{item.name}</Text>
-                    </View>
-                </ImageBackground>
-            </TouchableOpacity>
+            <ImageButton
+                navigation={navigation}
+                url={item.url}
+                id={item.id}
+                name={item.name}
+                touchable={styles.touchable}
+                overlay={styles.overlay}
+                imgText={styles.imgText}
+                icon={null}
+            />
         );
     };
 
     // check if imported Google Fonts were loaded
     let [fontsLoaded] = useFonts({
-       WorkSans_700Bold,
-       WorkSans_500Medium,
+        'Bold': WorkSans_700Bold,
+        'Medium': WorkSans_500Medium,
     });
     if (!fontsLoaded) return <AppLoading />;
+
 
     return (
         <View style={styles.container}>
@@ -186,7 +170,7 @@ const HomeScreen = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            {getLength == 0 && (
+            {getLength==0 && (
                 <View style={styles.flatPlace}>
                     <Text style={styles.textPlace}>
                         Loading your drawings...
@@ -194,7 +178,7 @@ const HomeScreen = ({ navigation }) => {
                 </View>
             )}
 
-            {getLength > 0 && (
+            {getLength>0 && (
                 <SafeAreaView style={styles.flatView}>
                     <FlatList
                         data={getImgs}
@@ -226,7 +210,7 @@ const styles = StyleSheet.create({
 
     // entire screen
     container: {
-        flex:1,
+        flex: 1,
         marginHorizontal: '5%',
     },
 
@@ -243,7 +227,7 @@ const styles = StyleSheet.create({
 
     // 'Welcome back'
     title: {
-        fontFamily: 'WorkSans_500Medium',
+        fontFamily: 'Medium',
         textAlign: 'center',
         fontSize: 22,
         marginBottom: '10%',
@@ -261,7 +245,7 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 32,
         flex: 2,
-        fontFamily: 'WorkSans_500Medium',
+        fontFamily: 'Medium',
         textAlign: 'left',
         color: 'rgba(43,43,40,1)',
     },
@@ -278,7 +262,7 @@ const styles = StyleSheet.create({
     viewAll: {
         fontSize: 20,
         color: 'rgba(96,177,182,1)',
-        fontFamily: 'WorkSans_500Medium',
+        fontFamily: 'Medium',
         textAlign: 'right',
     },
 
@@ -297,7 +281,7 @@ const styles = StyleSheet.create({
     // FlatList placeholder text
     textPlace: {
         marginTop: '20%',
-        fontFamily: 'WorkSans_500Medium',
+        fontFamily: 'Medium',
         fontSize: 25,
         textAlign: 'center',
         justifyContent: 'center',
@@ -315,26 +299,13 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
-    // dimensions of images in FlatList
-    imgDimensions: {
-        width: '100%',
-        aspectRatio: 1,
-    },
-
-    // images in FlatList
-    imgStyle: {
-        borderRadius: 5,
-        borderColor: 'grey',
-        borderWidth: 1,
-    },
-
     // view style of text overlayed on img
-    textOverlay: {
+    overlay: {
+        height: '35%',
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        height: '35%',
         justifyContent: 'center',
         backgroundColor: 'rgba(149,175,178,0.8)',
         borderRadius: 5,
@@ -343,7 +314,7 @@ const styles = StyleSheet.create({
     // text style of text overlayed on img
     imgText: {
         fontSize: 22,
-        fontFamily: 'WorkSans_500Medium',
+        fontFamily: 'Medium',
         textAlign: 'center',
         color: 'white',
         marginLeft: '3%',

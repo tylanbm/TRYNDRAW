@@ -6,7 +6,7 @@ const IonButton = (props) => {
   return (
       
       <TouchableOpacity onPress={props.onPress} style={props.style}>
-          <Ionicons name={props.name} size={24} color={props.color} />
+          <Ionicons name={props.name} size={props.size} color={props.color} />
       </TouchableOpacity>
   );
 };

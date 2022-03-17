@@ -24,7 +24,9 @@ import AppLoading from 'expo-app-loading';
 // Google Fonts
 import { useFonts,
   WorkSans_700Bold,
+  WorkSans_500Medium,
 } from '@expo-google-fonts/work-sans';
+
 import FullButton from '../components/FullButton';
 
 
@@ -98,7 +100,8 @@ const ChallengesScreen = ({ navigation }) => {
 
   // check if imported Google Fonts were loaded
   let [fontsLoaded] = useFonts({
-    WorkSans_700Bold,
+    'Bold': WorkSans_700Bold,
+    'Medium': WorkSans_500Medium,
   });
   if (!fontsLoaded) return <AppLoading />;
 

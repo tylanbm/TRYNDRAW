@@ -125,6 +125,7 @@ function App() {
     }
   });
 
+  
  //If user is signed in then render the app with tabs, otherwise send user to log in screen
   return (
     <SafeAreaProvider style={styles.heightOffset}>
@@ -135,11 +136,10 @@ function App() {
               <Stack.Screen name="HomeTabs" component={AppWithTabs} options={{headerShown: false}}/>
               <Stack.Screen name="Canvas" component={CanvasScreen} options={{ headerShown: false }} />
               <Stack.Screen name='Drawing Selection' component={ChallengesScreen} />
-              <Stack.Screen name='Image' component={ImageScreen} options={{ headerShown: true }} />
+              <Stack.Screen name='Image' component={ImageScreen} options={{ headerShown: false }} />
               <Stack.Screen
                 name='My Drawings'
                 component={DrawingsScreen}
-                options={{ headerShown: true }}
               />
               <Stack.Screen name="CanvasUserImageScreen" component={CanvasUserImageScreen} options={{ headerShown: false }} />
             </>
