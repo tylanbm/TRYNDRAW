@@ -253,11 +253,20 @@ const ImageScreen = ({route, navigation}) => {
                         source={{ uri: imageSourceToLoad }}
                         style={styles.imageStyle}
                     >
-                        <View style={styles.icon}>
+                        <View style={styles.heart}>
                             <IonButton
                                 name='heart'
                                 onPress={() => likeImage()}
-                                color='rgba(102,128,130,1)'
+                                color='#979797'
+                                size={24}
+                                style={styles.buttonStyle}
+                            />
+                        </View>
+                        <View style={styles.arrow}>
+                            <IonButton
+                                name='arrow-back'
+                                onPress={() => navigation.navigate('Home')}
+                                color='#979797'
                                 size={24}
                                 style={styles.buttonStyle}
                             />
@@ -288,7 +297,7 @@ const ImageScreen = ({route, navigation}) => {
             </View>
 
             <View style={styles.commentsContainer}>
-                <View style={{marginTop: 12, marginBottom: 12,}}>
+                <View style={styles.commentsTitle}>
                     <Text style={styles.commentsCount}>0 Comments</Text>
                 </View>
 
@@ -370,10 +379,19 @@ const styles = StyleSheet.create({
         height: screenWidth,
     },
 
-    // icon backgrounds on the image
-    icon: {
+    // heart icon background
+    heart: {
         position: 'absolute',
         bottom: 5,
+        left: 5,
+        backgroundColor: 'white',
+        borderRadius: 50,
+    },
+
+    // arrow icon background
+    arrow: {
+        position: 'absolute',
+        top: 5,
         left: 5,
         backgroundColor: 'white',
         borderRadius: 50,
@@ -417,6 +435,12 @@ const styles = StyleSheet.create({
     commentsContainer: {
         flex: 1,
         marginHorizontal: 24,  
+    },
+
+    // '# comments'
+    commentsTitle: {
+        marginTop: 12,
+        marginBottom: 12,
     },
 
     // title for number of comments

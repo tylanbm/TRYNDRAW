@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 22,
         marginBottom: '10%',
-        color: 'rgba(43,43,40,1)',
+        color: '#2B2B28',
     },
 
     // view style for the subtitle
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
         flex: 2,
         fontFamily: 'Medium',
         textAlign: 'left',
-        color: 'rgba(43,43,40,1)',
+        color: '#2B2B28',
     },
 
     // 'View all' button
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     // 'View all'
     viewAll: {
         fontSize: 20,
-        color: 'rgba(96,177,182,1)',
+        color: '#60B1B6',
         fontFamily: 'Medium',
         textAlign: 'right',
     },

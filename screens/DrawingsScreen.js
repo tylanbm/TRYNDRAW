@@ -143,7 +143,7 @@ const DrawingsScreen = ({ navigation }) => {
                 icon={<IonButton
                         name='trash-bin'
                         onPress={async() => await onDeleteObject(itemId)}
-                        color='rgba(255,156,156,1)'
+                        color='#FF9C9C'
                         size={22}
                         style={styles.delete}
                     />
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
         padding: 4,
         backgroundColor: 'white',
         borderRadius: 50,
-        borderColor: 'rgba(255,156,156,1)',
+        borderColor: '#FF9C9C',
         borderWidth: 1,
     },
 
