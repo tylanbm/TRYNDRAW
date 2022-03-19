@@ -379,7 +379,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Medium',
         textAlign: 'center',
         color: 'white',
-        marginLeft: '3%',
-        marginRight: '3%',
+        marginHorizontal: '3%',
     },
 });

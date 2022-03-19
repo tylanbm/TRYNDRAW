@@ -70,7 +70,7 @@ const HomeScreen = ({ navigation }) => {
     // length of FlatList of images
     const getLength = getImgs.length;
 
-    // get and set profile pic from firebase storage
+    // get and set profile pic from Firebase Storage
     useEffect(() => {
         const getPic = async() => {
             let temp = await getDownloadURL(ref(storage, 'userProfileImages/' + user.uid));
@@ -145,10 +145,10 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
                 <Image
-                    source={{uri: pic}}
-                    style={styles.profile}
+                    source={{ uri: pic }}
+                    style={styles.profileImage}
                 />
             </View>
 
@@ -211,15 +211,13 @@ const styles = StyleSheet.create({
         marginHorizontal: '5%',
     },
 
-    // profile image
-    profile: {
+    // user's profile image
+    profileImage: {
         width: '20%',
         aspectRatio: 1,
         borderRadius: 100,
         borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.25)',
-        marginTop: '5%',
-        alignItems: 'center',
+        borderColor: 'rgba(0,0,0,0.5)',
     },
 
     // 'Welcome back'
@@ -234,8 +232,7 @@ const styles = StyleSheet.create({
     // view style for the subtitle
     subView: {
         flexDirection: 'row',
-        marginTop: '5%',
-        marginBottom: '4%',
+        marginVertical: '4%',
     },
 
     // 'My Drawings'
@@ -265,14 +262,8 @@ const styles = StyleSheet.create({
 
     // FlatList placeholder view
     flatPlace: {
-        height: '31.2%',
+        height: '31%',
         marginLeft: '3%',
-    },
-    // 'Start Drawing!' button
-    button: {
-        borderColor: 'deepskyblue',
-        borderRadius: 20,
-        borderWidth: 2,
     },
 
     // FlatList placeholder text
@@ -314,7 +305,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Medium',
         textAlign: 'center',
         color: 'white',
-        marginLeft: '3%',
-        marginRight: '3%',
+        marginHorizontal: '3%',
     },
 });

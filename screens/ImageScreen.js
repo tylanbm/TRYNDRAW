@@ -46,9 +46,10 @@ import { auth } from '../firebaseConfig';
 // import screen scrolling
 import { ScrollView } from 'react-native-gesture-handler';
 
-// import custom buttons
+// import custom buttons and profile image
 import FullButton from '../components/FullButton';
 import IonButton from '../components/IonButton';
+import ProfileImage from '../components/ProfileImage';
 
 
 // get Firestore Database and Storage
@@ -75,15 +76,15 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 // ];
 
 // comments
-const Item = ({ title, author, authorImage }) => {
+const Item = ({ title, user, userImage }) => {
     return (
-        <View style={styles.commentAuthorContainer}>
+        <View style={styles.commentUserContainer}>
             <Image
-                source={{ uri: authorImage }}
-                style={styles.authorProfilePhoto}
+                source={{ uri: userImage }}
+                style={styles.profileImage}
             />
             <View>
-                <Text style={styles.commentAuthorNameText}>{author}</Text>
+                <Text style={styles.commentUserNameText}>{user}</Text>
                 <Text style={styles.commentText}>{title}</Text>
             </View>
         </View>
@@ -96,8 +97,8 @@ const ImageScreen = ({route, navigation}) => {
     // render FlatList of comments
     const renderItem = ({ item }) => (
         <Item title={item.text}
-            author={item.authorName}
-            authorImage={item.authorImageSource}
+            user={item.userName}
+            userImage={item.userImageSource}
         />
     );
 
@@ -135,8 +136,8 @@ const ImageScreen = ({route, navigation}) => {
         // Add a new document in collection 'cities'
         await setDoc(newCommentRef, {
             commentText: comment,
-            commentAuthorID: auth.currentUser.uid,
-            commentAuthorUsername: auth.currentUser.displayName,
+            commentUserID: auth.currentUser.uid,
+            commentUserUsername: auth.currentUser.displayName,
             timestamp: serverTimestamp(),
         });
         
@@ -156,34 +157,35 @@ const ImageScreen = ({route, navigation}) => {
     const [getComment, setComment] = useState('');
 
     // image metadata
-    const [imageAuthorUsername, setImageAuthorUserName] = useState('Default');
+    const [imageUsername, setImageUsername] = useState('Default');
     const [imageTitle, setImageTitle] = useState('Default');
-    const [authorImageUrl, setAuthorImageUrl] = useState('Default');
-    const [authorUid, setAuthorUid] = useState('Default');
+    const [userImageUrl, setUserImageUrl] = useState('Default');
+    const [userId, setUserId] = useState('Default');
 
     // get data for the image
     const getImageData = async (imageId) => {
 
         const docRef = doc(db, 'uniqueImageNames', imageId);
         const docSnap = await getDoc(docRef);
+        const docSnapData = docSnap.data();
 
         console.log('ImageId: ' + imageId);
 
         if (docSnap.exists()) {
-            //console.log('Document data:', docSnap.data());
-            setImageAuthorUserName(String(docSnap.data().imageAuthorUsername.toString()));
-            setImageTitle(String(docSnap.data().imageTitle.toString()));
+            //console.log('Document data:', docSnapData);
+            setImageUsername(String(docSnapData.imageAuthorUsername.toString()));
+            setImageTitle(String(docSnapData.imageTitle.toString()));
 
-            const tempAuthorUid =  docSnap.data().imageAuthorUID.toString();
-            //For author profile photo
-            const pathReference = ref(storage, 'userProfileImages/' + tempAuthorUid);
+            const tempUserId =  docSnapData.imageAuthorUID.toString();
+            //For user profile image
+            const pathReference = ref(storage, 'userProfileImages/' + tempUserId);
 
             let temp = await getDownloadURL(pathReference);
             //console.log('Temp: ' + temp);
-            setAuthorImageUrl(temp);
+            setUserImageUrl(temp);
             
         } else {
-            // doc.data() will be undefined in this case
+            // docData will be undefined in this case
             console.log('No such document!');
         }
     }
@@ -202,20 +204,21 @@ const ImageScreen = ({route, navigation}) => {
         
         if (querySnapshot != null) {
             querySnapshot.forEach(async(doc) => {
-                
-                const commentAuthorID = doc.data().commentAuthorID;
-                const pathReference = ref(storage, 'userProfileImages/' + commentAuthorID);
 
-                let commentAuthorImageUrl = await getDownloadURL(pathReference);
-                console.log('Temp: ' + commentAuthorImageUrl);
+                const docData = doc.data();
                 
-                let docData = doc.data();
+                const commentUserID = docData.commentAuthorID;
+                const pathReference = ref(storage, 'userProfileImages/' + commentUserID);
+
+                const commentUserImageUrl = await getDownloadURL(pathReference);
+                console.log('User Image: ' + commentUserImageUrl);
+                
                 let aComment = {
                     id: doc.id,
                     text: docData.commentText,
-                    authorName: docData.commentAuthorUsername,
-                    authorId: commentAuthorID,
-                    authorImageSource: commentAuthorImageUrl,
+                    userName: docData.commentAuthorUsername,
+                    userId: commentUserID,
+                    userImageSource: commentUserImageUrl,
                 }
                 //console.log(doc.id)
                 //console.log(aComment);
@@ -248,7 +251,7 @@ const ImageScreen = ({route, navigation}) => {
     <KeyboardAvoidingView behavior='padding'>
         <ScrollView>
             <View style={styles.screenContainer}>
-                <TouchableOpacity onPress={() => console.log('Touched photo')}>
+                <TouchableOpacity onPress={() => console.log('Touched image')}>
                     <ImageBackground
                         source={{ uri: imageSourceToLoad }}
                         style={styles.imageStyle}
@@ -276,13 +279,13 @@ const ImageScreen = ({route, navigation}) => {
             </View>
 
             <View style={styles.imageFooterContainer}>
-                <Image
-                    source={{ uri: authorImageUrl }}
-                    style={styles.authorProfilePhoto}
+                <ProfileImage
+                    source={{ uri: userImageUrl }}
+                    style={styles.profileImage}
                 />
                 <View>
                     <Text style={styles.imageNameText}>{imageTitle}</Text>
-                    <Text style={styles.authorNameText}>by {imageAuthorUsername}</Text>
+                    <Text style={styles.userNameText}>by {imageUsername}</Text>
                 </View>
 
                 
@@ -376,7 +379,7 @@ const styles = StyleSheet.create({
     // image
     imageStyle: {
         width: screenWidth,
-        height: screenWidth,
+        aspectRatio: 1,
     },
 
     // heart icon background
@@ -407,15 +410,15 @@ const styles = StyleSheet.create({
         borderBottomColor: 'gray',
     },
 
-    // profile photo of the user who drew the image
-    authorProfilePhoto: {
+    // user's profile image
+    profileImage: {
+        width: '10%',
+        aspectRatio: 1,
+        borderRadius: 100,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.5)',
         marginLeft: 4,
         marginVertical: 4,
-        borderRadius: 30,
-        width: 36,
-        aspectRatio: 1,
-        borderWidth: 1,
-        borderColor: 'black',
     },
 
     // name of the image
@@ -426,7 +429,7 @@ const styles = StyleSheet.create({
     },
 
     // name of the user who drew the image
-    authorNameText: {
+    userNameText: {
         marginLeft: 8,
         fontSize: 12,
     },
@@ -439,8 +442,7 @@ const styles = StyleSheet.create({
 
     // '# comments'
     commentsTitle: {
-        marginTop: 12,
-        marginBottom: 12,
+        marginVertical: 12,
     },
 
     // title for number of comments
@@ -460,13 +462,12 @@ const styles = StyleSheet.create({
 
     // text input and send button
     inputContainer: {
-        marginTop: 20,
+        marginVertical: 20,
         width: screenWidth * 0.8,
         backgroundColor: 'white',
         borderRadius: 30,
         borderWidth: 2,
         flexWrap: 'wrap',
-        marginBottom: 20,
         marginRight: 8,
     },
 
@@ -477,7 +478,7 @@ const styles = StyleSheet.create({
     },
 
     // name of user who left the comment
-    commentAuthorNameText: {
+    commentUserNameText: {
         fontSize: 12,
         fontWeight: 'bold',
         marginLeft: 8,

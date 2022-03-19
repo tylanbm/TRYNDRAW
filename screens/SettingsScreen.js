@@ -123,6 +123,7 @@ const SettingsScreen = ({ navigation }) => {
 
 export default SettingsScreen;
 
+
 const styles = StyleSheet.create({
 
     // entire screen
@@ -135,8 +136,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         textAlign: 'center',
-        marginTop: '2%',
-        marginBottom: '2%',
+        marginVertical: '2%',
     },
 
 
