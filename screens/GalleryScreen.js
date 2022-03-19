@@ -166,15 +166,6 @@ const GalleryScreen = ({ navigation }) => {
     //     return temp;
     // }
 
-    // load imgs when gallery screen visited
-    const openPhoto = (imageSource, imageId) => {
-        console.log("Yay!" + imageSource);
-        navigation.navigate('Image', {
-            imageSourceToLoad: imageSource.toString(),
-            imageId: imageId.toString(),
-        });
-    }
-
     // initial load
     useEffect(() => {
         getDownload();

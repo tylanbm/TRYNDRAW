@@ -72,7 +72,7 @@ const ImageButton = (props) => {
                         numberOfLines={2}
                     >{itemName}</Text>
                     {icon!=null && (
-                        <Text>{icon}</Text>
+                        <Text style={styles.icon}>{icon}</Text>
                     )}
                 </View>
             </ImageBackground>
@@ -117,5 +117,11 @@ const styles = StyleSheet.create({
         color: 'white',
         marginLeft: '3%',
         marginRight: '3%',
+    },
+
+    // delete icon
+    icon: {
+        marginTop: '1%',
+        marginRight: '2%',
     },
 });

@@ -31,6 +31,7 @@ import { collection,
     limit,
     doc,
     deleteDoc,
+    writeBatch,
 } from 'firebase/firestore';
 
 // import account authentication
@@ -92,17 +93,6 @@ const DrawingsScreen = ({ navigation }) => {
         }
     }
 
-    // load imgs when gallery screen visited
-    const openPhoto = (imageSource, imageId) => {
-        console.log("Yay!" + imageSource);
-        navigation.navigate('Image', {
-            imageSourceToLoad: imageSource.toString(),
-            imageId: imageId.toString(),
-        });
-    }
-
-
-
     // delete an image from the FlatList
     const onDeleteObject = async(itemId) => {
         const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
@@ -151,13 +141,14 @@ const DrawingsScreen = ({ navigation }) => {
                 overlay={styles.overlay}
                 imgText={styles.imgText}
                 icon={<IonButton
-                    name='trash-bin'
-                    onPress={async() => await onDeleteObject(itemId)}
-                    color='rgba(255,156,156,1)'
-                    size={40}
-                    style={styles.icon}
-                    />}
-              />
+                        name='trash-bin'
+                        onPress={async() => await onDeleteObject(itemId)}
+                        color='rgba(255,156,156,1)'
+                        size={22}
+                        style={styles.delete}
+                    />
+                }
+            />
         );
     };
 
@@ -198,6 +189,15 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
 
+    // delete icon
+    delete: {
+        padding: 4,
+        backgroundColor: 'white',
+        borderRadius: 50,
+        borderColor: 'rgba(255,156,156,1)',
+        borderWidth: 1,
+    },
+
     // image button
     touchable: {
         width: '100%',
@@ -227,9 +227,4 @@ const styles = StyleSheet.create({
         paddingLeft: '2%',
         paddingTop: '1%',
     },
-
-    // delete icon
-    icon: {
-         marginRight: '5%',
-     },
 });

@@ -366,8 +366,8 @@ const styles = StyleSheet.create({
 
     // image
     imageStyle: {
-        width:screenWidth,
-        height:screenWidth,
+        width: screenWidth,
+        height: screenWidth,
     },
 
     // icon backgrounds on the image
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 
-    // button style
+    // FullButton style
     buttonStyle: {
         padding: 4,
     },

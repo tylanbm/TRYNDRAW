@@ -108,15 +108,17 @@ const HomeScreen = ({ navigation }) => {
         //     where('imageAuthorUsername', '==', username),
         //     limit(2));
         
-        const updateQuery = onSnapshot(query(docsRef,
+        onSnapshot(query(docsRef,
             orderBy('timestamp', 'desc'),
             where('imageAuthorUsername', '==', username),
             limit(2)),
-            { includeMetadataChanges: true },
+            { includeMetadataChanges: false },
             async(querySnapshot) => {
-            const source = querySnapshot.metadata.hasPendingWrites ? 'Local' : 'Server';
-            if (source == 'Server') {
-                console.log(source + ' Update ' + new Date().getSeconds());
+            const writes = querySnapshot.metadata.hasPendingWrites;
+            const cache = querySnapshot.metadata.fromCache;
+            console.log(writes + ' ' + cache);
+            if (!writes) {
+                console.log('Server ' + new Date().getSeconds());
                 setImgs([]);
                 await getURLs(querySnapshot);
             }
