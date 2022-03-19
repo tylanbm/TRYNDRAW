@@ -103,11 +103,6 @@ const HomeScreen = ({ navigation }) => {
 
     // initial load
     useEffect(() => {
-        // const q = query(docsRef,
-        //     orderBy('timestamp', 'desc'),
-        //     where('imageAuthorUsername', '==', username),
-        //     limit(2));
-        
         onSnapshot(query(docsRef,
             orderBy('timestamp', 'desc'),
             where('imageAuthorUsername', '==', username),
@@ -115,8 +110,8 @@ const HomeScreen = ({ navigation }) => {
             { includeMetadataChanges: false },
             async(querySnapshot) => {
             const writes = querySnapshot.metadata.hasPendingWrites;
-            const cache = querySnapshot.metadata.fromCache;
-            console.log(writes + ' ' + cache);
+            //const cache = querySnapshot.metadata.fromCache;
+            //console.log(writes + ' ' + cache);
             if (!writes) {
                 console.log('Server ' + new Date().getSeconds());
                 setImgs([]);
