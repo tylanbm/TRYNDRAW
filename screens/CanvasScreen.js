@@ -10,6 +10,8 @@ import { getStorage,
     uploadBytes,
     uploadBytesResumable } from 'firebase/storage';
 
+import {Slider} from '@miblanchard/react-native-slider';
+
 import {
     collection,
     doc,
@@ -22,7 +24,6 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { auth } from "../firebaseConfig";
-import ThicknessModal from "../components/ThicknessModal";
 
 const db = getFirestore();
 
@@ -124,8 +125,23 @@ const COLORS = [
 ];
 
 
+
+
+
 //Color swatch on color selection bar
 const Item = ({ item, onPress, backgroundColor, swatchColor, style }) => {
+    let color = swatchColor;
+    const borderColor = color == '#FFFFFF' ? "#B9B9B9" : "#FFFFFF";
+    let radius = 28;
+    
+    return (
+    <TouchableOpacity onPress={onPress} style={[style]}>
+        <View style={{width: radius,height: radius, borderRadius: 100/2, backgroundColor: `${color}`, borderColor: `${borderColor}`, borderWidth:1}}></View>
+    </TouchableOpacity>
+    )
+};
+
+const Tool = ({ iconName, onPress, backgroundColor, swatchColor, style }) => {
     let color = swatchColor;
     const borderColor = color == '#FFFFFF' ? "#B9B9B9" : "#FFFFFF";
     let radius = 28;
@@ -146,6 +162,7 @@ const CircleButton = ({iconName, onPress}) => (
 
 
 const CanvasScreen = ({navigation, route}) => {
+
     const [selectedId, setSelectedId] = useState(null);
     const [selectedId2, setSelectedId2] = useState(null);
 
@@ -158,28 +175,25 @@ const CanvasScreen = ({navigation, route}) => {
     
     const [pencilActive, setPencilActive] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
-    
-
-    let currentThickness = 10;
+    const [currentThickness, setCurrentThickness] = useState(10);
 
 
     const removeLastPath = () => {
         drawRef.current.undo();
     }
 
-    const upThickness = () => {
-        if(currentThickness ==1)
-            currentThickness = 0;
-        currentThickness += 5;
-        drawRef.current.setThickness(currentThickness);
+    const updateThickness = (value) => {
+        drawRef.current.setThickness(`${value}`);
     }
 
-    const downThickness = () => {
-        currentThickness -= 5;
-        if (currentThickness <= 0 )
-            currentThickness = 1;
-        drawRef.current.setThickness(currentThickness);
+    const togglePencil = () => {
+        if(pencilActive){
+            setPencilActive(false);
+        } else {
+            setPencilActive(true);
+        }
     }
+
 
     const exitAndDelete = () => {
         setModalVisible(false);
@@ -246,10 +260,9 @@ const CanvasScreen = ({navigation, route}) => {
         })
     };
 
-
-
     const ToolBar = () => (
-        <View style={styles.row}>
+        <View style={{ alignItems: 'center', borderTopColor: "#B7B7B7", borderTopWidth: 1, paddingVertical: 8,justifyContent: 'space-evenly'}}>
+            <View style={[styles.row]}>
             <CircleButton onPress={() => console.log("Yay")} iconName={"pencil"}/>
             <View style={{
                 transform: [
@@ -258,13 +271,13 @@ const CanvasScreen = ({navigation, route}) => {
             }}> 
             <CircleButton onPress={() => console.log("Yay")} iconName={"tablet-portrait"} />
             </View>
-            
-            <CircleButton onPress={upThickness} iconName={"add"} />
-            <CircleButton onPress={downThickness} iconName={"remove"} />
             <CircleButton onPress={removeLastPath} iconName={"arrow-undo"} />
             <CircleButton onPress={clearDrawing} iconName={"trash"} />
             <CircleButton onPress={toggleModalVisibility} iconName={"checkmark"} />
         </View>    
+
+        </View>
+        
     );
     
 
@@ -285,6 +298,23 @@ const CanvasScreen = ({navigation, route}) => {
         );
     };
 
+    const renderTool = ({ tool }) => {
+        const backgroundColor = tool.id === selectedId ? "#60B1B6" : "#F5F5F5";
+        const color = tool.colorCode;
+        const borderColor = tool.id === selectedId ? "#60B1B6" : "#B9B9B9";
+        const borderWidth = tool.id === selectedId ? 1.5 : 1;
+
+        return (
+            <Tool
+                item={tool}
+                onPress={() => {setSelectedId(tool.id); setColor(tool.colorCode)}}
+                backgroundColor={{ backgroundColor }}
+                swatchColor={`${color}`}
+                style={{borderColor: borderColor, borderWidth: borderWidth, padding: 3, borderRadius: 30, overflow: 'hidden', margin:2, marginHorizontal: 2, alignItems: 'center', justifyContent: 'center', alignContent: 'center', backgroundColor: 'white'}}
+            />
+        );
+    };
+
     return (
         <View style={styles.mainContainer}>
             <View>
@@ -296,15 +326,13 @@ const CanvasScreen = ({navigation, route}) => {
                         
                             <Text style={styles.titleText}>TRYNDRAW</Text>
                             <Text style={styles.titleText}>
-                            "{slug}"</Text>
-                        
+                            "{slug}"</Text>  
                     </View>
                     <View style={{flex: 1}}>
+
                     </View>
-                   
                 </View>
 
-                
                 <SafeAreaView style={{ alignItems: 'center', borderBottomColor: "#B7B7B7", borderBottomWidth: 1, borderTopColor: "#B7B7B7", borderTopWidth: 1, paddingVertical: 4}}>
                     <FlatList
                         data={COLORS}
@@ -317,7 +345,7 @@ const CanvasScreen = ({navigation, route}) => {
             </View>
 
             <View style={styles.box2}>
-                    <View style={styles.container}>
+                <View style={styles.container}>
                     <ViewShot
                         ref={viewShot}
                         options={{ format: "jpg", quality: 0.9 }} >
@@ -328,23 +356,39 @@ const CanvasScreen = ({navigation, route}) => {
                             hideBottom={true}
                             initialValues={{
                                 color: "#B644D0",
-                                thickness: 5,
+                                thickness: currentThickness,
                                 opacity: 1,
                                 paths: []
                             }}
                             brushPreview="none"
                             canvasStyle={{ elevation: 0, backgroundColor: "#FFFFFF" }}
                         />
-                        </ViewShot>
+                    </ViewShot>
+                </View>
+                
+                <View style={{alignSelf: 'center', marginTop: "2%", width:'90%'}}>
+                    <View style={styles.thicknessContainer}>
+                        <View>
+                            <Text style={{color: '#60B1B6', marginTop: 8, fontSize: 16}}>Brush Thickness</Text>
+                        </View>
+                        <View style={{width: '80%'}}>
+                            <Slider
+                                        value={currentThickness}
+                                        onValueChange={value => {setCurrentThickness(value); updateThickness(value);}}
+                                        minimumValue={1}
+                                        maximumValue={100}
+                                        step={1}
+                                        thumbStyle={{borderColor: "#60B1B6", borderWidth: 1, backgroundColor: "#fff", padding: 0,}}
+                                        trackStyle={{height:8, borderRadius: 50, backgroundColor: "#DFDFE5", padding: 0, margin: 0, }}
+                                        minimumTrackTintColor={"#60B1B6"}
+                                        containerStyle={{padding: 0,margin: 0,}}
+                                    />           
+                        </View>
+                        <Text style={{color: '#60B1B6', marginBottom: 8, fontSize: 14}}>{currentThickness}</Text>
+                        
                     </View>
-                    
-                    <View style={{alignSelf: 'center', marginTop: "2%", width:'90%'}}>
-                    <ThicknessModal></ThicknessModal>
-                    </View>
-                    
+                </View>
             </View>
-
-            
 
             <Modal
                 animationType="slide"
@@ -355,22 +399,24 @@ const CanvasScreen = ({navigation, route}) => {
                     setModalVisible(!modalVisible);
                 }}
             >
-                
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalText}>What do you want to do?</Text>
+                    
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={publishAndExit}
                         >
                             <Text style={styles.textStyle}>Publish Drawing & Exit</Text>
                         </Pressable>
+                        
                         <Pressable
                             style={[styles.button, styles.buttonClose, { marginTop: 16 }]}
                             onPress={() => setModalVisible(!modalVisible)}
                         >
                             <Text style={styles.textStyle}>Keep Editing</Text>
                         </Pressable>
+                        
                         <Pressable
                             style={[styles.button, styles.buttonClose, { marginTop: 32, backgroundColor: 'red' }]}
                             onPress={exitAndDelete}
@@ -381,12 +427,12 @@ const CanvasScreen = ({navigation, route}) => {
                 </View>
             </Modal>
 
-            <View style={styles.box3}>
-                <SafeAreaView style={{ alignItems: 'center'}}>
-                    <ToolBar></ToolBar>
-                </SafeAreaView>
+            <View>
+                <ToolBar />   
             </View>
         </View>
+
+        
     );
 };
 
@@ -421,7 +467,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#F5F5F5",
     }, 
     toolContainer: {
-        borderColor: "#B9B9B9",
+        borderColor: "#C0C0CC",
         borderWidth: 1, 
         height: 44,
         width: 44, 
@@ -441,7 +487,12 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontFamily: 'WorkSans_700Bold',
         borderRadius: 80,
-        color: "#515151DE",
+        color: "#C0C0CC",
+    },
+
+    active: {
+        borderColor: "#60B1B6",
+        color: '#60B1B6'
     },
 
     swatch: {
@@ -520,7 +571,14 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 24,
         fontFamily: 'WorkSans_700Bold',
-    }
+    },
+    thicknessContainer: {
+        alignItems: 'center',
+        backgroundColor: "#ffffff",
+        borderRadius: 5,
+        borderColor: '#60B1B6',
+        borderWidth: 1
+    },
 });
 
 export default CanvasScreen;
