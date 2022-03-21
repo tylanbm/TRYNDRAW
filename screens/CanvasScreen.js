@@ -154,13 +154,6 @@ const Tool = ({ iconName, onPress, backgroundColor, swatchColor, style }) => {
 };
 
 
-const CircleButton = ({iconName, onPress}) => (
-    <TouchableOpacity onPress={onPress} style={[styles.toolContainer]}>
-        <Ionicons name={iconName} style={[styles.toolIcon]}/>
-    </TouchableOpacity>
-);
-
-
 const CanvasScreen = ({navigation, route}) => {
 
     const [selectedId, setSelectedId] = useState(null);
@@ -173,10 +166,8 @@ const CanvasScreen = ({navigation, route}) => {
     const viewShot = useRef(ViewShot);
     const storage = getStorage();
     
-    const [pencilActive, setPencilActive] = useState(true);
     const [modalVisible, setModalVisible] = useState(false);
     const [currentThickness, setCurrentThickness] = useState(10);
-
 
     const removeLastPath = () => {
         drawRef.current.undo();
@@ -186,15 +177,7 @@ const CanvasScreen = ({navigation, route}) => {
         drawRef.current.setThickness(`${value}`);
     }
 
-    const togglePencil = () => {
-        if(pencilActive){
-            setPencilActive(false);
-        } else {
-            setPencilActive(true);
-        }
-    }
-
-
+    
     const exitAndDelete = () => {
         setModalVisible(false);
         clearDrawing();
@@ -251,25 +234,66 @@ const CanvasScreen = ({navigation, route}) => {
                     imageTitle: slug,
                     timestamp: serverTimestamp(),
                 }).then(() => console.log('Document set'));
-
-                
             }
-
             uploadImage(uri);
-
         })
     };
 
-    const ToolBar = () => (
+    //Button component for the tools
+    const CircleButton = ({iconName, onPress, activeStyle}) => {
+        return (
+        <TouchableOpacity onPress={onPress} style={[styles.toolContainer, activeStyle]}>
+            <Ionicons name={iconName} style={[styles.toolIcon, activeStyle]}/>
+        </TouchableOpacity>
+    )};
+    
+    //States to handle highlighting of active tools
+    const [pencilActive, setPencilActive] = useState(true);
+    const [eraserActive, setEraserActive] = useState(false);
+    const [thicknessSliderActive, setThicknessSliderActive] = useState(true);
+
+    const togglePencil = () => {
+        if(pencilActive){
+            setPencilActive(false);
+        } else {
+            setPencilActive(true);
+        }
+    }
+
+    const toggleEraser = () => {
+        if(eraserActive){
+            setEraserActive(false);
+        } else {
+            setEraserActive(true);
+        }
+    }
+
+    const toggleThicknessSlider = () => {
+        if(thicknessSliderActive){
+            setThicknessSliderActive(false);
+        } else {
+            setThicknessSliderActive(true);
+        }
+    }
+
+    const ToolBar = () => {
+    
+        return (
         <View style={{ alignItems: 'center', borderTopColor: "#B7B7B7", borderTopWidth: 1, paddingVertical: 8,justifyContent: 'space-evenly'}}>
             <View style={[styles.row]}>
-            <CircleButton onPress={() => console.log("Yay")} iconName={"pencil"}/>
+            <CircleButton 
+            onPress={() => {if(!pencilActive){togglePencil(); toggleEraser();}}} 
+            iconName={"pencil"} 
+            activeStyle={pencilActive ? styles.active : styles.inActive}/>
             <View style={{
                 transform: [
                     { rotate: "-45deg" },
                 ]
             }}> 
-            <CircleButton onPress={() => console.log("Yay")} iconName={"tablet-portrait"} />
+             <CircleButton 
+             onPress={() => {if(!eraserActive){togglePencil(); toggleEraser();}}}  
+             iconName={"tablet-portrait"} 
+             activeStyle={eraserActive ? styles.active : styles.inActive} />
             </View>
             <CircleButton onPress={removeLastPath} iconName={"arrow-undo"} />
             <CircleButton onPress={clearDrawing} iconName={"trash"} />
@@ -278,9 +302,8 @@ const CanvasScreen = ({navigation, route}) => {
 
         </View>
         
-    );
+    )};
     
-
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? "#60B1B6" : "#F5F5F5";
         const color = item.colorCode;
@@ -291,23 +314,6 @@ const CanvasScreen = ({navigation, route}) => {
             <Item
                 item={item}
                 onPress={() => {setSelectedId(item.id); setColor(item.colorCode)}}
-                backgroundColor={{ backgroundColor }}
-                swatchColor={`${color}`}
-                style={{borderColor: borderColor, borderWidth: borderWidth, padding: 3, borderRadius: 30, overflow: 'hidden', margin:2, marginHorizontal: 2, alignItems: 'center', justifyContent: 'center', alignContent: 'center', backgroundColor: 'white'}}
-            />
-        );
-    };
-
-    const renderTool = ({ tool }) => {
-        const backgroundColor = tool.id === selectedId ? "#60B1B6" : "#F5F5F5";
-        const color = tool.colorCode;
-        const borderColor = tool.id === selectedId ? "#60B1B6" : "#B9B9B9";
-        const borderWidth = tool.id === selectedId ? 1.5 : 1;
-
-        return (
-            <Tool
-                item={tool}
-                onPress={() => {setSelectedId(tool.id); setColor(tool.colorCode)}}
                 backgroundColor={{ backgroundColor }}
                 swatchColor={`${color}`}
                 style={{borderColor: borderColor, borderWidth: borderWidth, padding: 3, borderRadius: 30, overflow: 'hidden', margin:2, marginHorizontal: 2, alignItems: 'center', justifyContent: 'center', alignContent: 'center', backgroundColor: 'white'}}
@@ -492,7 +498,11 @@ const styles = StyleSheet.create({
 
     active: {
         borderColor: "#60B1B6",
-        color: '#60B1B6'
+        color: '#60B1B6',
+    },
+    inActive: {
+        borderColor: "#C0C0CC",
+        color: "#C0C0CC",
     },
 
     swatch: {
