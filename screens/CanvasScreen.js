@@ -24,6 +24,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { auth } from "../firebaseConfig";
+import FullButton from "../components/FullButton";
 
 const db = getFirestore();
 
@@ -156,10 +157,11 @@ const Tool = ({ iconName, onPress, backgroundColor, swatchColor, style }) => {
 
 const CanvasScreen = ({navigation, route}) => {
 
-    const [selectedId, setSelectedId] = useState(null);
+    //Id of active drawing color
+    const [selectedId, setSelectedId] = useState('2');
     const [selectedId2, setSelectedId2] = useState(null);
 
-    // slug from ChallengesScreen
+    //Slug from drawing selection screen
     const slug = route.params;
 
     const drawRef = useRef(DrawRef);
@@ -177,7 +179,6 @@ const CanvasScreen = ({navigation, route}) => {
         drawRef.current.setThickness(`${value}`);
     }
 
-    
     const exitAndDelete = () => {
         setModalVisible(false);
         clearDrawing();
@@ -299,7 +300,7 @@ const CanvasScreen = ({navigation, route}) => {
                 activeStyle={eraserActive ? styles.active : styles.inActive} />
                 </View>
                 <CircleButton onPress={removeLastPath} iconName={"arrow-undo"} />
-                <CircleButton onPress={removeLastPath} iconName={"resize"}/>
+                <CircleButton onPress={toggleThicknessSlider} iconName={"resize"} activeStyle={thicknessSliderActive ? styles.active : styles.inActive}/>
                 <CircleButton onPress={clearDrawing} iconName={"trash-bin"} activeStyle={{color:"#FF9C9C", borderColor:"#FF9C9C"}} />
                 <CircleButton onPress={toggleModalVisibility} iconName={"cloud-upload"} activeStyle={{color:"#60B1B6", borderColor:"#60B1B6", fontSize: 32,}} />
             </View>    
@@ -375,6 +376,7 @@ const CanvasScreen = ({navigation, route}) => {
                 </View>
                 
                 <View style={{alignSelf: 'center', marginTop: "2%", width:'90%'}}>
+                    {thicknessSliderActive ? 
                     <View style={styles.thicknessContainer}>
                         <View>
                             <Text style={{color: '#60B1B6', marginTop: 8, fontSize: 16}}>Brush Thickness</Text>
@@ -394,8 +396,10 @@ const CanvasScreen = ({navigation, route}) => {
                         </View>
                         <Text style={{color: '#60B1B6', marginBottom: 8, fontSize: 14}}>{currentThickness}</Text>
                         
-                    </View>
+                    </View> : null
+                }
                 </View>
+                    
             </View>
 
             <Modal
@@ -409,28 +413,38 @@ const CanvasScreen = ({navigation, route}) => {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalText}>What do you want to do?</Text>
+                        <Text style={styles.modalText}>Ready to leave?</Text>
                     
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={publishAndExit}
-                        >
-                            <Text style={styles.textStyle}>Publish Drawing & Exit</Text>
-                        </Pressable>
-                        
-                        <Pressable
-                            style={[styles.button, styles.buttonClose, { marginTop: 16 }]}
-                            onPress={() => setModalVisible(!modalVisible)}
-                        >
-                            <Text style={styles.textStyle}>Keep Editing</Text>
-                        </Pressable>
-                        
-                        <Pressable
-                            style={[styles.button, styles.buttonClose, { marginTop: 32, backgroundColor: 'red' }]}
+
+                    <View style={{width:"70%", marginVertical:"2%"}}>
+                    <FullButton
                             onPress={exitAndDelete}
-                        >
-                            <Text style={styles.textStyle}>Delete Drawing & Exit</Text>
-                        </Pressable>
+                            text={'Delete drawing and exit'}
+                            backgroundColor={"#FF9C9C"}
+                            textColor={'#ffffff'}
+                            borderColor={'transparent'}
+                        />
+                    </View>
+
+                    <View style={{width:"70%", marginVertical:"2%"}}>
+                    <FullButton
+                            onPress={() => setModalVisible(!modalVisible)}
+                            text={'Stay and keep editing'}
+                            backgroundColor={'white'}
+                            textColor={'#60B1B6'}
+                            borderColor={'#60B1B6'}
+                        />
+                    </View>
+
+                    <View style={{width:"70%", marginVertical:"2%", marginBottom: '8%'}}>
+                        <FullButton
+                                onPress={publishAndExit}
+                                text={'Upload drawing and exit'}
+                                backgroundColor={'#60B1B6'}
+                                textColor={'#FFFFFF'}
+                                borderColor={"transparent"}
+                            />
+                    </View>
                     </View>
                 </View>
             </Modal>
@@ -541,12 +555,13 @@ const styles = StyleSheet.create({
     modalView: {
         margin: 20,
         backgroundColor: "white",
-        borderRadius: 20,
-        width: screenWidth,
-        height: screenHeight/2,
+        borderRadius: 4,
+        width: screenWidth-(screenWidth*0.15),
         alignItems: "center",
         justifyContent: 'center',
         shadowColor: "#000",
+        borderColor: "#60B1B6",
+        borderWidth: 1,
         shadowOffset: {
             width: 0,
             height: 2
@@ -575,7 +590,7 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     modalText: {
-        marginBottom: 48,
+        marginVertical: "6%",
         textAlign: "center",
         fontSize: 24,
         fontFamily: 'WorkSans_700Bold',
