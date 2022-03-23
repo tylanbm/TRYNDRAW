@@ -106,56 +106,55 @@ const ChallengesScreen = ({ navigation }) => {
   if (!fontsLoaded) return <AppLoading />;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>What do you want to draw?</Text>
+    <View style={{backgroundColor: 'white', flex:1}}>
+      <View style={styles.container}>
+        <Text style={styles.title}>What do you want to draw?</Text>
 
-      <SafeAreaView>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-        />
-      </SafeAreaView>
+        <SafeAreaView>
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+          />
+        </SafeAreaView>
 
-      <View style={{alignItems: 'center'}}>
-        <TouchableOpacity
-          onPress={() => {
-            let temp_data = [...data];
+        <View style={{alignItems: 'center'}}>
+          <TouchableOpacity
+            onPress={() => {
+              let temp_data = [...data];
 
-            for (let i=0; i<3; i++) {
-              let temp_elt = {...temp_data[i]};
-              temp_elt.slug = generateSlug(3, slugOptions);
-              temp_data[i] = temp_elt;
-            }
+              for (let i=0; i<3; i++) {
+                let temp_elt = {...temp_data[i]};
+                temp_elt.slug = generateSlug(3, slugOptions);
+                temp_data[i] = temp_elt;
+              }
 
-            setData(temp_data);
-          }}
-          >
-        </TouchableOpacity>
+              setData(temp_data);
+            }}
+            >
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.reroll}>
+          <FullButton
+            onPress={() => reroll()}
+            text={'Reroll selection'}
+            backgroundColor={'white'}
+            textColor={'#60B1B6'}
+            borderColor={'#60B1B6'}>
+          </FullButton>
+        </View>
+
+        <View style={{marginTop: '20%'}}/>
+          <FullButton
+            onPress={() => {
+              navigation.navigate('Canvas', data[selectedId].slug)}}
+            text={'Start drawing'}
+            backgroundColor={'#60B1B6'}
+            textColor={'white'}
+            borderColor={'transparent'}>
+          </FullButton>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
       </View>
-
-      <View style={styles.reroll}>
-        <FullButton
-          onPress={() => reroll()}
-          text={'Reroll selection'}
-          backgroundColor={'white'}
-          textColor={'#60B1B6'}
-          borderColor={'#60B1B6'}>
-        </FullButton>
-      </View>
-
-      <View style={{marginTop: '20%'}}/>
-        <FullButton
-          onPress={() => {
-            navigation.navigate('Canvas', data[selectedId].slug)}}
-          text={'Start drawing'}
-          backgroundColor={'#60B1B6'}
-          textColor={'white'}
-          borderColor={'transparent'}>
-        </FullButton>
-      
-      
-
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
     </View>
   )
 }

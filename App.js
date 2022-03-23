@@ -52,7 +52,8 @@ const auth = getAuth();
 
 const AppWithTabs = () => (
   <Tab.Navigator 
-    screenOptions={({ route }) => ({
+    screenOptions={
+      ({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 

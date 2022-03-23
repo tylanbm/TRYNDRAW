@@ -81,7 +81,7 @@ const SettingsScreen = ({ navigation }) => {
     if (!fontsLoaded) return <AppLoading />;
     
     return (
-        <View>
+        <View style={{backgroundColor: 'white', flex:1}}>
             <Image
                 source={{uri: pic}}
                 style={styles.img}

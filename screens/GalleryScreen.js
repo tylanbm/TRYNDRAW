@@ -327,6 +327,7 @@ const styles = StyleSheet.create({
     // entire page
     container: {
         flex: 1,
+        backgroundColor: '#FFFFFF'
     },
 
     // Database FlatList

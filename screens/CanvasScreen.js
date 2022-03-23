@@ -324,7 +324,7 @@ const CanvasScreen = ({navigation, route}) => {
     };
 
     return (
-        <View style={styles.mainContainer}>
+        <View style={[styles.mainContainer]}>
             <View>
                 <View style={{flexDirection: 'row', alignItems:'center', display: 'flex', marginVertical:'1%'}} >
                     <View style={{marginLeft: '1%', flex: 1}}>
@@ -448,6 +448,7 @@ const CanvasScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
+        backgroundColor: 'white'
     },
     title: {
         alignContent: "center",
