@@ -26,6 +26,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { auth } from "../firebaseConfig";
 import FullButton from "../components/FullButton";
 
+
+// Make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
+// Google Fonts
+import { useFonts,
+    WorkSans_300Light,
+} from '@expo-google-fonts/work-sans';
+
 const db = getFirestore();
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -156,6 +164,7 @@ const Tool = ({ iconName, onPress, backgroundColor, swatchColor, style }) => {
 
 
 const CanvasScreen = ({navigation, route}) => {
+
 
     //Id of active drawing color
     const [selectedId, setSelectedId] = useState('2');
@@ -324,6 +333,11 @@ const CanvasScreen = ({navigation, route}) => {
         );
     };
 
+    let [fontsLoaded] = useFonts({
+        WorkSans_300Light
+    });
+    if (!fontsLoaded) return <AppLoading />;
+
     return (
         <View style={[styles.mainContainer]}>
             <View>
@@ -375,7 +389,8 @@ const CanvasScreen = ({navigation, route}) => {
                     </ViewShot>
                 </View>
                 
-                <View style={{alignSelf: 'center', marginTop: "2%", width:'90%'}}>
+                <View style={{alignSelf: 'center',justifyContent: "center", flexDirection:"column", width:'100%', flex: 1}}> 
+                <View style={{alignSelf: 'center', width:'90%',}}>
                     {thicknessSliderActive ? 
                     <View style={styles.thicknessContainer}>
                         <View>
@@ -399,7 +414,7 @@ const CanvasScreen = ({navigation, route}) => {
                     </View> : null
                 }
                 </View>
-                    
+                </View>     
             </View>
 
             <Modal
@@ -470,7 +485,7 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontSize: 20,
-        fontFamily: 'WorkSans_700Bold',
+        fontFamily: 'WorkSans_300Light',
         textAlign: 'center',
     },
     
@@ -592,8 +607,8 @@ const styles = StyleSheet.create({
     modalText: {
         marginVertical: "6%",
         textAlign: "center",
-        fontSize: 24,
-        fontFamily: 'WorkSans_700Bold',
+        fontSize: 26,
+        fontFamily: 'WorkSans_300Light',
     },
     thicknessContainer: {
         alignItems: 'center',
