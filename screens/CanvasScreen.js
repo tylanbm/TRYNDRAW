@@ -242,8 +242,11 @@ const CanvasScreen = ({navigation, route}) => {
     //Button component for the tools
     const CircleButton = ({iconName, onPress, activeStyle}) => {
         return (
-        <TouchableOpacity onPress={onPress} style={[styles.toolContainer, activeStyle]}>
-            <Ionicons name={iconName} style={[styles.toolIcon, activeStyle]}/>
+        <TouchableOpacity onPress={onPress} style={[styles.toolContainer, activeStyle, iconName=='cloud-upload' ? {height: 56, width:56} : null ]}>
+            <View style={{alignItems:'center', alignSelf: 'center', justifyContent:'center', textAlign:"center", }}>
+                <Ionicons name={iconName} style={[styles.toolIcon, activeStyle]}/>
+            </View>
+            
         </TouchableOpacity>
     )};
     
@@ -279,29 +282,28 @@ const CanvasScreen = ({navigation, route}) => {
     const ToolBar = () => {
     
         return (
-        <View style={{ alignItems: 'center', borderTopColor: "#B7B7B7", borderTopWidth: 1, paddingVertical: 8,justifyContent: 'space-evenly'}}>
-            <View style={[styles.row]}>
-            <CircleButton 
-            onPress={() => {if(!pencilActive){togglePencil(); toggleEraser();}}} 
-            iconName={"pencil"} 
-            activeStyle={pencilActive ? styles.active : styles.inActive}/>
-            <View style={{
-                transform: [
-                    { rotate: "-45deg" },
-                ]
-            }}> 
-             <CircleButton 
-             onPress={() => {if(!eraserActive){togglePencil(); toggleEraser();}}}  
-             iconName={"tablet-portrait"} 
-             activeStyle={eraserActive ? styles.active : styles.inActive} />
-            </View>
-            <CircleButton onPress={removeLastPath} iconName={"arrow-undo"} />
-            <CircleButton onPress={clearDrawing} iconName={"trash"} />
-            <CircleButton onPress={toggleModalVisibility} iconName={"checkmark"} />
-        </View>    
-
-        </View>
-        
+        <View style={{borderTopColor: "#B7B7B7", borderTopWidth: 1, paddingVertical: 8}}>
+            <View style={[styles.row, {alignItems: 'center', justifyContent:"space-evenly", marginHorizontal:'0.5%'}]}>
+                <CircleButton 
+                onPress={() => {if(!pencilActive){togglePencil(); toggleEraser();}}} 
+                iconName={"pencil"} 
+                activeStyle={pencilActive ? styles.active : styles.inActive}/>
+                <View style={{
+                    transform: [
+                        { rotate: "-45deg" },
+                    ]
+                }}> 
+                <CircleButton 
+                onPress={() => {if(!eraserActive){togglePencil(); toggleEraser();}}}  
+                iconName={"tablet-portrait"} 
+                activeStyle={eraserActive ? styles.active : styles.inActive} />
+                </View>
+                <CircleButton onPress={removeLastPath} iconName={"arrow-undo"} />
+                <CircleButton onPress={removeLastPath} iconName={"resize"}/>
+                <CircleButton onPress={clearDrawing} iconName={"trash-bin"} activeStyle={{color:"#FF9C9C", borderColor:"#FF9C9C"}} />
+                <CircleButton onPress={toggleModalVisibility} iconName={"cloud-upload"} activeStyle={{color:"#60B1B6", borderColor:"#60B1B6", fontSize: 32,}} />
+            </View>    
+        </View>  
     )};
     
     const renderItem = ({ item }) => {
@@ -473,23 +475,18 @@ const styles = StyleSheet.create({
         backgroundColor: "#F5F5F5",
     }, 
     toolContainer: {
+        backgroundColor: 'white',
         borderColor: "#C0C0CC",
         borderWidth: 1, 
         height: 44,
         width: 44, 
-        marginHorizontal: 4,
+        marginHorizontal: 0,
         borderRadius: 80, 
         overflow: 'hidden', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        alignContent: 'center', 
-        backgroundColor: 'white'
-
+        flexDirection: 'column',
+        justifyContent: 'center'
     },
     toolIcon: {
-        textAlign: 'center',
-        textAlignVertical: 'center',
-        marginHorizontal: 8,
         fontSize: 24,
         fontFamily: 'WorkSans_700Bold',
         borderRadius: 80,
