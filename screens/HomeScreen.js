@@ -159,59 +159,60 @@ const HomeScreen = ({ navigation }) => {
 
 
     return (
-        <View style={styles.container}>
-            <View style={{ alignItems: 'center' }}>
-                <ProfileImage
-                    url={pic}
-                    size={size}
-                />
-            </View>
-
-            <Text style={styles.title}>
-                Welcome back,{'\n'}
-                {username}!
-            </Text>
-
-            <View style={styles.subView}>
-                <Text style={styles.subtitle}>My Drawings</Text>
-                <TouchableOpacity
-                    style={styles.viewDrawings}
-                    onPress={() => navigation.navigate('My Drawings')}
-                >
-                    <Text style={styles.viewAll}>View all</Text>
-                </TouchableOpacity>
-            </View>
-
-            {getLength==0 && (
-                <View style={styles.flatPlace}>
-                    <Text style={styles.textPlace}>
-                        Loading your drawings...
-                    </Text>
-                </View>
-            )}
-
-            {getLength>0 && (
-                <SafeAreaView style={styles.flatView}>
-                    <FlatList
-                        data={getImgs}
-                        renderItem={renderImg}
-                        horizontal={true}
+        <View style={{backgroundColor: 'white', flex:1}}>
+            <View style={styles.container}>
+                <View style={{alignItems: 'center'}}>
+                    <ProfileImage
+                        url={pic}
+                        size={size}
                     />
-                </SafeAreaView>
-            )}
+                </View>
+
+                <Text style={styles.title}>
+                    Welcome back,{'\n'}
+                    {username}!
+                </Text>
+
+                <View style={styles.subView}>
+                    <Text style={styles.subtitle}>My Drawings</Text>
+                    <TouchableOpacity
+                        style={styles.viewDrawings}
+                        onPress={() => navigation.navigate('My Drawings')}
+                    >
+                        <Text style={styles.viewAll}>View all</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {getLength==0 && (
+                    <View style={styles.flatPlace}>
+                        <Text style={styles.textPlace}>
+                            Loading your drawings...
+                        </Text>
+                    </View>
+                )}
+
+                {getLength>0 && (
+                    <SafeAreaView style={styles.flatView}>
+                        <FlatList
+                            data={getImgs}
+                            renderItem={renderImg}
+                            horizontal={true}
+                        />
+                    </SafeAreaView>
+                )}
+                    
+                <View style={{marginTop: '20%'}}>
+                    <FullButton
+                        onPress={() => navigation.navigate('Drawing Selection')}
+                        text={'Start drawing'}
+                        backgroundColor={'#60B1B6'}
+                        textColor={'white'}
+                        borderColor={'transparent'}>
+                    </FullButton>
+                </View>
                 
-            <View style={{marginTop: '20%'}}>
-                <FullButton
-                    onPress={() => navigation.navigate('Drawing Selection')}
-                    text={'Start drawing'}
-                    backgroundColor={'#60B1B6'}
-                    textColor={'white'}
-                    borderColor={'transparent'}>
-                </FullButton>
+                <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
             </View>
-            
-            
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
         </View>
     );
 }

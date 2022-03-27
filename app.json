@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "DART",
-    "slug": "DART",
+    "name": "TRYNDRAW",
+    "slug": "TRYNDRAW",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "backgroundColor": "#ffffff",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -17,12 +18,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "backgroundColor": "#ffffff"
+      
     },
     "android": {
+      "backgroundColor": "#FFFFFF",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/adaptive-icon.png"
       }
     },
     "web": {
