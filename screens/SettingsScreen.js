@@ -26,14 +26,14 @@ import { getStorage,
     getDownloadURL }
 from 'firebase/storage';
 
-// make sure fonts are loaded
-import AppLoading from 'expo-app-loading';
-
 // Google Fonts
 import { useFonts,
     WorkSans_700Bold,
     WorkSans_500Medium,
 } from '@expo-google-fonts/work-sans';
+
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
 
 // button style
 import FullButton from '../components/FullButton';
@@ -83,7 +83,7 @@ const SettingsScreen = ({ navigation }) => {
     return (
         <View>
             <Image
-                source={{uri: pic}}
+                source={{ uri: pic }}
                 style={styles.img}
             />
             <Text style={styles.title}>

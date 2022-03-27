@@ -15,7 +15,6 @@ import { getStorage,
 import { StyleSheet,
     Text,
     View,
-    ImageBackground,
     FlatList,
     SafeAreaView,
     TouchableOpacity,
@@ -31,7 +30,6 @@ import { collection,
     query,
     orderBy,
     limit,
-    startAt,
     startAfter } from 'firebase/firestore';
 
 // Google Fonts
@@ -107,10 +105,8 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 // global variables (set once per app reload)
 const docsRef = collection(db, "uniqueImageNames");
 const imgsToLoad = 20;
-let q = query(docsRef,
-    orderBy('timestamp', 'desc'),
-    limit(imgsToLoad));
-let querySnapshot = getDocs(q);
+let q = null;
+let querySnapshot = null;
 let last = 0;
 let dragging = false;
 let loading = false;
@@ -174,6 +170,9 @@ const GalleryScreen = ({ navigation }) => {
     // await async calls for getting img urls
     const getDownload = async() => {
         loading = true;
+        q = query(docsRef,
+            orderBy('timestamp', 'desc'),
+            limit(imgsToLoad));
         querySnapshot = await getDocs(q);
         last = await getURLs(querySnapshot);
         loading = false;
@@ -202,8 +201,6 @@ const GalleryScreen = ({ navigation }) => {
 
     // load new imgs when halfway through FlatList
     const getMoreDownload = async() => {
-        console.log('Loading more...');
-
         loading = true;
 
         q = query(docsRef,
@@ -225,8 +222,8 @@ const GalleryScreen = ({ navigation }) => {
     const [selectedId, setSelectedId] = useState(null);
 
     const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-        const color = item.id === selectedId ? 'white' : 'black';
+        const backgroundColor = item.id == selectedId ? "#6e3b6e" : "#f9c2ff";
+        const color = item.id == selectedId ? 'white' : 'black';
 
         return (
             <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
@@ -239,6 +236,7 @@ const GalleryScreen = ({ navigation }) => {
         return (
             <ImageButton
                 navigation={navigation}
+                screen={'Gallery'}
                 url={item.url}
                 id={item.id}
                 name={item.name}
@@ -363,12 +361,8 @@ const styles = StyleSheet.create({
 
     // view style of text overlayed on img
     overlay: {
-        height: '28%',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        justifyContent: 'center',
+        flex: 1,
+        justifyContent: 'flex-end',
         backgroundColor: 'rgba(149,175,178,0.8)',
         borderRadius: 5,
     },

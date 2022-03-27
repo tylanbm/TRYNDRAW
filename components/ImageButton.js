@@ -22,6 +22,7 @@ import { useFonts,
 
 /* props:
     navigation
+    screen
     url
     id
     name
@@ -33,17 +34,19 @@ const ImageButton = (props) => {
 
     // get const values
     const navigation = props.navigation;
+    const screen = props.screen;
     const itemUrl = props.url;
     const itemId = props.id;
     const itemName = props.name;
     const icon = props.icon;
 
-    // load imgs when gallery screen visited
-    const openPhoto = (imageSource, imageId) => {
+    // navigate to image's Image Screen
+    const openPhoto = (imageSource, imageId, screen) => {
         console.log("Photo: " + imageSource);
         navigation.navigate('Image', {
             imageSourceToLoad: imageSource.toString(),
             imageId: imageId.toString(),
+            screen: screen,
         });
     }
 
@@ -57,11 +60,11 @@ const ImageButton = (props) => {
 
     return (
         <TouchableOpacity
-            onPress={() => openPhoto(itemUrl, itemId)}
+            onPress={() => openPhoto(itemUrl, itemId, screen)}
             style={props.touchable}
         >
             <ImageBackground
-                source={{uri: itemUrl}}
+                source={{ uri: itemUrl }}
                 style={styles.imgDimensions}
                 imageStyle={styles.imgStyle}
                 key={itemId}
@@ -93,30 +96,10 @@ const styles = StyleSheet.create({
 
     // images in FlatList
     imgStyle: {
+        flex: 1,
         borderRadius: 5,
         borderColor: 'grey',
         borderWidth: 1,
-    },
-
-    // view style of text overlayed on img
-    overlay: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        justifyContent: 'center',
-        backgroundColor: 'rgba(149,175,178,0.8)',
-        borderRadius: 5,
-    },
-
-    // text style of text overlayed on img
-    imgText: {
-        fontSize: 22,
-        fontFamily: 'Medium',
-        textAlign: 'center',
-        color: 'white',
-        marginLeft: '3%',
-        marginRight: '3%',
     },
 
     // delete icon

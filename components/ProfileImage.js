@@ -4,8 +4,6 @@ import React from 'react';
 // import styles
 import {
     StyleSheet,
-    Text,
-    View,
     Image,
 } from 'react-native';
 
@@ -13,8 +11,6 @@ import {
 /* props:
     url
     size
-    left
-    vertical
 */
 const ProfileImage = (props) => {
     return (
@@ -23,8 +19,6 @@ const ProfileImage = (props) => {
             style={[styles.profileImage,
                 {
                     width: props.size,
-                    marginLeft: props.left,
-                    marginVertical: props.vertical,
                 }
             ]}
         />
@@ -39,8 +33,9 @@ const styles = StyleSheet.create({
     // user's profile photo
     profileImage: {
         aspectRatio: 1,
-        borderRadius: 100,
+        borderRadius: 50,
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0.5)',
+        alignSelf: 'center',
     },
 });

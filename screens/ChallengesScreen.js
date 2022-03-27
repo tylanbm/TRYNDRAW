@@ -78,10 +78,10 @@ const ChallengesScreen = ({ navigation }) => {
   }
 
   const renderItem = ({ item }) => {
-    const borderColor = item.id === selectedId ? '#60B1B6' : 'transparent';
-    const textColor = item.id === selectedId ? '#60B1B6' : '#9AAAAC';
-    const textWeight = item.id === selectedId ? 'bold' : 'normal';
-    const icon = item.id === selectedId ? checkbox : emptybox;
+    const borderColor = item.id == selectedId ? '#60B1B6' : 'transparent';
+    const textColor = item.id == selectedId ? '#60B1B6' : '#9AAAAC';
+    const textWeight = item.id == selectedId ? 'bold' : 'normal';
+    const icon = item.id == selectedId ? checkbox : emptybox;
 
     return (
         <TouchableOpacity

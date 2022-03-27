@@ -47,12 +47,16 @@ import AppLoading from 'expo-app-loading';
 // button and image styles
 import FullButton from '../components/FullButton';
 import ImageButton from '../components/ImageButton';
+import ProfileImage from '../components/ProfileImage';
 
 
 // get Firebase database and storage
 const db = getFirestore();
 const storage = getStorage();
 const docsRef = collection(db, "uniqueImageNames");
+
+// profile image size
+const size = '20%';
 
 
 const HomeScreen = ({ navigation }) => {
@@ -101,7 +105,7 @@ const HomeScreen = ({ navigation }) => {
         }
     }
 
-    // initial load
+    // load images
     useEffect(() => {
         onSnapshot(query(docsRef,
             orderBy('timestamp', 'desc'),
@@ -109,14 +113,24 @@ const HomeScreen = ({ navigation }) => {
             limit(2)),
             { includeMetadataChanges: false },
             async(querySnapshot) => {
+            
+            // check if writes and type are both false
             const writes = querySnapshot.metadata.hasPendingWrites;
-            //const cache = querySnapshot.metadata.fromCache;
-            //console.log(writes + ' ' + cache);
-            if (!writes) {
-                console.log('Server ' + new Date().getSeconds());
+            let changeType = false;
+            querySnapshot.docChanges().forEach((change) => {
+                if (change.type == 'removed') {
+                    changeType = true;
+                }
+            })
+            console.log(writes + ' ' + changeType);
+
+            // if both are false, refresh the images
+            if (!writes && !changeType) {
+                console.log('Change ' + new Date().getSeconds());
                 setImgs([]);
                 await getURLs(querySnapshot);
             }
+            else console.log('Do not change ' + new Date().getSeconds());
         });
     }, []);
 
@@ -124,6 +138,7 @@ const HomeScreen = ({ navigation }) => {
         return (
             <ImageButton
                 navigation={navigation}
+                screen={'Home'}
                 url={item.url}
                 id={item.id}
                 name={item.name}
@@ -146,9 +161,9 @@ const HomeScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={{ alignItems: 'center' }}>
-                <Image
-                    source={{ uri: pic }}
-                    style={styles.profileImage}
+                <ProfileImage
+                    url={pic}
+                    size={size}
                 />
             </View>
 
@@ -211,15 +226,6 @@ const styles = StyleSheet.create({
         marginHorizontal: '5%',
     },
 
-    // user's profile image
-    profileImage: {
-        width: '20%',
-        aspectRatio: 1,
-        borderRadius: 100,
-        borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.5)',
-    },
-
     // 'Welcome back'
     title: {
         fontFamily: 'Medium',
@@ -240,16 +246,16 @@ const styles = StyleSheet.create({
         fontSize: 32,
         flex: 2,
         fontFamily: 'Medium',
-        textAlign: 'left',
+        alignSelf: 'flex-start',
         color: '#2B2B28',
     },
 
     // 'View all' button
     viewDrawings: {
         flex: 1,
-        position: 'absolute',
-        bottom: 8,
-        right: 5,
+        alignSelf: 'flex-end',
+        justifyContent: 'center',
+        marginBottom: '2%',
     },
 
     // 'View all'
@@ -289,12 +295,6 @@ const styles = StyleSheet.create({
 
     // view style of text overlayed on img
     overlay: {
-        height: '35%',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        justifyContent: 'center',
         backgroundColor: 'rgba(149,175,178,0.8)',
         borderRadius: 5,
     },
@@ -305,6 +305,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Medium',
         textAlign: 'center',
         color: 'white',
-        marginHorizontal: '3%',
+        marginHorizontal: '2%',
     },
 });

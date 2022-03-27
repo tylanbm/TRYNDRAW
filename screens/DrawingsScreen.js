@@ -37,14 +37,14 @@ import { collection,
 // import account authentication
 import { auth } from "../firebaseConfig";
 
-// make sure fonts are loaded
-import AppLoading from 'expo-app-loading';
-
 // Google Fonts
 import { useFonts,
     WorkSans_700Bold,
     WorkSans_500Medium,
 } from '@expo-google-fonts/work-sans';
+
+// make sure fonts are loaded
+import AppLoading from 'expo-app-loading';
 
 // button and image styles
 import IonButton from '../components/IonButton';
@@ -57,8 +57,8 @@ const storage = getStorage();
 
 // global variables (set once per app reload)
 const docsRef = collection(db, 'uniqueImageNames');
-let q = query(docsRef, limit(1));
-let querySnapshot = getDocs(q);
+let q = null;
+let querySnapshot = null;
 let loading = false;
 
 
@@ -93,21 +93,25 @@ const DrawingsScreen = ({ navigation }) => {
         }
     }
 
-    // delete an image from the FlatList
-    const onDeleteObject = async(itemId) => {
-        const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
+    // delete an image
+    const onDeleteObject = async(item, itemId) => {
         const docRef = doc(db, 'uniqueImageNames', itemId);
+        const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
 
         // delete image from FlatList
+        console.log('Deleting from array...');
         const tempImgs = [...getImgs];
-        tempImgs.splice(itemId, 1);
+        tempImgs.splice(tempImgs.indexOf(item), 1);
         setImgs(tempImgs);
+        console.log('Deleted item ' + itemId);
 
         // delete image data from database
+        console.log('Deleting from Database...');
         await deleteDoc(docRef);
         console.log('Deleted doc ' + itemId);
 
         // delete image from storage
+        console.log('Deleting from Storage...');
         await deleteObject(itemRef);
         console.log('Deleted image ' + itemId);
     }
@@ -129,25 +133,27 @@ const DrawingsScreen = ({ navigation }) => {
     }
 
     const renderImg = ({ item }) => {
+        const itemUrl = item.url;
         const itemId = item.id;
+        const itemName = item.name;
 
         return (
             <ImageButton
                 navigation={navigation}
-                url={item.url}
+                screen={'My Drawings'}
+                url={itemUrl}
                 id={itemId}
-                name={item.name}
+                name={itemName}
                 touchable={styles.touchable}
                 overlay={styles.overlay}
                 imgText={styles.imgText}
                 icon={<IonButton
-                        name='trash-bin'
-                        onPress={async() => await onDeleteObject(itemId)}
-                        color='#FF9C9C'
-                        size={22}
-                        style={styles.delete}
-                    />
-                }
+                    name='trash-bin'
+                    onPress={async() => await onDeleteObject(item, itemId)}
+                    color='#FF9C9C'
+                    size={22}
+                    style={styles.delete}
+                />}
             />
         );
     };
@@ -191,9 +197,10 @@ const styles = StyleSheet.create({
 
     // delete icon
     delete: {
+        flex: 1,
         padding: 4,
-        backgroundColor: 'white',
         borderRadius: 50,
+        backgroundColor: 'white',
         borderColor: '#FF9C9C',
         borderWidth: 1,
     },
@@ -208,11 +215,7 @@ const styles = StyleSheet.create({
     // view style of text overlayed on img
     overlay: {
         flexDirection: 'row',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: '10%',
+        justifyContent: 'flex-end',
         backgroundColor: 'rgba(149,175,178,0.8)',
         borderRadius: 5,
     },
@@ -225,6 +228,6 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         color: 'white',
         paddingLeft: '2%',
-        paddingTop: '1%',
+        paddingVertical: '1%',
     },
 });

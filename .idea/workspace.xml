@@ -6,10 +6,19 @@
   <component name="ChangeListManager">
     <list default="true" id="c79f43c6-e473-4371-90b7-322467d27372" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/fonts/WorkSans-Bold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/fonts/WorkSans-Medium.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ImageButton.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/ImageButton.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ProfileImage.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/ProfileImage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/ChallengesScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChallengesScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/DrawingsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/DrawingsScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/GalleryScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/GalleryScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/HomeScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ImageScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ImageScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/SettingsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SettingsScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
