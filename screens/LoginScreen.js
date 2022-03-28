@@ -54,11 +54,9 @@ const LoginScreen = ({ navigation }) => {
     
     // log user into account
     const logInUser = () => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+        signInWithEmailAndPassword(auth, email, password).then(() => {
 
-            // Signed in 
-            const user = userCredential.user;
+            // Signed in
             console.log("User signed in successfully!");
             
         }).catch((error) => {
@@ -119,7 +117,7 @@ const LoginScreen = ({ navigation }) => {
                 {borderColor: borderEmail}]}>
                 <TextInput
                     style={styles.inputText}
-                    onChangeText={text => setEmail(text)}
+                    onChangeText={text => setEmail(text.replace(/\s+/g, ''))}
                 />
             </View>
             <Text style={styles.inputTitle}>Password</Text>
@@ -138,7 +136,13 @@ const LoginScreen = ({ navigation }) => {
 
             <View style={{marginTop: 125}}/>
 
-            <FullButton onPress={() => logInUser()} text={'Sign in'} backgroundColor={'#60B1B6'} textColor={'white'} borderColor={'transparent'}></FullButton>
+            <FullButton
+                onPress={() => logInUser()}
+                text={'Sign in'}
+                backgroundColor={'#60B1B6'}
+                textColor={'white'}
+                borderColor={'transparent'}>
+            </FullButton>
             
             <View style={styles.subContainer}>
                 <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>

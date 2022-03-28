@@ -69,6 +69,7 @@ const ImageButton = (props) => {
                 imageStyle={styles.imgStyle}
                 key={itemId}
             >
+                <View style={{flex: 2,}}/>
                 <View style={props.overlay}>
                     <Text
                         style={props.imgText}

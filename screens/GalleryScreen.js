@@ -360,15 +360,15 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
-    // view style of text overlayed on img
+    // view style overlayed on img
     overlay: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         backgroundColor: 'rgba(149,175,178,0.8)',
         borderRadius: 5,
     },
 
-    // text style of text overlayed on img
+    // text style overlayed on img
     imgText: {
         fontSize: 22,
         fontFamily: 'Medium',

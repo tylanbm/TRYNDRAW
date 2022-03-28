@@ -200,7 +200,7 @@ const SignUpScreen = ({navigation}) => {
                 {borderColor: borderEmail}]}>
                 <TextInput
                     style={styles.inputText}
-                    onChangeText={text => setEmail(text)}
+                    onChangeText={text => setEmail(text.replace(/\s+/g, ''))}
                 />
             </View>
             <Text style={styles.inputTitle}>Password</Text>

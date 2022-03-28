@@ -30,13 +30,13 @@ import DebugScreen from './screens/DebugScreen';
 import TestCanvasScreen from './screens/TestCanvasScreen';
 import ImageScreen from './screens/ImageScreen';
 import CanvasUserImageScreen from './screens/CanvasUserImageScreen';
+import ProfilePictureEditor from './screens/ProfilePictureEditor';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import OnboardingScreen from './screens/OnboardingScreen';
 
 //Height detection
   //Android
   import { NativeModules } from 'react-native';
-import ProfilePictureEditor from './screens/ProfilePictureEditor';
   const { StatusBarManager } = NativeModules;
   const height = StatusBarManager.HEIGHT;
   //IOS
@@ -143,7 +143,7 @@ function App() {
                 name='My Drawings'
                 component={DrawingsScreen}
               />
-              <Stack.Screen name="CanvasUserImageScreen" component={ProfilePictureEditor} options={{ headerShown: false }} />
+              <Stack.Screen name='ProfilePictureEditor' component={ProfilePictureEditor} options={{ headerShown: false }} />
             </>
           ) : (
             <>

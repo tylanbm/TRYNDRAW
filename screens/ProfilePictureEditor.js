@@ -19,7 +19,8 @@ import {
     getFirestore,
     getDoc,
     getDocs,
-    serverTimestamp, } from 'firebase/firestore';
+    serverTimestamp,
+} from 'firebase/firestore';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -34,8 +35,11 @@ import { useFonts,
     WorkSans_300Light,
 } from '@expo-google-fonts/work-sans';
 
+
+// get database
 const db = getFirestore();
 
+// get screen dimensions
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const COLORS = [
@@ -186,13 +190,13 @@ const ProfilePictureEditor = ({navigation, route}) => {
     const exitAndDelete = () => {
         setModalVisible(false);
         clearDrawing();
-        navigation.navigate('Home');
+        navigation.navigate('Account');
     }
 
     const publishAndExit = async () => {
         setModalVisible(false);
         await captureViewShot();
-        navigation.navigate('Home');
+        navigation.navigate('Account');
     }
 
     const toggleModalVisibility = () => {
@@ -223,26 +227,30 @@ const ProfilePictureEditor = ({navigation, route}) => {
             //MediaLibrary.requestPermissionsAsync();
             //MediaLibrary.saveToLibraryAsync(uri);
             //uploadImageAsync(uri);
-            const userId = auth.currentUser.uid.toString();
+            const userId = auth.currentUser.uid;
             
-            //Storage path and file name of image
-            const storagePath = "userProfileImages/" + userId;
+            //Database and Storage paths for profile image
+            const docRef = doc(db, 'users', userId);
+            const storagePath = 'userProfileImages/' + userId;
 
             const storageRef = ref(storage, storagePath);
             
-            const uploadImage = async (imageUri) => {
+            const uploadImage = async(imageUri) => {
                 const response = await fetch(imageUri);
                 //Generate blob from image URI
                 const blob = await response.blob();
                 
                 //Upload image blob to firebase storage
-                uploadBytes(storageRef, blob).then((snapshot) => {
+                await uploadBytes(storageRef, blob).then(() => {
                     console.log('Uploaded a blob or file!');
                 });
+
+                // update timestamp of newly created profile image
+                await setDoc(docRef, {
+                    lastProfileImageChange: serverTimestamp(),
+                }).then(() => console.log('Profile changed'));
             }
-
             uploadImage(uri);
-
         })
     };
 
@@ -347,10 +355,12 @@ const ProfilePictureEditor = ({navigation, route}) => {
                         <CircleButton onPress={() => navigation.navigate('Account')} iconName={"arrow-back"} />
                     </View>
                     <View style={{flex: 5,alignContent: 'center',justifyContent:'center',alignItems:'center'}}>
-                        
-                            <Text style={styles.titleText}>TRYNDRAW</Text>
-                            <Text style={styles.titleText}>
-                            Your profile photo</Text>  
+                        <Text style={styles.titleText}>
+                            TRYNDRAW
+                        </Text>
+                        <Text style={styles.titleText}>
+                            Your profile photo
+                        </Text>
                     </View>
                     <View style={{flex: 1}}>
 
@@ -517,10 +527,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white'
     },
+
     title: {
         alignContent: "center",
         justifyContent: "center",
     },
+
     titleText: {
         fontSize: 20,
         fontFamily: 'WorkSans_300Light',
@@ -535,13 +547,16 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: "#D2D2D2"
     },
+
     container1: {
         marginTop: StatusBar.currentHeight || 0,
         backgroundColor: "#F5F5F5",
     },
+
     container2: {
         backgroundColor: "#F5F5F5",
-    }, 
+    },
+
     toolContainer: {
         backgroundColor: 'white',
         borderColor: "#C0C0CC",
@@ -554,6 +569,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center'
     },
+
     toolIcon: {
         fontSize: 24,
         fontFamily: 'WorkSans_700Bold',
@@ -565,6 +581,7 @@ const styles = StyleSheet.create({
         borderColor: "#60B1B6",
         color: '#60B1B6',
     },
+
     inActive: {
         borderColor: "#C0C0CC",
         color: "#C0C0CC",
@@ -578,33 +595,40 @@ const styles = StyleSheet.create({
         fontFamily: 'WorkSans_700Bold',
         borderRadius: 30,
     },
+
     item2: {
         padding: 8.5,
         marginVertical: 8,
         marginHorizontal: 2,
         backgroundColor: "lightgray",
     },
+
     box1: {
         flex: 1,
         backgroundColor: "#F5F5F5",
     },
+
     box2: {
         flex: 12,
         backgroundColor: "#FAFAFA",
     },
+
     box3: {
         flex: 1.25,
         alignItems: 'center',
         backgroundColor: "#F5F5F5",
     },
+
     row: {
         flexDirection: "row",
     },
+
     centeredView: {
         flex: 1,
         justifyContent: "flex-end",
         alignItems: "center",
     },
+
     modalView: {
         margin: 20,
         backgroundColor: "white",
@@ -623,6 +647,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5
     },
+
     button: {
         borderRadius: 20,
         elevation: 2,
@@ -631,23 +656,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: "center",
     },
+
     buttonOpen: {
         backgroundColor: "#F194FF",
     },
+
     buttonClose: {
         backgroundColor: "#2196F3",
     },
+
     textStyle: {
         color: "white",
         fontFamily: 'WorkSans_700Bold',
         textAlign: "center"
     },
+
     modalText: {
         marginVertical: "6%",
         textAlign: "center",
         fontSize: 26,
         fontFamily: 'WorkSans_300Light',
     },
+
     thicknessContainer: {
         alignItems: 'center',
         backgroundColor: "#ffffff",

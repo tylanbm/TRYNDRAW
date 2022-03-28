@@ -363,7 +363,7 @@ const ImageScreen = ({ route, navigation }) => {
 
                 <View style={styles.imageFooterContainer}>
                     <View style={{marginHorizontal: '1%'}}/>
-                        <View style={{marginVertical: 5}}>
+                        <View style={styles.profileView}>
                             <ProfileImage
                                 url={userImageUrl}
                                 size={50}
@@ -421,21 +421,24 @@ const ImageScreen = ({ route, navigation }) => {
                     onRequestClose={() => setModalVisible(false)}
                 >
                     <View style={styles.modalHeader}>
+                        <View style={{flex: 1,}}>
                         <IonButton
                             name='arrow-back'
                             onPress={() => setModalVisible(false)}
                             color='#979797'
                             size={30}
                             style={[styles.ionStyle, styles.modalIonStyle]}
-                        />
+                        /></View>
                 
+                        <View style={{flex: 2,}}>
                         <Text style={styles.modalCommentsCount}>
                             {commentsLength} Comment(s)
-                        </Text>
+                        </Text></View>
+                        <View style={{flex: 1,}}/>
                     </View>
                 
                     <View style={styles.imageFooterContainer}>
-                        <View style={{marginLeft: '2%', marginVertical: 2}}>
+                        <View style={styles.profileView}>
                             <ProfileImage
                                 url={userImageUrl}
                                 size={56}
@@ -539,14 +542,22 @@ const styles = StyleSheet.create({
 
     // image footer
     imageFooterContainer: {
+        paddingVertical: 5,
         marginBottom: 5,
         flexDirection: 'row',
         borderBottomWidth: 0.5,
         borderBottomColor: 'gray',
     },
 
+    // modal profile view
+    profileView: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+
     // title and user of image
     imageFooterText: {
+        flex: 5,
         flexDirection: 'column',
         justifyContent: 'center',
         marginLeft: '1%',
@@ -560,16 +571,15 @@ const styles = StyleSheet.create({
 
     // name of the user who drew the image
     usernameText: {
-        fontSize: 12,
-        fontFamily: 'Medium',
+        fontSize: 15,
+        fontFamily: 'Bold',
     },
 
     // report button
     report: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'flex-end',
-        marginRight: '1%',
+        alignItems: 'center',
     },
 
     // comments section
@@ -634,18 +644,19 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderTopColor: 'gray',
         borderBottomColor: 'gray',
+        paddingVertical: 5,
     },
 
     // modal back button
     modalIonStyle: {
-        marginLeft: '2%',
+        marginLeft: '10%',
         justifyContent: 'center',
-        alignSelf: 'center',
+        alignSelf: 'flex-start',
+
     },
 
     // modal comments count title
     modalCommentsCount: {
-        flex: 1,
         textAlign: 'center',
         marginVertical: '3%',
         fontSize: 24,
@@ -655,20 +666,14 @@ const styles = StyleSheet.create({
     // modal image view
     modalImageView: {
         flex: 1,
-        alignItems: 'flex-end',
+        justifyContent: 'center',
     },
 
     // modal image style
     modalImageStyle: {
-        width: '45%',
+        width: '100%',
         aspectRatio: 1,
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0.5)',
-    },
-
-    // modal profile view
-    modalProfileView: {
-        marginLeft: '2%',
-        marginVertical: 2,
     },
 });

@@ -533,7 +533,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     titleText: {
-        fontSize: 20,
+        fontSize: 15,
         fontFamily: 'WorkSans_300Light',
         textAlign: 'center',
     },

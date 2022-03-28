@@ -20,6 +20,17 @@ import { signOut } from 'firebase/auth';
 // import account authentication
 import { auth } from "../firebaseConfig";
 
+// import Firestore docs
+import { collection,
+    doc,
+    getFirestore,
+    query,
+    orderBy,
+    where,
+    limit,
+    onSnapshot,
+} from 'firebase/firestore';
+
 // import firebase storage
 import { getStorage,
     ref,
@@ -38,26 +49,46 @@ import AppLoading from 'expo-app-loading';
 // button style
 import FullButton from '../components/FullButton';
 
+
+// get Database and Storage
+const storage = getStorage();
+const db = getFirestore();
+
+// get screen dimensions
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 
 const SettingsScreen = ({ navigation }) => {
 
-    // authorization
+    // user auth
     const user = auth.currentUser;
     const username = user.displayName;
+    const userId = user.uid;
 
-    // set up variables for image get
-    const storage = getStorage();
+    // set up image get
     const [pic, setPic] = useState('');
+    const userRef = doc(db, 'users', userId);
 
     // get and set profile pic from firebase storage
     useEffect(() => {
-        const getPic = async() => {
-            let temp = await getDownloadURL(ref(storage, 'userProfileImages/' + auth.currentUser.uid));
-            setPic(temp.toString());
-        }
-        getPic();
+
+        // listen to profile image
+        onSnapshot(query(userRef),
+            { includeMetadataChanges: true },
+            async(profileSnapshot) => {
+            
+            // check if there are no more pending writes
+            const writes = profileSnapshot.metadata.hasPendingWrites;
+            console.log('User settings ' + writes);
+
+            // if no pending writes, update Home screen profile image
+            if (!writes) {
+                console.log('Change profile settings ' + new Date().getSeconds());
+                let temp = await getDownloadURL(ref(storage, 'userProfileImages/' + user.uid));
+                setPic(temp.toString());
+            }
+            else console.log('Do not change profile settings ' + new Date().getSeconds());
+        });
     }, []);
 
     // sign out button
@@ -81,7 +112,7 @@ const SettingsScreen = ({ navigation }) => {
     if (!fontsLoaded) return <AppLoading />;
     
     return (
-        <View style={{backgroundColor: 'white', flex:1}}>
+        <View style={styles.container}>
             <Image
                 source={{ uri: pic }}
                 style={styles.img}
@@ -91,9 +122,9 @@ const SettingsScreen = ({ navigation }) => {
                 {username}
             </Text>
 
-            <View style={styles.container}>
+            <View style={styles.buttons}>
                 <FullButton
-                    onPress={() => navigation.navigate('CanvasUserImageScreen')}
+                    onPress={() => navigation.navigate('ProfilePictureEditor')}
                     text={'Edit profile picture'}
                     backgroundColor={'white'}
                     textColor={'#60B1B6'}
@@ -128,6 +159,12 @@ const styles = StyleSheet.create({
 
     // entire screen
     container: {
+        flex: 1,
+        backgroundColor: 'white',
+    },
+
+    // buttons
+    buttons: {
         flex: 1,
         marginHorizontal: '5%',
     },
