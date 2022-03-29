@@ -159,17 +159,28 @@ const ImageScreen = ({ route, navigation }) => {
         const docSnap = await getDoc(docRef);
         const docSnapData = docSnap.data();
 
+        const userId = docSnapData.imageAuthorUID;
+        const userRef = doc(db, 'users', userId);
+        const userSnap = await getDoc(userRef);
+        const userSnapData = userSnap.data();
+
         console.log('ImageId: ' + imageId);
 
         if (docSnap.exists()) {
             setImageUsername(docSnapData.imageAuthorUsername);
             setImageTitle(docSnapData.imageTitle);
 
-            // User profile image
-            const tempUserId =  docSnapData.imageAuthorUID;
-            const pathReference = ref(storage, 'userProfileImages/' + tempUserId);
-            const temp = await getDownloadURL(pathReference);
-            setUserImageUrl(temp);
+            // if profile image does not exist, use default profile image
+            if (userSnapData.profileImageSet) {
+                const temp = await getDownloadURL(ref(storage,
+                    'userProfileImages/' + userId));
+                setUserImageUrl(temp);
+            }
+            else {
+                const temp = await getDownloadURL(ref(storage,
+                    'userProfileImages/profileImage.jpg'));
+                setUserImageUrl(temp);
+            }
             
         } else {
             // docData does not exist
@@ -231,9 +242,25 @@ const ImageScreen = ({ route, navigation }) => {
 
                 const itemData = item.data();
                 const commentUserID = itemData.commentAuthorID;
-                const pathReference = ref(storage, 'userProfileImages/' + commentUserID);
 
-                const commentUserImageUrl = await getDownloadURL(pathReference);
+                const userRef = doc(db, 'users', commentUserID);
+                const userSnap = await getDoc(userRef);
+                const userSnapData = userSnap.data();
+
+                let commentUserImageUrl = 'Default';
+
+                // if profile image does not exist, use default profile image
+                if (userSnapData.profileImageSet) {
+                    const temp = await getDownloadURL(ref(storage,
+                        'userProfileImages/' + commentUserID));
+                    commentUserImageUrl = temp;
+                }
+                else {
+                    const temp = await getDownloadURL(ref(storage,
+                        'userProfileImages/profileImage.jpg'));
+                    commentUserImageUrl = temp;
+                }
+                
                 console.log('Profile image: ' + commentUserImageUrl);
                 
                 let aComment = {
@@ -243,8 +270,6 @@ const ImageScreen = ({ route, navigation }) => {
                     userId: commentUserID,
                     userImageSource: commentUserImageUrl,
                 }
-                //console.log(doc.id)
-                //console.log(aComment);
                 set2Comments(get2Comments => [...get2Comments, aComment]);
             });
         } else {
@@ -259,9 +284,24 @@ const ImageScreen = ({ route, navigation }) => {
 
                 const itemData = item.data();
                 const commentUserID = itemData.commentAuthorID;
-                const pathReference = ref(storage, 'userProfileImages/' + commentUserID);
 
-                const commentUserImageUrl = await getDownloadURL(pathReference);
+                const userRef = doc(db, 'users', commentUserID);
+                const userSnap = await getDoc(userRef);
+                const userSnapData = userSnap.data();
+
+                let commentUserImageUrl = 'Default';
+                // if profile image does not exist, use default profile image
+                if (userSnapData.profileImageSet) {
+                    const temp = await getDownloadURL(ref(storage,
+                        'userProfileImages/' + commentUserID));
+                    commentUserImageUrl = temp;
+                }
+                else {
+                    const temp = await getDownloadURL(ref(storage,
+                        'userProfileImages/profileImage.jpg'));
+                    commentUserImageUrl = temp;
+                }
+                
                 console.log('Profile image: ' + commentUserImageUrl);
                 
                 let aComment = {
@@ -287,6 +327,8 @@ const ImageScreen = ({ route, navigation }) => {
     // initial load
     useEffect(() => {
         getUserData();
+
+
     }, []);
 
     // upon first modal open, load all comments
@@ -652,7 +694,6 @@ const styles = StyleSheet.create({
         marginLeft: '10%',
         justifyContent: 'center',
         alignSelf: 'flex-start',
-
     },
 
     // modal comments count title

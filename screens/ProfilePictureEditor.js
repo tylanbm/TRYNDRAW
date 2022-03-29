@@ -227,7 +227,8 @@ const ProfilePictureEditor = ({navigation, route}) => {
             //MediaLibrary.requestPermissionsAsync();
             //MediaLibrary.saveToLibraryAsync(uri);
             //uploadImageAsync(uri);
-            const userId = auth.currentUser.uid;
+            const user = auth.currentUser;
+            const userId = user.uid;
             
             //Database and Storage paths for profile image
             const docRef = doc(db, 'users', userId);
@@ -248,6 +249,8 @@ const ProfilePictureEditor = ({navigation, route}) => {
                 // update timestamp of newly created profile image
                 await setDoc(docRef, {
                     lastProfileImageChange: serverTimestamp(),
+                    profileImageSet: true,
+                    userName: user.displayName,
                 }).then(() => console.log('Profile changed'));
             }
             uploadImage(uri);

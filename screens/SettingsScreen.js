@@ -84,8 +84,18 @@ const SettingsScreen = ({ navigation }) => {
             // if no pending writes, update Home screen profile image
             if (!writes) {
                 console.log('Change profile settings ' + new Date().getSeconds());
-                let temp = await getDownloadURL(ref(storage, 'userProfileImages/' + user.uid));
-                setPic(temp.toString());
+
+                // if profile image does not exist, use default profile image
+                if (profileSnapshot.data().profileImageSet) {
+                    const temp = await getDownloadURL(ref(storage,
+                        'userProfileImages/' + user.uid));
+                    setPic(temp);
+                }
+                else {
+                    const temp = await getDownloadURL(ref(storage,
+                    'userProfileImages/profileImage.jpg'));
+                    setPic(temp);
+                }
             }
             else console.log('Do not change profile settings ' + new Date().getSeconds());
         });

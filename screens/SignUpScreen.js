@@ -34,8 +34,9 @@ import FullButton from '../components/FullButton';
 
 const db = getFirestore();
 
-const setUsernameInDatabase = async (userUID, usernameInput) => {
+const setUsernameInDatabase = async(userUID, usernameInput) => {
     await setDoc(doc(db, "users", userUID), {
+        profileImageSet: false,
         userName: usernameInput,
     });
 }
