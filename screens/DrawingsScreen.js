@@ -151,7 +151,7 @@ const DrawingsScreen = ({ navigation }) => {
                     name='trash-bin'
                     onPress={async() => await onDeleteObject(item, itemId)}
                     color='#FF9C9C'
-                    size={22}
+                    size={32}
                     style={styles.delete}
                 />}
             />
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     // delete icon
     delete: {
         flex: 1,
-        padding: 4,
+        padding: 7,
         borderRadius: 50,
         backgroundColor: 'white',
         borderColor: '#FF9C9C',
@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
 
     // view style of text overlayed on img
     overlay: {
+        flex: 0.4,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         backgroundColor: 'rgba(149,175,178,0.8)',
@@ -222,10 +223,11 @@ const styles = StyleSheet.create({
 
     // text style of text overlayed on img
     imgText: {
-        flex: 2,
+        flex: 10,
         fontSize: 22,
         fontFamily: 'Medium',
         textAlign: 'left',
+        alignSelf: 'center',
         color: 'white',
         paddingLeft: '2%',
         paddingVertical: '1%',

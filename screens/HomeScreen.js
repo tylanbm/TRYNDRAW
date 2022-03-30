@@ -111,7 +111,7 @@ const HomeScreen = ({ navigation }) => {
 
             // if no pending writes, update Home screen profile image
             if (!writes) {
-                console.log('Change profile home ' + new Date().getSeconds());
+                console.log('Change profile home');
 
                 // if profile image does not exist, use default profile image
                 if (profileSnapshot.data().profileImageSet) {
@@ -126,7 +126,7 @@ const HomeScreen = ({ navigation }) => {
                 }
             }
             else  {
-                console.log('Do not change profile home ' + new Date().getSeconds());
+                console.log('Do not change profile home');
             }
         });
 
@@ -150,12 +150,12 @@ const HomeScreen = ({ navigation }) => {
 
             // if both are false, refresh the images
             if (!writes && !changeType) {
-                console.log('Change images ' + new Date().getSeconds());
+                console.log('Change images');
                 setImgs([]);
                 await getURLs(imageSnapshot);
                 setPending(false);
             }
-            else console.log('Do not change images ' + new Date().getSeconds());
+            else console.log('Do not change images');
         });
     }, []);
 

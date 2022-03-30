@@ -69,7 +69,7 @@ const ImageButton = (props) => {
                 imageStyle={styles.imgStyle}
                 key={itemId}
             >
-                <View style={{flex: 2,}}/>
+                <View style={{flex: 2}} />
                 <View style={props.overlay}>
                     <Text
                         style={props.imgText}
@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
 
     // delete icon
     icon: {
-        marginTop: '1%',
-        marginRight: '2%',
+        flex: 1,
+        alignSelf: 'center',
+        marginRight: '6%',
     },
 });
