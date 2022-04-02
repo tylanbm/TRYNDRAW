@@ -230,7 +230,7 @@ const HomeScreen = ({ navigation }) => {
                             style={[styles.flatEmptyIcon, {flex: 2,}]}
                         />
                         <Text style={[styles.flatEmptyText,
-                            {flex: 1,}]}>Start drawing</Text>
+                            {flex: 1,}]}>Start drawing!</Text>
                     </TouchableOpacity>
                 )}
 
