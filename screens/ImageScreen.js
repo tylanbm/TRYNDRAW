@@ -472,7 +472,7 @@ const ImageScreen = ({ route, navigation }) => {
                 <Text style={styles.imageNameText}>{imageTitle}</Text>
                 <Text style={styles.usernameText}>by {imageUsername}</Text>
               </View>
-              <View style={styles.modalImageView}>
+              <View style={[styles.modalImageView]}>
                 <Image
                   source={{ uri: imageSourceToLoad }}
                   style={styles.modalImageStyle}
@@ -481,25 +481,7 @@ const ImageScreen = ({ route, navigation }) => {
             </View>
 
             <View style={styles.commentsContainer}>
-              <View style={styles.commentsHeaderContainer}>
-                <View behavior="height" style={styles.inputContainer}>
-                  <TextInput
-                    style={styles.inputComment}
-                    multiline={true}
-                    value={getComment}
-                    onChangeText={(text) => setComment(text)}
-                    placeholder="Add a comment..."
-                    onSubmitEditing={() => setComment("")}
-                  />
-                </View>
-
-                <IonButton
-                  name="send"
-                  onPress={async () => await postComment(getComment)}
-                  size={24}
-                  color="cyan"
-                />
-              </View>
+              <View style={styles.commentsHeaderContainer}></View>
               <SafeAreaView style={{ marginTop: "5%" }}>
                 <FlatList
                   data={getAllComments}
@@ -507,6 +489,34 @@ const ImageScreen = ({ route, navigation }) => {
                   keyExtractor={(item) => item.id}
                 />
               </SafeAreaView>
+            </View>
+
+            <View behavior="height" style={styles.inputContainer}>
+              <View style={{ flex: 8, marginRight: "3%" }}>
+                <TextInput
+                  style={styles.inputComment}
+                  multiline={true}
+                  value={getComment}
+                  onChangeText={(text) => setComment(text)}
+                  placeholder="Add a comment..."
+                  onSubmitEditing={() => setComment("")}
+                />
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "flex-end",
+                  marginBottom: "3.25%",
+                }}
+              >
+                <IonButton
+                  name="send"
+                  onPress={async () => await postComment(getComment)}
+                  size={22}
+                  color="#60B1B6"
+                />
+              </View>
             </View>
           </Modal>
         </ScrollView>
@@ -526,7 +536,6 @@ const styles = StyleSheet.create({
     borderTopColor: "#BFBFBF",
     borderBottomColor: "#BFBFBF",
     backgroundColor: "#FFFFFF",
-    // marginTop: StatusBar.currentHeight || 0,
   },
 
   // image
@@ -631,19 +640,22 @@ const styles = StyleSheet.create({
 
   // text input and send button
   inputContainer: {
-    marginVertical: "5%",
-    width: screenWidth * 0.8,
+    marginHorizontal: "5%",
+    flexDirection: "row",
+    marginVertical: "4%",
     backgroundColor: "white",
-    borderRadius: 30,
-    borderWidth: 2,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "#60B1B6",
     flexWrap: "wrap",
-    marginRight: "2%",
   },
 
   // input text for submitting a comment
   inputComment: {
     padding: "3%",
     width: "100%",
+    lineHeight: 24,
+    marginLeft: "3%",
   },
 
   // name of user who left the comment
@@ -686,15 +698,14 @@ const styles = StyleSheet.create({
   // modal image view
   modalImageView: {
     flex: 1,
-    justifyContent: "center",
+    marginRight: "1%",
   },
 
   // modal image style
   modalImageStyle: {
     width: "100%",
     aspectRatio: 1,
-    borderWidth: 0,
-    marginRight: "1%",
+    borderWidth: 0.25,
     borderColor: "rgba(0,0,0,0.2)",
   },
   heightOffset: {
