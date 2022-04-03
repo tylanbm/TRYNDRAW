@@ -49,7 +49,7 @@ import AppLoading from "expo-app-loading";
 
 // button and image styles
 import IonButton from "../components/IonButton";
-import ImageButton from "../components/ImageButton";
+import ImageButtonWithDelete from "../components/ImageButtonWithDelete";
 
 // get Database and Storage
 const db = getFirestore();
@@ -59,7 +59,6 @@ const storage = getStorage();
 const docsRef = collection(db, "uniqueImageNames");
 let q = null;
 let querySnapshot = null;
-let loading = false;
 
 const DrawingsScreen = ({ navigation }) => {
   // authorization
@@ -137,7 +136,7 @@ const DrawingsScreen = ({ navigation }) => {
     const itemName = item.name;
 
     return (
-      <ImageButton
+      <ImageButtonWithDelete
         navigation={navigation}
         screen={"My Drawings"}
         url={itemUrl}
@@ -151,7 +150,7 @@ const DrawingsScreen = ({ navigation }) => {
             name="trash-bin"
             onPress={async () => await onDeleteObject(item, itemId)}
             color="#FF9C9C"
-            size={32}
+            size={28}
             style={styles.delete}
           />
         }
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
   // delete icon
   delete: {
     flex: 1,
-    padding: 7,
+    padding: 8,
     borderRadius: 50,
     backgroundColor: "white",
     borderColor: "#FF9C9C",
@@ -215,7 +214,7 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 0.4,
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     backgroundColor: "rgba(149,175,178,0.8)",
     borderRadius: 5,
   },

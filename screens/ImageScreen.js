@@ -506,8 +506,7 @@ const ImageScreen = ({ route, navigation }) => {
               <View
                 style={{
                   flex: 1,
-                  justifyContent: "flex-end",
-                  marginBottom: "3.25%",
+                  justifyContent: "center",
                 }}
               >
                 <IonButton
@@ -642,7 +641,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginHorizontal: "5%",
     flexDirection: "row",
-    marginVertical: "4%",
+    marginVertical: "6%",
     backgroundColor: "white",
     borderRadius: 25,
     borderWidth: 1,
@@ -654,7 +653,7 @@ const styles = StyleSheet.create({
   inputComment: {
     padding: "3%",
     width: "100%",
-    lineHeight: 24,
+    lineHeight: 20,
     marginLeft: "3%",
   },
 
