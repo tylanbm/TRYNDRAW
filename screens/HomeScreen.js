@@ -299,12 +299,13 @@ const styles = StyleSheet.create({
   // view style for the subtitle
   subView: {
     flexDirection: "row",
-    marginVertical: "4%",
+    marginVertical: "1%",
+    marginTop: "6%",
   },
 
   // 'My Drawings'
   subtitle: {
-    fontSize: 32,
+    fontSize: 28,
     flex: 2,
     fontFamily: "Medium",
     alignSelf: "flex-start",
@@ -320,7 +321,7 @@ const styles = StyleSheet.create({
 
   // 'View all'
   viewAll: {
-    fontSize: 22,
+    fontSize: 20,
     color: "#60B1B6",
     fontFamily: "Medium",
     textAlign: "right",

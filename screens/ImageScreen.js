@@ -548,7 +548,7 @@ const styles = StyleSheet.create({
   ionStyle: {
     padding: 8,
     borderRadius: 100,
-    backgroundColor: "white",
+    backgroundColor: "#FAFAFA",
     borderColor: "#BFBFBF",
     borderWidth: 0.5,
   },

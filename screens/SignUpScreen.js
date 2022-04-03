@@ -50,9 +50,9 @@ const SignUpScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   // username, email, password entry border colours
-  const [borderUsername, setBorderUsername] = useState("black");
-  const [borderEmail, setBorderEmail] = useState("black");
-  const [borderPassword, setBorderPassword] = useState("black");
+  const [borderUsername, setBorderUsername] = useState("#4F4E4C");
+  const [borderEmail, setBorderEmail] = useState("#4F4E4C");
+  const [borderPassword, setBorderPassword] = useState("#4F4E4C");
 
   // error message
   const [errorMessage, setErrorMessage] = useState("");
@@ -188,63 +188,65 @@ const SignUpScreen = ({ navigation }) => {
   if (!fontsLoaded) return <AppLoading />;
 
   return (
-    <View style={styles.container}>
-      <View style={{ marginTop: 90 }} />
-      <Text style={styles.title}>Sign Up</Text>
-      <Text style={styles.subtitle}>Get drawing right away!</Text>
-      <View style={{ marginTop: 70 }} />
-      <Text style={styles.inputTitle}>Username</Text>
-      <View style={[styles.inputContainer, { borderColor: borderUsername }]}>
-        <TextInput
-          style={styles.inputText}
-          onChangeText={(text) => setUsername(text)}
+    <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
+      <View style={styles.container}>
+        <View style={{ marginTop: 90 }} />
+        <Text style={styles.title}>Sign Up</Text>
+        <Text style={styles.subtitle}>Get drawing right away!</Text>
+        <View style={{ marginTop: 70 }} />
+        <Text style={styles.inputTitle}>Username</Text>
+        <View style={[styles.inputContainer, { borderColor: borderUsername }]}>
+          <TextInput
+            style={styles.inputText}
+            onChangeText={(text) => setUsername(text)}
+          />
+        </View>
+
+        <Text style={styles.inputTitle}>Email</Text>
+        <View style={[styles.inputContainer, { borderColor: borderEmail }]}>
+          <TextInput
+            style={styles.inputText}
+            onChangeText={(text) => setEmail(text.replace(/\s+/g, ""))}
+          />
+        </View>
+        <Text style={styles.inputTitle}>Password</Text>
+        <View style={[styles.inputContainer, { borderColor: borderPassword }]}>
+          <TextInput
+            style={styles.inputText}
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry
+          />
+        </View>
+
+        <View>
+          <Text style={styles.error}>{errorMessage}</Text>
+        </View>
+
+        <View style={{ marginTop: 50 }} />
+
+        <FullButton
+          onPress={() => register()}
+          text={"Create account"}
+          backgroundColor={"#60B1B6"}
+          textColor={"white"}
+          borderColor={"transparent"}
+        ></FullButton>
+
+        <View style={styles.subContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.textPoke1}>Already have an account?</Text>
+            <Text style={styles.textPoke2}> Sign in</Text>
+          </TouchableOpacity>
+
+          <Image style={styles.logo} source={require("../assets/logo.png")} />
+        </View>
+
+        <View
+          style={styles.separator}
+          lightColor="#eee"
+          darkColor="rgba(255,255,255,0.2)"
         />
       </View>
-
-      <Text style={styles.inputTitle}>Email</Text>
-      <View style={[styles.inputContainer, { borderColor: borderEmail }]}>
-        <TextInput
-          style={styles.inputText}
-          onChangeText={(text) => setEmail(text.replace(/\s+/g, ""))}
-        />
-      </View>
-      <Text style={styles.inputTitle}>Password</Text>
-      <View style={[styles.inputContainer, { borderColor: borderPassword }]}>
-        <TextInput
-          style={styles.inputText}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry
-        />
-      </View>
-
-      <View>
-        <Text style={styles.error}>{errorMessage}</Text>
-      </View>
-
-      <View style={{ marginTop: 50 }} />
-
-      <FullButton
-        onPress={() => register()}
-        text={"Create account"}
-        backgroundColor={"#60B1B6"}
-        textColor={"white"}
-        borderColor={"transparent"}
-      ></FullButton>
-
-      <View style={styles.subContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.textPoke1}>Already have an account?</Text>
-          <Text style={styles.textPoke2}> Sign in</Text>
-        </TouchableOpacity>
-
-        <Image style={styles.logo} source={require("../assets/logo.png")} />
-      </View>
-
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.2)"
-      />
     </View>
   );
 };
@@ -267,9 +269,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   title: {
+    color: "#2B2B28",
     fontSize: 32,
   },
   subtitle: {
+    color: "#2B2B28",
     fontSize: 20,
   },
   inputTitle: {
@@ -289,7 +293,7 @@ const styles = StyleSheet.create({
 
   // text input
   inputContainer: {
-    backgroundColor: "#ECECEC",
+    backgroundColor: "#F4F4F4",
     borderRadius: 7,
     borderWidth: 1,
     padding: 0,
