@@ -130,6 +130,17 @@ const LoginScreen = ({ navigation }) => {
           />
         </View>
 
+        <Text
+          style={{
+            color: "#33999F",
+            fontSize: 13,
+            textAlign: "left",
+            marginTop: 4,
+          }}
+        >
+          Forgot password?
+        </Text>
+
         <View>
           <Text style={styles.error}>{errorMessage}</Text>
         </View>
