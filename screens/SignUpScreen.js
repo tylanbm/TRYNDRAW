@@ -66,8 +66,8 @@ const SignUpScreen = ({ navigation }) => {
     // edge case: username is a nonempty string
     if (userNameInput == "") {
       setBorderUsername("red");
-      setBorderEmail("black");
-      setBorderPassword("black");
+      setBorderEmail("#4F4E4C");
+      setBorderPassword("#4F4E4C");
       setErrorMessage("Please enter a username.");
       return false;
     }
@@ -84,8 +84,8 @@ const SignUpScreen = ({ navigation }) => {
       return true;
     } else {
       setBorderUsername("red");
-      setBorderEmail("black");
-      setBorderPassword("black");
+      setBorderEmail("#4F4E4C");
+      setBorderPassword("#4F4E4C");
       setErrorMessage(
         '"' + userNameInput + '" is already taken, please try another username.'
       );
@@ -98,8 +98,8 @@ const SignUpScreen = ({ navigation }) => {
       if (await isUsernameAvailable(username)) {
         // check is password is nonempty
         if (password == "") {
-          setBorderUsername("black");
-          setBorderEmail("black");
+          setBorderUsername("#4F4E4C");
+          setBorderEmail("#4F4E4C");
           setBorderPassword("red");
           setErrorMessage("Please enter a password.");
         } else {
@@ -133,9 +133,9 @@ const SignUpScreen = ({ navigation }) => {
       // all the possible different error codes
       switch (errorCode) {
         case "auth/email-already-in-use":
-          setBorderUsername("black");
+          setBorderUsername("#4F4E4C");
           setBorderEmail("red");
-          setBorderPassword("black");
+          setBorderPassword("#4F4E4C");
           setErrorMessage("Email already in use, please try another one.");
           break;
 
@@ -149,30 +149,30 @@ const SignUpScreen = ({ navigation }) => {
           break;
 
         case "auth/invalid-email":
-          setBorderUsername("black");
+          setBorderUsername("#4F4E4C");
           setBorderEmail("red");
-          setBorderPassword("black");
+          setBorderPassword("#4F4E4C");
           setErrorMessage("Invalid email, please enter a valid email address.");
           break;
 
         case "auth/missing-email":
-          setBorderUsername("black");
+          setBorderUsername("#4F4E4C");
           setBorderEmail("red");
-          setBorderPassword("black");
+          setBorderPassword("#4F4E4C");
           setErrorMessage("Missing email, please enter a valid email address.");
           break;
 
         case "auth/weak-password":
-          setBorderUsername("black");
-          setBorderEmail("black");
+          setBorderUsername("#4F4E4C");
+          setBorderEmail("#4F4E4C");
           setBorderPassword("red");
           setErrorMessage("Weak password, please use a stronger one.");
           break;
 
         default:
-          setBorderUsername("black");
-          setBorderEmail("black");
-          setBorderPassword("black");
+          setBorderUsername("#4F4E4C");
+          setBorderEmail("#4F4E4C");
+          setBorderPassword("#4F4E4C");
           setErrorMessage(
             "Unknown error, please make sure you entered your information correctly."
           );
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
   // 'SIGN UP' button
   button: {
     backgroundColor: "grey",
-    borderColor: "black",
+    borderColor: "#4F4E4C",
     borderRadius: 10,
     borderWidth: 2,
   },

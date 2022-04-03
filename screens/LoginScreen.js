@@ -66,7 +66,7 @@ const LoginScreen = ({ navigation }) => {
         switch (errorCode) {
           case "auth/invalid-email":
             setBorderEmail("red");
-            setBorderPassword("black");
+            setBorderPassword("#4F4E4C");
             setErrorMessage("Invalid email, please try another one.");
             break;
 
@@ -80,19 +80,19 @@ const LoginScreen = ({ navigation }) => {
 
           case "auth/user-not-found":
             setBorderEmail("red");
-            setBorderPassword("black");
+            setBorderPassword("#4F4E4C");
             setErrorMessage("This user cannot be found, please try again.");
             break;
 
           case "auth/wrong-password":
-            setBorderEmail("black");
+            setBorderEmail("#4F4E4C");
             setBorderPassword("red");
             setErrorMessage("Wrong password, please try again.");
             break;
 
           default:
-            setBorderEmail("black");
-            setBorderPassword("black");
+            setBorderEmail("#4F4E4C");
+            setBorderPassword("#4F4E4C");
             setErrorMessage(
               "Unknown error, cannot log in. Please make sure you entered your information correctly."
             );
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   // 'SIGN UP' button
   button: {
     backgroundColor: "grey",
-    borderColor: "black",
+    borderColor: "#4F4E4C",
     borderRadius: 10,
     borderWidth: 2,
   },
