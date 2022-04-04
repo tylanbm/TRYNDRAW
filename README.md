@@ -569,12 +569,12 @@ Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
 
 ### Credits <a name="credits"></a>
 
-<img width=25% src="/readme_resources/tylan.jpeg" />
+<img width=25% src="/readme_resources/tylan.png" />
 
 [Tylan Bayley-McPherson](https://github.com/tylanbm)
 
 <br />
 
-<img width=25% src="/readme_resources/tyrell.jpeg" />
+<img width=25% src="/readme_resources/tyrell.png" />
 
 [Tyrell Bain](https://github.com/tyrellbain4)
