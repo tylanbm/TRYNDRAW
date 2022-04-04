@@ -46,7 +46,7 @@ To get started, tap the "Sign up" button to create an account on *TRYNDRAW*.
 
 The [Sign Up Screen](#signup) prompts you to enter a unique username, email address and password for your new account. Firebase handles most error cases for authentication, but it misses a few crucial ones. For example, it does not check if your chosen username is unique to other users' usernames, so we implemented the `isUsernameAvailable()` function to handle username query conflicts.
 
-<details><summary>Sign Up Screen: isUsernameAvailable()</summary>
+<details open><summary>Sign Up Screen: isUsernameAvailable()</summary>
 
 ```javascript
 // check if the current username is unique
@@ -102,7 +102,7 @@ The [Home Tab](#home) will greet you with a welcome message, a default profile p
 
 The [Gallery Tab](#gallery) displays all the uploaded drawings drawn by other users for you to view and comment on with other users. Displaying the drawings requires loading them into a FlatList using our `getURLs()` function.
 
-<details><summary>Gallery Tab: getURLs()</summary>
+<details open><summary>Gallery Tab: getURLs()</summary>
 
 ```javascript
 const docsRef = collection(db, "uniqueImageNames");
@@ -164,7 +164,7 @@ This continues until the screen has loaded all the drawings which then asks if y
 
 The [Image Screen](#image) displays a full-size image of the selected drawing with a back button, a like button and a report button. You can also view the full name of the drawing along with who drew it and its comments section. This screen displays only the first 2 comments using our `get2CommentsData()` function.
 
-<details><summary>Image Screen: get2CommentsData()</summary>
+<details open><summary>Image Screen: get2CommentsData()</summary>
 
 ```javascript
 // get data from all the comments
@@ -242,7 +242,7 @@ Do you want to create your own drawing? Go to the [Home Tab](#home) and tap eith
 
 The [Drawing Selection Screen](#drawing-selection) gives you a list of randomly generated 3-word prompts containing 2 adjectives and a noun. These are the same style as the drawing titles in the [Gallery Tab](#gallery). Whichever one you select will be the drawing you will *TRY AND DRAW*! If you do not like the selection given, you can tap the "Reroll selection" button to generate three more 3-word prompts using our `reroll()` function.
 
-<details><summary>Drawing Selection Screen: get2CommentsData()</summary>
+<details open><summary>Drawing Selection Screen: get2CommentsData()</summary>
 
 ```javascript
 // generates 3 more 3-word prompts
@@ -286,7 +286,7 @@ You can choose one of the 3 options the [Upload Modal](#upload) provides. You ca
 
 Tapping the "Upload drawing and exit" button runs the `captureViewShot()` function before returning you to the [Home Tab](#home).
 
-<details><summary>Upload Modal: captureViewShot()</summary>
+<details open><summary>Upload Modal: captureViewShot()</summary>
 
 ```javascript
 //A function that takes a snapshot of the canvas element and uploads image to firebase storage
@@ -335,7 +335,7 @@ This uploads your new drawing as an image to the storage and then to the databas
 
 Returning to the [Home Tab](#home) will eventually replace the "You have no drawings" button with your uploaded drawing. It will also show a "View all" button to the right of your drawing with a big + icon. This happens due to the [Home Tab](#home)'s `onSnapshot()` function for showing your drawings.
 
-<details><summary>Home Tab: onSnapshot() for drawings</summary>
+<details open><summary>Home Tab: onSnapshot() for drawings</summary>
    
 ```javascript
 const imagesRef = collection(db, "uniqueImageNames");
@@ -388,7 +388,7 @@ You can create as many drawings as you want! However, the [Home Tab](#home) will
 
 The [My Drawings Screen](#my-drawings) will display all your drawings in chronological order. You can again tap to view them in the [Image Screen](#image). You can also delete them with the Delete button at the bottom right of the image which runs the `onDeleteObject()` function.
    
-<details><summary>My Drawings Screen: onDeleteObject()</summary>
+<details open><summary>My Drawings Screen: onDeleteObject()</summary>
    
 ```javascript
 // delete an image
@@ -444,7 +444,7 @@ The [Profile Image Editor Screen](#profile-image-editor) is the same as the [Can
 
 Once done drawing your new profile image, tap the Upload button as before and tap "Upload profile photo and exit" to run its `captureViewShot()` function and upload the image.
    
-<details><summary>Profile Image Editor Screen: captureViewShot()</summary>
+<details open><summary>Profile Image Editor Screen: captureViewShot()</summary>
    
 ```javascript
 //A function that takes a snapshot of the canvas element and uploads image to firebase storage
@@ -496,7 +496,7 @@ Thus, unlike the [Canvas Screen](#canvas) that creates a brand new image with a 
 
 After tapping the "Upload profile photo and exit" button in the [Profile Picture Editor Screen](#profile-image-editor), you will go back to the [Account Tab](#account) and it along with the [Home Tab](#home) will set your profile image by running their own `onSnapshot()` functions. The `onSnapshot()` functions are the same on both screens. This means the [Home Tab](#home) has 2 `onSnapshot()` functions: one for updating your 2 newest drawings and another for updating your profile image.
    
-<details><summary>Account and Home Tabs: captureViewShot() for profile image</summary>
+<details open><summary>Account and Home Tabs: captureViewShot() for profile image</summary>
    
 ```javascript
 const userRef = doc(db, 'users', userId);
