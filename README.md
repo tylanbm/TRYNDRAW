@@ -4,7 +4,9 @@
 
 *TRYNDRAW* is a social-lite drawing platform. Users are given randomly generated prompts that depict funny senarios. Then they are tasked to "try and draw" these prompts relying on their imagination and humor. Once they are done, the drawing is uploaded onto the platform for their friends and the world to see!
 
-*TRYNDRAW* is powered by React Native and Firebase.
+*TRYNDRAW* is powered by [React Native](https://reactnative.dev/) and [Firebase](https://firebase.google.com/).
+
+Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
 
 
 ## Table of Contents
@@ -44,6 +46,8 @@ To get started, tap the "Sign up" button to create an account on *TRYNDRAW*.
 
 The [Sign Up Screen](#signup) prompts you to enter a unique username, email address and password for your new account. Firebase handles most error cases for authentication, but it misses a few crucial ones. For example, it does not check if your chosen username is unique to other users' usernames, so we implemented the `isUsernameAvailable()` function to handle username query conflicts.
 
+<details><summary>Sign Up Screen: isUsernameAvailable()</summary>
+
 ```javascript
 // check if the current username is unique
    const isUsernameAvailable = async(userNameInput) => {
@@ -78,7 +82,9 @@ The [Sign Up Screen](#signup) prompts you to enter a unique username, email addr
    }
 ```
 
-This prevents you and everyone else from creating the same usernames by querying into the Firestore Database. It uses the "users" collection and checks each registered username to ensure your username does not match. If the query returns empty, your username is unique. If it returns nonempty, another user has a username the same as yours and thus prompts you to enter a different one. This prevents false queries from overwriting one user's data with another.
+</details>
+
+This prevents you and everyone else from creating the same usernames by querying into the [Firestore Database](https://firebase.google.com/docs/firestore). It uses the "users" collection and checks each registered username to ensure your username does not match. If the query returns empty, your username is unique. If it returns nonempty, another user has a username the same as yours and thus prompts you to enter a different one. This prevents false queries from overwriting one user's data with another.
 
 After entering a valid username, email and password, you can tap the "Create account" button to go to the [Home Tab](#home).
 
@@ -96,10 +102,14 @@ The [Home Tab](#home) will greet you with a welcome message, a default profile p
 
 The [Gallery Tab](#gallery) displays all the uploaded drawings drawn by other users for you to view and comment on with other users. Displaying the drawings requires loading them into a FlatList using our `getURLs()` function.
 
+<details><summary>Gallery Tab: getURLs()</summary>
+
 ```javascript
 const docsRef = collection(db, "uniqueImageNames");
 const imgsToLoad = 20;
-...
+
+[...]
+
 // await async calls for getting img URLs
    const getDownload = async() => {
        loading = true;
@@ -139,6 +149,8 @@ const imgsToLoad = 20;
    }
 ```
 
+</details>
+
 It loads each drawing into an array the FlatList uses to display them all on the [Gallery Tab](#gallery) by querying into the database and fetching the storage. It uses the "uniqueImageNames" collection in the database to fetch all its documents. It then uses their IDs to fetch the drawings in the "testImages" folder in the storage. It then uses the IDs along with the drawings' names, timestamps and URLs to correctly order and display the drawings with their unique titles. This gives us all the data it needs to render each drawing only once with each new refresh.
 
 It also limits how many drawings the screen loads at a time (currently set to 20) until you request more drawings when you scroll 75% down the image list. Thus, if there are n>20 documents in the "uniqueImageNames" collection, we save n-20 API calls until you scroll 75% down the list which then queries for 20 more images. This is crucial because if n is large, saving n-20 API calls saves a lot of money and data resources for the database ($0.10 per 1000 API calls). It also causes less slowdown on your device when needing to only call for 20 images instead of all n, giving you an earlier chance to explore other users' drawings.
@@ -151,6 +163,8 @@ This continues until the screen has loaded all the drawings which then asks if y
 ![image](/readme_resources/image_screen.jpg)
 
 The [Image Screen](#image) displays a full-size image of the selected drawing with a back button, a like button and a report button. You can also view the full name of the drawing along with who drew it and its comments section. This screen displays only the first 2 comments using our `get2CommentsData()` function.
+
+<details><summary>Image Screen: get2CommentsData()</summary>
 
 ```javascript
 // get data from all the comments
@@ -188,9 +202,13 @@ The [Image Screen](#image) displays a full-size image of the selected drawing wi
            }
            else console.log('Do not change ' + new Date().getSeconds());
        });
-...
+
+[...]
+
 }
 ```
+
+</details>
 
 It queries into the "uniqueImageNames" collection to fetch its "comments" collection, containing all the drawing's comments. It then uses 2 queries, each with its own purpose: one to fetch only the first 2 most recent comments and another to fetch all the comments. The screen displays only the first 2 comments to give you an idea of what the recent consensus is on the drawing. It uses `onSnapshot()` to update the comments when a user adds a new comment to the drawing.
 
@@ -224,6 +242,8 @@ Do you want to create your own drawing? Go to the [Home Tab](#home) and tap eith
 
 The [Drawing Selection Screen](#drawing-selection) gives you a list of randomly generated 3-word prompts containing 2 adjectives and a noun. These are the same style as the drawing titles in the [Gallery Tab](#gallery). Whichever one you select will be the drawing you will *TRY AND DRAW*! If you do not like the selection given, you can tap the "Reroll selection" button to generate three more 3-word prompts using our `reroll()` function.
 
+<details><summary>Drawing Selection Screen: get2CommentsData()</summary>
+
 ```javascript
 // generates 3 more 3-word prompts
  const reroll = () => {
@@ -238,6 +258,8 @@ The [Drawing Selection Screen](#drawing-selection) gives you a list of randomly 
    setData(temp_data);
 }
 ```
+
+</details>
 
 It creates a temporary copy of the prompt list, generating 3 more prompts for the copy one by one then sets the current list of prompts displayed on the screen to that modified copy. It cannot simply place the 3 new slugs into the displayed list because the list is a const. Thus, it cannot write directly to its elements. It needs to create a copy first then set the const list to the modified copy asynchronously. However, this also allows all 3 new prompts to display at once instead of displaying sequentially which could confuse some users upon first pressing the "Reroll" button.
 
@@ -263,6 +285,8 @@ You can choose one of the 3 options the [Upload Modal](#upload) provides. You ca
 ### Uploading your drawing <a name="upload-drawing"></a>
 
 Tapping the "Upload drawing and exit" button runs the `captureViewShot()` function before returning you to the [Home Tab](#home).
+
+<details><summary>Upload Modal: captureViewShot()</summary>
 
 ```javascript
 //A function that takes a snapshot of the canvas element and uploads image to firebase storage
@@ -302,16 +326,22 @@ Tapping the "Upload drawing and exit" button runs the `captureViewShot()` functi
    };
 ```
 
-This uploads your new drawing as an image to the storage and then to the database with the image's data. This is crucial for retrieving the image's data for the Image Screen and ordering the images in batches of 20 for the [Gallery Tab](#gallery). It first gets the uri of your drawing's viewShot and uploads it as a blob to the "testImages" folder in storage. It then uploads the image data (user ID, username, image title and timestamp) to the database so it can retrieve the image with all its data from anywhere in the app.
+</details>
+
+This uploads your new drawing as an image to the storage and then to the database with the image's data. This is crucial for retrieving the image's data for the [Image Screen](#image) and ordering the images in batches of 20 for the [Gallery Tab](#gallery). It first gets the uri of your drawing's viewShot and uploads it as a blob to the "testImages" folder in storage. It then uploads the image data (user ID, username, image title and timestamp) to the database so it can retrieve the image with all its data from anywhere in the app.
 
 
 ### Back to the Home Tab <a name="back-home"></a>
 
 Returning to the [Home Tab](#home) will eventually replace the "You have no drawings" button with your uploaded drawing. It will also show a "View all" button to the right of your drawing with a big + icon. This happens due to the [Home Tab](#home)'s `onSnapshot()` function for showing your drawings.
 
+<details><summary>Home Tab: onSnapshot() for drawings</summary>
+   
 ```javascript
 const imagesRef = collection(db, "uniqueImageNames");
-...
+
+[...]
+
 // listen to uploading or deleting a drawing
        onSnapshot(query(imagesRef,
            orderBy('timestamp', 'desc'),
@@ -341,6 +371,8 @@ const imagesRef = collection(db, "uniqueImageNames");
        });
 ```
 
+</details>
+
 This updates every time you upload a drawing or delete one of your 2 newest drawings (more on deleting drawings in [The My Drawings Screen](#my-drawings)). It queries for the 2 newest drawings whenever there is a change in the query itself. If you have only one drawing, it queries for just that one drawing, no others. The "View all" button with the + icon will always display to the right of your drawings if you have at least one. Otherwise, if you have no drawings, it will display the "You have no drawings" button.
 
 We want to display only your 2 newest drawings because we want to prevent clutter on the [Home Tab](#home). Furthermore, if you have n>2 drawings, we save n-2 API calls. This is the same principle we use as limiting the initial query in the [Gallery Tab](#gallery) to 20 images. If you want to see more drawings, you can tap one of the "View all" buttons to go to the [My Drawings Screen](#my-drawings) which we discuss at the end of this section.
@@ -355,7 +387,9 @@ You can create as many drawings as you want! However, the [Home Tab](#home) will
 ![my-drawings](/readme_resources/mydrawings_screen.jpg)
 
 The [My Drawings Screen](#my-drawings) will display all your drawings in chronological order. You can again tap to view them in the [Image Screen](#image). You can also delete them with the Delete button at the bottom right of the image which runs the `onDeleteObject()` function.
-
+   
+<details><summary>My Drawings Screen: onDeleteObject()</summary>
+   
 ```javascript
 // delete an image
    const onDeleteObject = async(item, itemId) => {
@@ -380,6 +414,8 @@ The [My Drawings Screen](#my-drawings) will display all your drawings in chronol
        console.log('Deleted image ' + itemId);
    }
 ```
+
+</details>
 
 It deletes your chosen drawing first from the FlatList which displays it on the screen. It then deletes the drawing from the database and storage. It does this so there are no more traces of your drawing anywhere on the backend.
 
@@ -407,7 +443,9 @@ The [Account Tab](#account) will show your default profile image along with "Edi
 The [Profile Image Editor Screen](#profile-image-editor) is the same as the [Canvas Screen](#canvas) but with "Your profile photo" displayed at the top. You can draw whatever you want as your unique profile image!
 
 Once done drawing your new profile image, tap the Upload button as before and tap "Upload profile photo and exit" to run its `captureViewShot()` function and upload the image.
-
+   
+<details><summary>Profile Image Editor Screen: captureViewShot()</summary>
+   
 ```javascript
 //A function that takes a snapshot of the canvas element and uploads image to firebase storage
    const captureViewShot = async () => {
@@ -447,7 +485,9 @@ Once done drawing your new profile image, tap the Upload button as before and ta
    };
 ```
 
-This `captureViewShot()` function is very similar to the `captureViewShot()` function in the [Canvas Screen](#canvas) but differs in where it uploads. It still gets the uri from its viewShot and fetches its blob but instead of querying the "uniqueImageNames" collection, it queries the "users" collection. If there is no profile image currently set, it overwrites your profileImageSet boolean to true and your lastProfileImageChange timestamp to the current timestamp. This way, your new profile image overwrites your current profile image (including if your current profile image is the default) when querying for it in the [Account Tab](#account) and [Home Tab](#home) (discussed in [Back to the Account and Home Tabs](#back-to-account-and-home)). Furthermore, the storage path is your profile image in the "uniqueProfileImages" folder. Thus, your new profile image overwrites your current profile image in both the database and storage.
+</details>
+   
+This `captureViewShot()` function is very similar to the `captureViewShot()` function in the [Canvas Screen](#canvas) but differs in where it uploads. It still gets the uri from its viewShot and fetches its blob but instead of querying the "uniqueImageNames" collection, it queries the "users" collection. If there is no profile image currently set, it overwrites your "profileImageSet" boolean to true and your "lastProfileImageChange" timestamp to the current timestamp. This way, your new profile image overwrites your current profile image (including if your current profile image is the default) when querying for it in the [Account Tab](#account) and [Home Tab](#home) (discussed in [Back to the Account and Home Tabs](#back-to-account-and-home)). Furthermore, the storage path is your profile image in the "uniqueProfileImages" folder. Thus, your new profile image overwrites your current profile image in both the database and storage.
 
 Thus, unlike the [Canvas Screen](#canvas) that creates a brand new image with a new ID with your new drawing, there is no additional storage allocation for your profile image. It is set once you create a profile image and it never changes. No matter how many times you create a new profile image, we do not need anymore database nor storage allocation. If an image is size k, we save k storage space with each new profile image creation any user creates.
 
@@ -455,10 +495,14 @@ Thus, unlike the [Canvas Screen](#canvas) that creates a brand new image with a 
 ### Back to the Account and Home Tabs <a name="back-to-account-and-home"></a>
 
 After tapping the "Upload profile photo and exit" button in the [Profile Picture Editor Screen](#profile-image-editor), you will go back to the [Account Tab](#account) and it along with the [Home Tab](#home) will set your profile image by running their own `onSnapshot()` functions. The `onSnapshot()` functions are the same on both screens. This means the [Home Tab](#home) has 2 `onSnapshot()` functions: one for updating your 2 newest drawings and another for updating your profile image.
-
+   
+<details><summary>Account and Home Tabs: captureViewShot() for profile image</summary>
+   
 ```javascript
 const userRef = doc(db, 'users', userId);
-...
+
+[...]
+
 // listen to profile image change
        onSnapshot(query(userRef),
            { includeMetadataChanges: true },
@@ -488,7 +532,9 @@ const userRef = doc(db, 'users', userId);
        });
 ```
 
-This `onSnapshot()` function is conceptually the same as the other `onSnapshot()` functions. It runs when the query, in this case the document with the name of your user ID, in the "users" collection changes. This is the same document that changes when you change your profile image in the Profile Picture Editor Screen. When there are no more pending writes, it retrieves the default profile image from storage if profileImageSet is false. If profileImageSet is true, it retrieves your unique profile image with the name of your user ID from the "userProfileImages" folder in storage.
+</details>
+
+This `onSnapshot()` function is conceptually the same as the other `onSnapshot()` functions. It runs when the query, in this case the document with the name of your user ID, in the "users" collection changes. This is the same document that changes when you change your profile image in the Profile Picture Editor Screen. When there are no more pending writes, it retrieves the default profile image from storage if "profileImageSet" is false. If "profileImageSet" is true, it retrieves your unique profile image with the name of your user ID from the "userProfileImages" folder in storage.
 
 Your newly created profile image will replace your default profile image on your [Account Tab](#account) and [Home Tab](#home) along with the drawings you drew and comments you wrote. However, you will initially have only 2 API calls: one for the [Account Tab](#account) and another for the [Home Tab](#home). More API calls will happen when you go to the [Image Screen](#image) but that is the same as before you set your profile image. You can now display your unique profile image to other users just like they can with their own profile images!
 
@@ -508,3 +554,5 @@ You can use the [LogIn Screen](#login) to log back into your account using your 
 ### Best wishes! <a name="end"></a>
 
 We hope you enjoy *TRYNDRAW* to express and exercise your creativity and share it with others!
+
+Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
