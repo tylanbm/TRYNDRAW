@@ -15,7 +15,7 @@
 8. [Create a Drawing](#create-drawing)
 9. [The Drawing Selection Screen](#drawing-selection)
 10. [The Canvas Screen](#canvas)
-11. [The Publish Modal](#publish)
+11. [The Upload Modal](#upload)
 12. [Uploading your drawing](#upload-drawing)
 13. [Back to the Home Screen](#back-home)
 14. [The My Drawings Screen](#my-drawings)
@@ -86,7 +86,7 @@ You can also navigate to other tabs at the bottom of the app to view screens suc
 ### The Gallery Screen <a name="gallery"></a>
 
 
-The [Gallery Screen](#gallery) displays all the published drawings drawn by other users for you to view and comment on with other users. Displaying the drawings requires loading them into a FlatList using our `getURLs()` function.
+The [Gallery Screen](#gallery) displays all the uploaded drawings drawn by other users for you to view and comment on with other users. Displaying the drawings requires loading them into a FlatList using our `getURLs()` function.
 
 ```javascript
 const docsRef = collection(db, "uniqueImageNames");
@@ -237,12 +237,12 @@ When you have decided on your prompt, you can then tap the "Start drawing" butto
 
 The [Canvas Screen](#canvas) provides many different tools for you to draw your best representation of your selected prompt. The screen displays your selected prompt at the top of the screen so you do not forget what you are drawing. In the middle of the screen is the canvas itself, giving you ample room for you to draw as large and detailed of a drawing as you want.
 
-At the top and bottom of the screen are your tools. The top features 23 different colours for you to use. The bottom features a brush utensil, an eraser, an Undo button, a brush thickness slider, an Undo all button and a Publish button. When you are done drawing, tap the Publish button to display the Publish Modal.
+At the top and bottom of the screen are your tools. The top features 23 different colours for you to use. The bottom features a brush utensil, an eraser, an Undo button, a brush thickness slider, an Undo all button and an Upload button. When you are done drawing, tap the Upload button to display the [Upload Modal](#upload).
 
 
-### The Publish Modal <a name="publish"></a>
+### The Upload Modal <a name="upload"></a>
 
-You can choose one of the 3 options the Publish Modal provides. You can upload your drawing and exit to the [Home Screen](#home), stay to continue your drawing or delete the drawing and exit to the [Home Screen](#home).
+You can choose one of the 3 options the [Upload Modal](#upload) provides. You can upload your drawing and exit to the [Home Screen](#home), stay to continue your drawing or delete the drawing and exit to the [Home Screen](#home).
 
 
 ### Uploading your drawing <a name="upload-drawing"></a>
@@ -292,7 +292,7 @@ This uploads your new drawing as an image to the storage and then to the databas
 
 ### Back to the Home Screen <a name="back-home"></a>
 
-Returning to the [Home Screen](#home) will eventually replace the "You have no drawings" button with your published drawing. It will also show a "View all" button to the right of your drawing with a big + icon. This happens due to the [Home Screen](#home)'s `onSnapshot()` function for showing your drawings.
+Returning to the [Home Screen](#home) will eventually replace the "You have no drawings" button with your uploaded drawing. It will also show a "View all" button to the right of your drawing with a big + icon. This happens due to the [Home Screen](#home)'s `onSnapshot()` function for showing your drawings.
 
 ```javascript
 const imagesRef = collection(db, "uniqueImageNames");
@@ -328,16 +328,16 @@ const imagesRef = collection(db, "uniqueImageNames");
 
 This updates every time you upload a drawing or delete one of your 2 newest drawings (more on deleting drawings in [The My Drawings Screen](#my-drawings)). It queries for the 2 newest drawings whenever there is a change in the query itself. If you have only one drawing, it queries for just that one drawing, no others. The "View all" button with the + icon will always display to the right of your drawings if you have at least one. Otherwise, if you have no drawings, it will display the "You have no drawings" button.
 
-We want to display only your 2 newest drawings because we want to prevent clutter on the [Home Screen](#home). Furthermore, if you have n>2 drawings, we save n-2 API calls. This is the same principle we use as limiting the initial query in the [Gallery Screen](#gallery) to 20 images. If you want to see more drawings, you can tap one of the "View all" buttons to go to the My Drawing Screen which we discuss at the end of this section.
+We want to display only your 2 newest drawings because we want to prevent clutter on the [Home Screen](#home). Furthermore, if you have n>2 drawings, we save n-2 API calls. This is the same principle we use as limiting the initial query in the [Gallery Screen](#gallery) to 20 images. If you want to see more drawings, you can tap one of the "View all" buttons to go to the [My Drawings Screen](#my-drawings) which we discuss at the end of this section.
 
-Uploading a drawing always runs the `onSnapshot()` function because your newest drawing will have the most recent timestamp of all your drawings. Thus, it will always show up on your [Home Screen](#home). You can tap it to go to its [Image Screen](#image) to view its image details and comments, exactly the same as other users' drawings in the [Gallery Screen](#gallery). You most likely will not see any comments yet as you have just recently published your drawing. You can then view your new drawing in the [Gallery Screen[(#gallery) by scrolling upwards as before to refresh all the drawings.
+Uploading a drawing always runs the `onSnapshot()` function because your newest drawing will have the most recent timestamp of all your drawings. Thus, it will always show up on your [Home Screen](#home). You can tap it to go to its [Image Screen](#image) to view its image details and comments, exactly the same as other users' drawings in the [Gallery Screen](#gallery). You most likely will not see any comments yet as you have just recently uploaded your drawing. You can then view your new drawing in the [Gallery Screen[(#gallery) by scrolling upwards as before to refresh all the drawings.
 
 You can create as many drawings as you want! However, the [Home Screen](#home) will display only your 2 newest drawings to prevent clutter. To view all your drawings, tap either the "View all" button at the top right of the drawings list or to the right of your first 2 drawings to go to the My Drawings Screen.
 
 
 ### The My Drawings Screen <a name="my-drawings"></a>
 
-The My Drawings Screen will display all your drawings in chronological order. You can again tap to view them in the [Image Screen](#image). You can also delete them with the Delete button at the bottom right of the image which runs the `onDeleteObject()` function.
+The [My Drawings Screen](#my-drawings) will display all your drawings in chronological order. You can again tap to view them in the [Image Screen](#image). You can also delete them with the Delete button at the bottom right of the image which runs the `onDeleteObject()` function.
 
 ```javascript
 // delete an image
@@ -373,21 +373,21 @@ If the drawing you delete is one of your 2 newest, the [Home Screen](#home) will
 
 ### Creating your own profile image <a name="create-profile-image"></a>
 
-You may have noticed some users have unique profile images when viewing their drawings in the [Gallery Screen](#gallery). To create your own profile image, first tap the "Account" tab to go to the Account Screen.
+You may have noticed some users have unique profile images when viewing their drawings in the [Gallery Screen](#gallery). To create your own profile image, first tap the "Account" tab to go to the [Account Screen](#account).
 
 
 ### The Account Screen <a name="account"></a>
 
-The Account Screen will show your default profile image along with "Edit profile image" and "Sign out" buttons. Tap on the "Edit profile image" button to go to the Profile Image Editor Screen.
+The [Account Screen](#account) will show your default profile image along with "Edit profile image" and "Sign out" buttons. Tap on the "Edit profile image" button to go to the [Profile Image Editor Screen](#profile-image-editor).
 
 
 ### The Profile Image Editor Screen <a name="profile-image-editor"></a>
 
 same as Canvas Screen
 
-The Profile Image Editor Screen is the same as the [Canvas Screen](#canvas) but with "Your profile photo" displayed at the top. You can draw whatever you want as your unique profile image!
+The [Profile Image Editor Screen](#profile-image-editor) is the same as the [Canvas Screen](#canvas) but with "Your profile photo" displayed at the top. You can draw whatever you want as your unique profile image!
 
-Once done drawing your new profile image, tap the Publish button as before and tap "Upload profile photo and exit" to run its `captureViewShot()` function and upload the image.
+Once done drawing your new profile image, tap the Upload button as before and tap "Upload profile photo and exit" to run its `captureViewShot()` function and upload the image.
 
 ```javascript
 //A function that takes a snapshot of the canvas element and uploads image to firebase storage
@@ -428,14 +428,14 @@ Once done drawing your new profile image, tap the Publish button as before and t
    };
 ```
 
-This `captureViewShot()` function is very similar to the `captureViewShot()` function in the [Canvas Screen](#canvas) but differs in where it uploads. It still gets the uri from its viewShot and fetches its blob but instead of querying the "uniqueImageNames" collection, it queries the "users" collection. If there is no profile image currently set, it overwrites your profileImageSet boolean to true and your lastProfileImageChange timestamp to the current timestamp. This way, your new profile image overwrites your current profile image (including if your current profile image is the default) when querying for it in the Account Screen and [Home Screen](#home) (discussed in [Back to the Account and Home Screens](#back-to-account-and-home)). Furthermore, the storage path is your profile image in the "uniqueProfileImages" folder. Thus, your new profile image overwrites your current profile image in both the database and storage.
+This `captureViewShot()` function is very similar to the `captureViewShot()` function in the [Canvas Screen](#canvas) but differs in where it uploads. It still gets the uri from its viewShot and fetches its blob but instead of querying the "uniqueImageNames" collection, it queries the "users" collection. If there is no profile image currently set, it overwrites your profileImageSet boolean to true and your lastProfileImageChange timestamp to the current timestamp. This way, your new profile image overwrites your current profile image (including if your current profile image is the default) when querying for it in the [Account Screen](#account) and [Home Screen](#home) (discussed in [Back to the Account and Home Screens](#back-to-account-and-home)). Furthermore, the storage path is your profile image in the "uniqueProfileImages" folder. Thus, your new profile image overwrites your current profile image in both the database and storage.
 
 Thus, unlike the [Canvas Screen](#canvas) that creates a brand new image with a new ID with your new drawing, there is no additional storage allocation for your profile image. It is set once you create a profile image and it never changes. No matter how many times you create a new profile image, we do not need anymore database nor storage allocation. If an image is size k, we save k storage space with each new profile image creation any user creates.
 
 
 ### Back to the Account and Home Screens <a name="back-to-account-and-home"></a>
 
-After tapping the "Upload profile photo and exit" button in the Profile Picture Editor Screen, you will go back to the Account Screen and it along with the [Home Screen](#home) will set your profile image by running their own `onSnapshot()` functions. The `onSnapshot()` functions are the same on both screens. This means the [Home Screen](#home) has 2 `onSnapshot()` functions: one for updating your 2 newest drawings and another for updating your profile image.
+After tapping the "Upload profile photo and exit" button in the [Profile Picture Editor Screen](#profile-image-editor), you will go back to the [Account Screen](#account) and it along with the [Home Screen](#home) will set your profile image by running their own `onSnapshot()` functions. The `onSnapshot()` functions are the same on both screens. This means the [Home Screen](#home) has 2 `onSnapshot()` functions: one for updating your 2 newest drawings and another for updating your profile image.
 
 ```javascript
 const userRef = doc(db, 'users', userId);
@@ -471,17 +471,17 @@ const userRef = doc(db, 'users', userId);
 
 This `onSnapshot()` function is conceptually the same as the other `onSnapshot()` functions. It runs when the query, in this case the document with the name of your user ID, in the "users" collection changes. This is the same document that changes when you change your profile image in the Profile Picture Editor Screen. When there are no more pending writes, it retrieves the default profile image from storage if profileImageSet is false. If profileImageSet is true, it retrieves your unique profile image with the name of your user ID from the "userProfileImages" folder in storage.
 
-Your newly created profile image will replace your default profile image on your Account Screen and [Home Screen](#home) along with the drawings you drew and comments you wrote. However, you will initially have only 2 API calls: one for the Account Screen and another for the [Home Screen](#home). More API calls will happen when you go to the [Image Screen](#image) but that is the same as before you set your profile image. You can now display your unique profile image to other users just like they can with their own profile images!
+Your newly created profile image will replace your default profile image on your [Account Screen](#account) and [Home Screen](#home) along with the drawings you drew and comments you wrote. However, you will initially have only 2 API calls: one for the [Account Screen](#account) and another for the [Home Screen](#home). More API calls will happen when you go to the [Image Screen](#image) but that is the same as before you set your profile image. You can now display your unique profile image to other users just like they can with their own profile images!
 
 
 ### Logging out of your account <a name="logout"></a>
 
-If you ever wish to sign out of your account, simply tap the "Sign out" button on the Account Screen to go back to the Onboarding Screen. You can then tap the "Login" button to go to the LogIn Screen.
+If you ever wish to sign out of your account, simply tap the "Sign out" button on the [Account Screen](#account) to go back to the [Onboarding Screen](#onboarding). You can then tap the "Login" button to go to the [LogIn Screen](#login).
 
 
 ### The LogIn Screen <a name="login"></a>
 
-You can use the LogIn Screen to log back into your account using your email and password. If you want to create a new account instead, you can tap the "Don't have an account?" button to go back to the [Sign Up](#signup) Screen.
+You can use the [LogIn Screen](#login) to log back into your account using your email and password. If you want to create a new account instead, you can tap the "Don't have an account?" button to go back to the [Sign Up](#signup) Screen.
 
 
 ### Best wishes! <a name="end"></a>
