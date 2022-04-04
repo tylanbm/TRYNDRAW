@@ -33,9 +33,13 @@ Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
 18. [Back to the Account and Home Tabs](#back-to-account-and-home)
 19. [Logging out of your account](#logout)
 20. [The LogIn Screen](#login)
-21. [Best wishes!](#end)
+21. [Best wishes and credits](#end)
+22. [Credits](#credits)
 
 </details>
+
+
+![speed](/readme_resources/speed_draw.gif)
 
 
 ### The Onboarding Screen <a name="onboarding"></a>
@@ -561,3 +565,16 @@ You can use the [LogIn Screen](#login) to log back into your account using your 
 We hope you enjoy *TRYNDRAW* to express and exercise your creativity and share it with others!
 
 Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
+
+
+### Credits <a name="credits"></a>
+
+<img width=25% src="/readme_resources/tylan.jpeg" />
+
+[Tylan Bayley-McPherson](https://github.com/tylanbm)
+
+<br />
+
+<img width=25% src="/readme_resources/tyrell.jpeg" />
+
+[Tyrell Bain](https://github.com/tyrellbain4)
