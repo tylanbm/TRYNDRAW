@@ -78,9 +78,7 @@ After entering a valid username, email and password, you can tap the "Create acc
 
 ### The Home Screen <a name="home"></a>
 
-The [Home Screen](#home) will greet you with a welcome message, a default profile picture and a prompt to start your first drawing.
-
-You can also navigate to other tabs at the bottom of the app to view screens such as the [Gallery Screen](#gallery).
+The [Home Screen](#home) will greet you with a welcome message, a default profile picture and a prompt to start your first drawing. You can also navigate to other tabs at the bottom of the app to view screens such as the [Gallery Screen](#gallery).
 
 
 ### The Gallery Screen <a name="gallery"></a>
@@ -135,9 +133,7 @@ It loads each drawing into an array the FlatList uses to display them all on the
 
 It also limits how many drawings the screen loads at a time (currently set to 20) until you request more drawings when you scroll 75% down the image list. Thus, if there are n>20 documents in the "uniqueImageNames" collection, we save n-20 API calls until you scroll 75% down the list which then queries for 20 more images. This is crucial because if n is large, saving n-20 API calls saves a lot of money and data resources for the database ($0.10 per 1000 API calls). It also causes less slowdown on your device when needing to only call for 20 images instead of all n, giving you an earlier chance to explore other users' drawings.
 
-This continues until the screen has loaded all the drawings which then asks if you want to refresh the image list. Pressing the button refreshes the image list.
-
-To view a drawing in the [Gallery Screen](#gallery), simply tap on it to go to the [Image Screen](#image).
+This continues until the screen has loaded all the drawings which then asks if you want to refresh the image list. Pressing the button refreshes the image list. To view a drawing in the [Gallery Screen](#gallery), simply tap on it to go to the [Image Screen](#image).
 
 
 ### The Image Screen <a name="image"></a>
@@ -383,7 +379,7 @@ The [Account Screen](#account) will show your default profile image along with "
 
 ### The Profile Image Editor Screen <a name="profile-image-editor"></a>
 
-same as Canvas Screen
+
 
 The [Profile Image Editor Screen](#profile-image-editor) is the same as the [Canvas Screen](#canvas) but with "Your profile photo" displayed at the top. You can draw whatever you want as your unique profile image!
 
