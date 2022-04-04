@@ -15,7 +15,7 @@
 5. [The Image Screen](#image)
 6. [The Comments Modal](#comments)
 7. [Exploring the Gallery Tab](#explore-gallery)
-8. [Create a Drawing](#create-drawing)
+8. [Creating a Drawing](#creating-drawing)
 9. [The Drawing Selection Screen](#drawing-selection)
 10. [The Canvas Screen](#canvas)
 11. [The Upload Modal](#upload)
@@ -213,7 +213,7 @@ To return back to the [Gallery Tab](#gallery), simply tap the back button at the
 You can continue to view and comment on other drawings as you please. Scrolling downwards sequentially displays 20 more drawings until you reach the end of all the drawings. The screen then gives you the option to refresh all the drawings from the start, possibly displaying newer ones submitted by other users if they have created any. You can also refresh the screen by scrolling upwards at the top of the [Gallery](#gallery)'s image list.
 
 
-### Create a drawing <a name="create-drawing"></a>
+### Creating a drawing <a name="creating-drawing"></a>
 
 Do you want to create your own drawing? Go to the [Home Tab](#home) and tap either the big button in the middle saying "You have no drawings" or the "Start drawing" button at the bottom of the screen to take you to the [Drawing Selection Screen](#drawing-selection).
 
