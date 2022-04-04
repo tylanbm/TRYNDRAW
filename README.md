@@ -10,6 +10,9 @@ Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
 
 
 ## Table of Contents
+
+<details><summary>Table of Contents</summary>
+
 1. [The Onbarding Screen](#onboarding)
 2. [The Sign Up Screen](#signup)
 3. [The Home Tab](#home)
@@ -31,6 +34,8 @@ Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
 19. [Logging out of your account](#logout)
 20. [The LogIn Screen](#login)
 21. [Best wishes!](#end)
+
+</details>
 
 
 ### The Onboarding Screen <a name="onboarding"></a>
