@@ -7,8 +7,6 @@ import {
   Text,
   View,
   SafeAreaView,
-  Image,
-  ImageBackground,
   FlatList,
   TouchableOpacity,
 } from "react-native";
@@ -17,7 +15,11 @@ import {
 import { auth } from "../firebaseConfig";
 
 // import firebase storage
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  getDownloadURL
+} from "firebase/storage";
 
 // import Firestore docs
 import {
@@ -47,6 +49,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import ImageButton from "../components/ImageButton";
 import ProfileImage from "../components/ProfileImage";
 
+
 // get Firebase database and storage
 const db = getFirestore();
 const storage = getStorage();
@@ -56,6 +59,7 @@ const imagesRef = collection(db, "uniqueImageNames");
 const size = "20%";
 
 const HomeScreen = ({ navigation }) => {
+
   // user auth
   const user = auth.currentUser;
   const username = user.displayName;
@@ -157,6 +161,7 @@ const HomeScreen = ({ navigation }) => {
     );
   }, []);
 
+  // images
   const renderImg = ({ item }) => {
     return (
       <ImageButton
@@ -180,9 +185,10 @@ const HomeScreen = ({ navigation }) => {
   });
   if (!fontsLoaded) return <AppLoading />;
 
+
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
-      <View style={[styles.container, {}]}>
+      <View style={styles.container}>
         <View style={{ alignItems: "center", marginTop: "5%" }}>
           <ProfileImage url={pic} size={size} />
           <Text style={styles.title}>
@@ -214,16 +220,16 @@ const HomeScreen = ({ navigation }) => {
             style={[styles.flatEmpty, { height: "31%" }]}
           >
             <View style={{ marginVertical: "10%" }}>
-              <Text style={[styles.flatEmptyText, {}]}>
+              <Text style={styles.flatEmptyText}>
                 You have no drawings.
               </Text>
               <Ionicons
                 name="add-outline"
                 size={96}
                 color="#60B1B6"
-                style={[styles.flatEmptyIcon, {}]}
+                style={styles.flatEmptyIcon}
               />
-              <Text style={[styles.flatEmptyText, {}]}>Start drawing!</Text>
+              <Text style={styles.flatEmptyText}>Start drawing!</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -279,7 +285,9 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen;
 
+
 const styles = StyleSheet.create({
+
   // entire screen
   container: {
     flex: 1,
@@ -390,5 +398,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     marginHorizontal: "2%",
+  },
+
+  // light/dark mode
+  separator: {
+    marginVertical: "10%",
+    height: 1,
+    width: "80%",
   },
 });

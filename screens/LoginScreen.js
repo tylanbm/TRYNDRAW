@@ -1,25 +1,28 @@
+// React, initial run, set const
 import React, { useEffect, useState } from "react";
+
+// styling
 import {
   StyleSheet,
-  Dimensions,
   TextInput,
   View,
   Text,
   TouchableOpacity,
   Image,
 } from "react-native";
+
 import { auth } from "../firebaseConfig";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+// Google Fonts
+import { useFonts, WorkSans_700Bold } from "@expo-google-fonts/work-sans";
 
 // make sure fonts are loaded
 import AppLoading from "expo-app-loading";
 
-// Google Fonts
-import { useFonts, WorkSans_700Bold } from "@expo-google-fonts/work-sans";
+// custom button
 import FullButton from "../components/FullButton";
+
 
 const LoginScreen = ({ navigation }) => {
   // email and password
@@ -35,21 +38,9 @@ const LoginScreen = ({ navigation }) => {
 
   //Check if user is logged in and return state
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {});
+    const unsubscribe = auth.onAuthStateChanged(() => {});
     return unsubscribe;
   }, []);
-
-  // Register a new user
-  const register = async () => {
-    try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(user);
-      console.log(email);
-    } catch (error) {
-      console.log("register error: " + error.code);
-      console.log(email);
-    }
-  };
 
   // log user into account
   const logInUser = () => {
@@ -106,6 +97,7 @@ const LoginScreen = ({ navigation }) => {
     WorkSans_700Bold,
   });
   if (!fontsLoaded) return <AppLoading />;
+
 
   return (
     <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
@@ -177,41 +169,42 @@ const LoginScreen = ({ navigation }) => {
 
 export default LoginScreen;
 
-// full width of the window
-let fullWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
+
+  // entire screen
   container: {
     flex: 1,
     marginHorizontal: 24,
   },
+
+  // navigate to Sign Up
   subContainer: {
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
     marginTop: 20,
   },
+
+  // 'Log in'
   title: {
     color: "#2B2B28",
     fontSize: 32,
   },
+
+  // 'Get back to drawing!'
   subtitle: {
     color: "#2B2B28",
     fontSize: 20,
   },
+
+  // titles above text inputs
   inputTitle: {
     fontSize: 14,
     color: "#4F4E4C",
     fontWeight: "bold",
     marginTop: 8,
     marginBottom: 2,
-  },
-
-  // light/dark mode
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
   },
 
   // text input
@@ -222,10 +215,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 0,
   },
+
+  // 'Dont have an account?'
   textPoke1: {
     fontSize: 14,
     color: "#7C8B8C",
   },
+
+  // 'Sign up today!'
   textPoke2: {
     fontSize: 14,
     color: "#33999F",
@@ -240,6 +237,8 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     height: 48,
   },
+
+  // logo image
   logo: {
     width: 20,
     height: 20,
@@ -254,18 +253,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  // 'SIGN UP' button
-  button: {
-    backgroundColor: "grey",
-    borderColor: "#4F4E4C",
-    borderRadius: 10,
-    borderWidth: 2,
-  },
-
-  // 'SIGN UP'
-  buttonText: {
-    fontSize: 30,
-    fontFamily: "WorkSans_700Bold",
-    color: "white",
+  // light/dark mode
+  separator: {
+    marginVertical: "10%",
+    height: 1,
+    width: "80%",
   },
 });

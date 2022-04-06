@@ -11,7 +11,6 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  TextInput,
   FlatList,
 } from "react-native";
 
@@ -40,9 +39,6 @@ const slugOptions = {
 const emptybox = <Ionicons name="square-outline" size={20} color="#9AAAAC" />;
 const checkbox = <Ionicons name="checkbox" size={20} color="#60B1B6" />;
 
-/*generateSlug
-use slug to put into state
-*/
 
 const ChallengesScreen = ({ navigation }) => {
   // which challenge to be selected
@@ -155,6 +151,7 @@ const ChallengesScreen = ({ navigation }) => {
           textColor={"white"}
           borderColor={"transparent"}
         ></FullButton>
+
         <View
           style={styles.separator}
           lightColor="#eee"
@@ -167,7 +164,9 @@ const ChallengesScreen = ({ navigation }) => {
 
 export default ChallengesScreen;
 
+
 const styles = StyleSheet.create({
+
   // entire page
   container: {
     flex: 1,
@@ -201,5 +200,12 @@ const styles = StyleSheet.create({
   reroll: {
     marginTop: "7%",
     marginHorizontal: "9%",
+  },
+
+  // light/dark mode
+  separator: {
+    marginVertical: "10%",
+    height: 1,
+    width: "80%",
   },
 });

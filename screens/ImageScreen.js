@@ -29,7 +29,6 @@ import {
   query,
   orderBy,
   limit,
-  startAfter,
   serverTimestamp,
   onSnapshot,
 } from "firebase/firestore";
@@ -59,12 +58,8 @@ import FullButton from "../components/FullButton";
 import IonButton from "../components/IonButton";
 import ProfileImage from "../components/ProfileImage";
 
-//Height detection
-//Android
-import { NativeModules } from "react-native";
-const { StatusBarManager } = NativeModules;
-const height = StatusBarManager.HEIGHT;
-//IOS
+
+// iOS
 let iosHeight = 44;
 const majorVersionIOS = parseInt(Platform.Version, 10);
 if (majorVersionIOS <= 9) {
@@ -75,11 +70,8 @@ if (majorVersionIOS <= 9) {
 const db = getFirestore();
 const storage = getStorage();
 
-// snapshot for entire comments subcollection
-let snapshot = null;
-
 // get screen dimensions
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+const { width: screenWidth } = Dimensions.get("window");
 
 // comments
 const Item = ({ title, user, userImage }) => {
@@ -102,7 +94,6 @@ const ImageScreen = ({ route, navigation }) => {
 
   // number of comments
   const [commentsLength, setCommentsLength] = useState(0);
-  const [s, setS] = useState("");
 
   // modal visibility
   const [modalVisible, setModalVisible] = useState(false);
@@ -131,11 +122,6 @@ const ImageScreen = ({ route, navigation }) => {
   // click the like button
   const likeImage = () => {
     console.log("You liked the image");
-  };
-
-  // click the dislike button
-  const dislikeImage = () => {
-    console.log("You disliked the image");
   };
 
   // click the flag button
@@ -472,7 +458,7 @@ const ImageScreen = ({ route, navigation }) => {
                 <Text style={styles.imageNameText}>{imageTitle}</Text>
                 <Text style={styles.usernameText}>by {imageUsername}</Text>
               </View>
-              <View style={[styles.modalImageView]}>
+              <View style={styles.modalImageView}>
                 <Image
                   source={{ uri: imageSourceToLoad }}
                   style={styles.modalImageStyle}
@@ -527,6 +513,7 @@ const ImageScreen = ({ route, navigation }) => {
 export default ImageScreen;
 
 const styles = StyleSheet.create({
+
   // image and image footer
   imageContainer: {
     flex: 1,
@@ -553,19 +540,19 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
   },
 
-  // heart icon background
-  heart: {
-    flex: 1,
-    alignSelf: "flex-start",
-    justifyContent: "flex-end",
-    margin: "1%",
-  },
-
   // arrow icon background
   arrow: {
     flex: 1,
     alignSelf: "flex-start",
     justifyContent: "flex-start",
+    margin: "1%",
+  },
+
+  // heart icon background
+  heart: {
+    flex: 1,
+    alignSelf: "flex-start",
+    justifyContent: "flex-end",
     margin: "1%",
   },
 
@@ -707,6 +694,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.25,
     borderColor: "rgba(0,0,0,0.2)",
   },
+
+  // modal back button
   heightOffset: {
     ...Platform.select({
       ios: {

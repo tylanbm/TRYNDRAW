@@ -1,3 +1,6 @@
+import React from "react";
+
+// styling
 import {
   StyleSheet,
   Text,
@@ -5,34 +8,37 @@ import {
   Image,
   Dimensions,
   ImageBackground,
-  TouchableOpacity,
 } from "react-native";
-import React from "react";
-import { StatusBar } from "expo-status-bar";
-import { NativeModules } from "react-native";
-import {} from "@expo-google-fonts/work-sans";
 
-import AppLoading from "expo-app-loading";
+// Google Fonts
 import {
   useFonts,
   WorkSans_700Bold,
   WorkSans_100Thin,
   WorkSans_300Light,
 } from "@expo-google-fonts/work-sans";
+
+// fonts are still loading
+import AppLoading from "expo-app-loading";
+
+// custom button
 import FullButton from "../components/FullButton";
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
+
+// get screen dimensions
+const { width: screenWidth } = Dimensions.get("window");
+
 
 const OnboardingScreen = ({ navigation }) => {
-  const TestButton = () => {
-    console.log("Yay!");
-  };
 
+  // check if fonts are loaded
   let [fontsLoaded] = useFonts({
     WorkSans_700Bold,
     WorkSans_100Thin,
     WorkSans_300Light,
   });
   if (!fontsLoaded) return <AppLoading />;
+
 
   return (
     <View style={styles.container2}>
@@ -60,7 +66,7 @@ const OnboardingScreen = ({ navigation }) => {
             textColor={"black"}
             borderColor={"transparent"}
           ></FullButton>
-          <View style={styles.spacing8}></View>
+          <View style={{marginTop: 8,}} />
           <FullButton
             onPress={() => navigation.navigate("Login")}
             text={"Log in"}
@@ -76,47 +82,63 @@ const OnboardingScreen = ({ navigation }) => {
 
 export default OnboardingScreen;
 
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginLeft: 24,
-  },
+
+  // entire screen
   container2: {
     flex: 1,
     backgroundColor: "white",
     zIndex: 0,
   },
-  buttonContainer: {
-    marginTop: 170,
-    marginHorizontal: 24,
+
+  // logo, title and subtitle
+  container: {
+    flex: 1,
+    marginLeft: 24,
   },
-  spacing8: {
-    marginTop: 8,
-  },
+
+  // TRYNDRAW logo
   logo: {
     width: 20,
     height: 20,
   },
-  vector: {
-    width: screenWidth,
-    height: 335,
-    alignSelf: "flex-end",
-  },
+
+  // logo and logo text
   container_row: {
     marginTop: 16,
     flexDirection: "row",
     alignItems: "center",
   },
+
+  // 'TRYNDRAW'
   logoText: {
     fontSize: 32,
     fontFamily: "WorkSans_300Light",
   },
-  bigText: {
-    marginTop: 160,
-    fontSize: 32,
+
+  // background landscape vector
+  vector: {
+    width: screenWidth,
+    height: 335,
+    alignSelf: "flex-end",
   },
+
+  // 'Billions of...'
+  bigText: {
+    fontSize: 32,
+    marginTop: 160,
+  },
+
+  // 'Down to try?'
   smallText: {
     fontSize: 22,
     marginTop: 16,
+  },
+
+  // Sign up and Log in buttons
+  buttonContainer: {
+    marginTop: 170,
+    marginHorizontal: 24,
   },
 });

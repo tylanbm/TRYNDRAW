@@ -1,13 +1,11 @@
 // import React itself, change const state, use async methods
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 // import Firebase storage
 import {
   getStorage,
   ref,
   getDownloadURL,
-  listAll,
-  getMetadata,
 } from "firebase/storage";
 
 // import React styles and features
@@ -17,17 +15,13 @@ import {
   View,
   FlatList,
   SafeAreaView,
-  TouchableOpacity,
   RefreshControl,
 } from "react-native";
 
 // import Firestore docs
 import {
   collection,
-  doc,
-  setDoc,
   getFirestore,
-  getDoc,
   getDocs,
   query,
   orderBy,
@@ -49,57 +43,10 @@ import AppLoading from "expo-app-loading";
 import FullButton from "../components/FullButton";
 import ImageButton from "../components/ImageButton";
 
+
+// get database and storage
 const db = getFirestore();
 const storage = getStorage();
-
-const setDataInDatabase = async () => {
-  await setDoc(doc(db, "characters", "mario2"), {
-    employment: "plumber",
-    outfitColor: "red",
-    specialAttack: "fireball",
-  });
-};
-
-const getData = async () => {
-  const docRef = doc(db, "characters", "mario");
-  const docSnap = await getDoc(docRef);
-  let returnVal = "";
-
-  if (docSnap.exists()) {
-    returnVal = String(docSnap.data().specialAttack.toString());
-  } else {
-    // doc.data() will be undefined in this case
-    returnVal = "No document found!";
-    console.log("No such document!");
-  }
-  return returnVal;
-};
-
-const getAllData = async () => {
-  const docsRef = collection(db, "characters");
-  const querySnapshot = await getDocs(docsRef);
-  const tempData = [];
-
-  if (querySnapshot != null) {
-    querySnapshot.forEach((doc) => {
-      let temp = {
-        id: doc.data().id,
-        specialAttack: doc.data().specialAttack,
-      };
-      tempData.push(temp);
-    });
-  } else {
-    console.log("No such query snapshot!");
-  }
-
-  return tempData;
-};
-
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.titleStyle, textColor]}>{item.specialAttack}</Text>
-  </TouchableOpacity>
-);
 
 // global variables (set once per app reload)
 const docsRef = collection(db, "uniqueImageNames");
@@ -111,6 +58,7 @@ let dragging = false;
 let loading = false;
 let refreshing = false;
 
+
 const GalleryScreen = ({ navigation }) => {
   // array for FlatList of images
   const [getImgs, setImgs] = useState([]);
@@ -120,7 +68,7 @@ const GalleryScreen = ({ navigation }) => {
 
   // initial load of gallery screen
   const getURLs = async (querySnapshot) => {
-    querySnapshot.forEach(async (item) => {
+    querySnapshot.forEach(async(item) => {
       // iterate through all testImages images
       const itemId = item.id;
       const itemRef = ref(storage, "testImages/" + itemId + ".jpg");
@@ -195,6 +143,7 @@ const GalleryScreen = ({ navigation }) => {
     loading = false;
   };
 
+  // images
   const renderImg = ({ item }) => {
     return (
       <ImageButton
@@ -211,6 +160,7 @@ const GalleryScreen = ({ navigation }) => {
     );
   };
 
+  // scrolling 75% down causes more images to load
   const handleOnEndReached = async () => {
     if (dragging && !isEmpty) {
       console.log("Load new");
@@ -285,15 +235,12 @@ const GalleryScreen = ({ navigation }) => {
 
 export default GalleryScreen;
 
+
 const styles = StyleSheet.create({
+
   // entire page
   container: {
     backgroundColor: "#FFFFFF",
-  },
-
-  // title for Database
-  titleStyle: {
-    fontSize: 12,
   },
 
   // footer of FlatList
@@ -324,5 +271,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     marginHorizontal: "3%",
+  },
+
+  // light/dark mode
+  separator: {
+    marginVertical: "10%",
+    height: 1,
+    width: "80%",
   },
 });

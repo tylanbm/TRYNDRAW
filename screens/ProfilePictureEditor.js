@@ -1,60 +1,61 @@
+// React, const initializer, use tools
 import React, { useState, useRef } from "react";
+
+// styling
 import {
   FlatList,
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
-  useWindowDimensions,
   View,
   Dimensions,
   Modal,
-  Pressable,
 } from "react-native";
-import {
-  backgroundColor,
-  borderColor,
-  color,
-} from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+
+// take screenshot of drawing
 import ViewShot from "react-native-view-shot";
-import * as MediaLibrary from "expo-media-library";
-import { Draw, DrawRef, ColorPicker } from "@benjeau/react-native-draw";
+
+// draw on the canvas
+import { Draw, DrawRef } from "@benjeau/react-native-draw";
 import {
   getStorage,
   ref,
-  uploadString,
   uploadBytes,
-  uploadBytesResumable,
 } from "firebase/storage";
 
+// brush thickness
 import { Slider } from "@miblanchard/react-native-slider";
 
+// upload drawing to database
 import {
-  collection,
   doc,
   setDoc,
   getFirestore,
-  getDoc,
-  getDocs,
   serverTimestamp,
 } from "firebase/firestore";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
-
 import { auth } from "../firebaseConfig";
+
+// custom button
 import FullButton from "../components/FullButton";
+
+// Google Fonts
+import {
+  useFonts,
+  WorkSans_300Light
+} from "@expo-google-fonts/work-sans";
 
 // Make sure fonts are loaded
 import AppLoading from "expo-app-loading";
-// Google Fonts
-import { useFonts, WorkSans_300Light } from "@expo-google-fonts/work-sans";
+
 
 // get database
 const db = getFirestore();
 
 // get screen dimensions
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+const { width: screenWidth } = Dimensions.get("window");
 
 const COLORS = [
   {
@@ -152,7 +153,7 @@ const COLORS = [
 ];
 
 //Color swatch on color selection bar
-const Item = ({ item, onPress, backgroundColor, swatchColor, style }) => {
+const Item = ({ onPress, swatchColor, style }) => {
   let color = swatchColor;
   const borderColor = color == "#FFFFFF" ? "#B9B9B9" : "#FFFFFF";
   let radius = 28;
@@ -173,35 +174,11 @@ const Item = ({ item, onPress, backgroundColor, swatchColor, style }) => {
   );
 };
 
-const Tool = ({ iconName, onPress, backgroundColor, swatchColor, style }) => {
-  let color = swatchColor;
-  const borderColor = color == "#FFFFFF" ? "#B9B9B9" : "#FFFFFF";
-  let radius = 28;
-
-  return (
-    <TouchableOpacity onPress={onPress} style={[style]}>
-      <View
-        style={{
-          width: radius,
-          height: radius,
-          borderRadius: 100 / 2,
-          backgroundColor: `${color}`,
-          borderColor: `${borderColor}`,
-          borderWidth: 1,
-        }}
-      ></View>
-    </TouchableOpacity>
-  );
-};
 
 const ProfilePictureEditor = ({ navigation, route }) => {
   //Id of active drawing color
   const [selectedId, setSelectedId] = useState("2");
-  const [selectedId2, setSelectedId2] = useState(null);
   let activeColor = "#D00909";
-
-  //Slug from drawing selection screen
-  const slug = route.params;
 
   const drawRef = useRef(DrawRef);
   const viewShot = useRef(ViewShot);
@@ -256,9 +233,7 @@ const ProfilePictureEditor = ({ navigation, route }) => {
   const captureViewShot = async () => {
     viewShot.current.capture().then((uri) => {
       console.log("Do something with ", uri);
-      //MediaLibrary.requestPermissionsAsync();
-      //MediaLibrary.saveToLibraryAsync(uri);
-      //uploadImageAsync(uri);
+      
       const user = auth.currentUser;
       const userId = user.uid;
 
@@ -419,6 +394,7 @@ const ProfilePictureEditor = ({ navigation, route }) => {
     );
   };
 
+  // colors
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#60B1B6" : "#F5F5F5";
     const color = item.colorCode;
@@ -684,22 +660,21 @@ const ProfilePictureEditor = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+
+  // entire screen
   mainContainer: {
     flex: 1,
     backgroundColor: "white",
   },
 
-  title: {
-    alignContent: "center",
-    justifyContent: "center",
-  },
-
+  // TRYNDRAW, Your profile photo at top of screen
   titleText: {
     fontSize: 20,
     fontFamily: "WorkSans_300Light",
     textAlign: "center",
   },
 
+  // viewShot
   container: {
     alignContent: "center",
     justifyContent: "center",
@@ -709,15 +684,7 @@ const styles = StyleSheet.create({
     borderColor: "#D2D2D2",
   },
 
-  container1: {
-    marginTop: StatusBar.currentHeight || 0,
-    backgroundColor: "#F5F5F5",
-  },
-
-  container2: {
-    backgroundColor: "#F5F5F5",
-  },
-
+  // tools at bottom of screen
   toolContainer: {
     backgroundColor: "white",
     borderColor: "#C0C0CC",
@@ -731,6 +698,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
+  // icons of tools
   toolIcon: {
     fontSize: 24,
     fontFamily: "WorkSans_700Bold",
@@ -738,58 +706,37 @@ const styles = StyleSheet.create({
     color: "#C0C0CC",
   },
 
+  // tool is active
   active: {
     borderColor: "#60B1B6",
     color: "#60B1B6",
   },
 
+  // tool is inactive
   inActive: {
     borderColor: "#C0C0CC",
     color: "#C0C0CC",
   },
 
-  swatch: {
-    textAlign: "center",
-    textAlignVertical: "center",
-    paddingLeft: 1.75,
-    fontSize: 32,
-    fontFamily: "WorkSans_700Bold",
-    borderRadius: 30,
-  },
-
-  item2: {
-    padding: 8.5,
-    marginVertical: 8,
-    marginHorizontal: 2,
-    backgroundColor: "lightgray",
-  },
-
-  box1: {
-    flex: 1,
-    backgroundColor: "#F5F5F5",
-  },
-
+  // canvas and tools
   box2: {
     flex: 12,
     backgroundColor: "#FAFAFA",
   },
 
-  box3: {
-    flex: 1.25,
-    alignItems: "center",
-    backgroundColor: "#F5F5F5",
-  },
-
+  // tools in a row
   row: {
     flexDirection: "row",
   },
 
+  // center the clear canvas modal
   centeredView: {
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
   },
 
+  // clear canvas modal
   modalView: {
     margin: 20,
     backgroundColor: "white",
@@ -809,29 +756,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
-  button: {
-    borderRadius: 20,
-    elevation: 2,
-    width: 200,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-
-  textStyle: {
-    color: "white",
-    fontFamily: "WorkSans_700Bold",
-    textAlign: "center",
-  },
-
+  // 'Clear canvas?'
   modalText: {
     marginVertical: "6%",
     textAlign: "center",
@@ -839,6 +764,7 @@ const styles = StyleSheet.create({
     fontFamily: "WorkSans_300Light",
   },
 
+  // thickness slider
   thicknessContainer: {
     alignItems: "center",
     backgroundColor: "#ffffff",

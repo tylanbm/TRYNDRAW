@@ -1,16 +1,19 @@
+// React, initial load, set const
 import React, { useEffect, useState } from "react";
+
+// styling
 import {
   StyleSheet,
-  Dimensions,
   TextInput,
   TouchableOpacity,
   Image,
   View,
   Text,
 } from "react-native";
+
+// authentication
 import { auth } from "../firebaseConfig";
 import {
-  getAuth,
   updateProfile,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
@@ -32,10 +35,15 @@ import AppLoading from "expo-app-loading";
 
 // Google Fonts
 import { useFonts, WorkSans_700Bold } from "@expo-google-fonts/work-sans";
+
+// custom button
 import FullButton from "../components/FullButton";
 
+
+// get database
 const db = getFirestore();
 
+// set the user's username they entered
 const setUsernameInDatabase = async (userUID, usernameInput) => {
   await setDoc(doc(db, "users", userUID), {
     profileImageSet: false,
@@ -43,26 +51,26 @@ const setUsernameInDatabase = async (userUID, usernameInput) => {
   });
 };
 
+
 const SignUpScreen = ({ navigation }) => {
-  // username, email, password
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // username, email, password entry border colours
   const [borderUsername, setBorderUsername] = useState("#4F4E4C");
   const [borderEmail, setBorderEmail] = useState("#4F4E4C");
   const [borderPassword, setBorderPassword] = useState("#4F4E4C");
 
-  // error message
   const [errorMessage, setErrorMessage] = useState("");
 
+  // initial load
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {});
+    const unsubscribe = auth.onAuthStateChanged(() => {});
     return unsubscribe;
   }, []);
 
-  const isUsernameAvailable = async (userNameInput) => {
+  const isUsernameAvailable = async(userNameInput) => {
     // edge case: username is a nonempty string
     if (userNameInput == "") {
       setBorderUsername("red");
@@ -74,11 +82,12 @@ const SignUpScreen = ({ navigation }) => {
 
     // Create a reference to the users collection
     const usersRef = collection(db, "users");
-    // Create a query against the collection.
-    const q = query(usersRef, where("userName", "==", userNameInput));
 
+    // Create a query and snapshot against the collection.
+    const q = query(usersRef, where("userName", "==", userNameInput));
     const querySnapshot = await getDocs(q);
 
+    // check if username is unique
     if (querySnapshot.empty) {
       console.log(userNameInput + " is available!");
       return true;
@@ -93,9 +102,11 @@ const SignUpScreen = ({ navigation }) => {
     }
   };
 
-  const register = async () => {
+  // create new user account
+  const register = async() => {
     try {
       if (await isUsernameAvailable(username)) {
+
         // check is password is nonempty
         if (password == "") {
           setBorderUsername("#4F4E4C");
@@ -235,7 +246,7 @@ const SignUpScreen = ({ navigation }) => {
         <View style={styles.subContainer}>
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text style={styles.textPoke1}>Already have an account?</Text>
-            <Text style={styles.textPoke2}> Sign in</Text>
+            <Text style={styles.textPoke2}>Sign in</Text>
           </TouchableOpacity>
 
           <Image style={styles.logo} source={require("../assets/logo.png")} />
@@ -253,42 +264,42 @@ const SignUpScreen = ({ navigation }) => {
 
 export default SignUpScreen;
 
-// full width of screen
-let fullWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
+
   // entire screen
   container: {
     flex: 1,
     marginHorizontal: 24,
   },
+
+  // Sign in at bottom of screen
   subContainer: {
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
     marginTop: 20,
   },
+
+  // 'Sign Up'
   title: {
     color: "#2B2B28",
     fontSize: 32,
   },
+
+  // 'Get drawing right away!'
   subtitle: {
     color: "#2B2B28",
     fontSize: 20,
   },
+
+  // labels above text inputs
   inputTitle: {
     fontSize: 14,
     color: "#4F4E4C",
     fontWeight: "bold",
     marginTop: 8,
     marginBottom: 2,
-  },
-
-  // light/dark mode
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
   },
 
   // text input
@@ -298,10 +309,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 0,
   },
+
+  // 'Already have an account?'
   textPoke1: {
     fontSize: 14,
     color: "#7C8B8C",
   },
+
+  // 'Sign in'
   textPoke2: {
     fontSize: 14,
     color: "#33999F",
@@ -316,6 +331,8 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     height: 48,
   },
+
+  // logo
   logo: {
     width: 20,
     height: 20,
@@ -330,18 +347,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  // 'SIGN UP' button
-  button: {
-    backgroundColor: "grey",
-    borderColor: "#4F4E4C",
-    borderRadius: 10,
-    borderWidth: 2,
-  },
-
-  // 'SIGN UP'
-  buttonText: {
-    fontSize: 30,
-    fontFamily: "WorkSans_700Bold",
-    color: "white",
+  // light/dark mode
+  separator: {
+    marginVertical: "10%",
+    height: 1,
+    width: "80%",
   },
 });

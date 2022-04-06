@@ -6,10 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Image,
-  TouchableOpacity,
-  FlatList,
   Dimensions,
 } from "react-native";
 
@@ -21,18 +18,18 @@ import { auth } from "../firebaseConfig";
 
 // import Firestore docs
 import {
-  collection,
   doc,
   getFirestore,
   query,
-  orderBy,
-  where,
-  limit,
   onSnapshot,
 } from "firebase/firestore";
 
 // import firebase storage
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  getDownloadURL,
+} from "firebase/storage";
 
 // Google Fonts
 import {
@@ -52,9 +49,11 @@ const storage = getStorage();
 const db = getFirestore();
 
 // get screen dimensions
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+const { width: screenWidth } = Dimensions.get("window");
+
 
 const SettingsScreen = ({ navigation }) => {
+
   // user auth
   const user = auth.currentUser;
   const username = user.displayName;
@@ -67,10 +66,9 @@ const SettingsScreen = ({ navigation }) => {
   // get and set profile pic from firebase storage
   useEffect(() => {
     // listen to profile image
-    onSnapshot(
-      query(userRef),
+    onSnapshot(query(userRef),
       { includeMetadataChanges: true },
-      async (profileSnapshot) => {
+      async(profileSnapshot) => {
         // check if there are no more pending writes
         const writes = profileSnapshot.metadata.hasPendingWrites;
         console.log("User settings " + writes);
@@ -82,19 +80,15 @@ const SettingsScreen = ({ navigation }) => {
           // if profile image does not exist, use default profile image
           if (profileSnapshot.data().profileImageSet) {
             const temp = await getDownloadURL(
-              ref(storage, "userProfileImages/" + user.uid)
-            );
+              ref(storage, "userProfileImages/" + user.uid));
             setPic(temp);
           } else {
             const temp = await getDownloadURL(
-              ref(storage, "userProfileImages/profileImage.jpg")
-            );
+              ref(storage, "userProfileImages/profileImage.jpg"));
             setPic(temp);
           }
         } else
-          console.log(
-            "Do not change profile settings " + new Date().getSeconds()
-          );
+          console.log("Do not change profile settings " + new Date().getSeconds());
       }
     );
   }, []);
@@ -119,6 +113,7 @@ const SettingsScreen = ({ navigation }) => {
     Medium: WorkSans_500Medium,
   });
   if (!fontsLoaded) return <AppLoading />;
+
 
   return (
     <View style={styles.container}>
@@ -150,18 +145,16 @@ const SettingsScreen = ({ navigation }) => {
         </View>
       </View>
 
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.2)"
-      />
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.2)" />
     </View>
   );
 };
 
 export default SettingsScreen;
 
+
 const styles = StyleSheet.create({
+
   // entire screen
   container: {
     flex: 1,

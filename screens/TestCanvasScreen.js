@@ -1,16 +1,20 @@
+// React, use tools
 import React, { useRef } from "react";
 
+// styling
 import {
-  FlatList,
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+
+// take screenshot of drawing
 import ViewShot from "react-native-view-shot";
+
 import * as MediaLibrary from "expo-media-library";
+
+// draw on the canvas screen
 import { Draw, DrawRef } from "@benjeau/react-native-draw";
 
 const TestCanvasScreen = () => {
@@ -51,13 +55,18 @@ const TestCanvasScreen = () => {
 
 export default TestCanvasScreen;
 
+
 const styles = StyleSheet.create({
+
+  // entire screen
   container: {
     marginTop: 130,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5FCFF",
   },
+
+  // upload drawing
   touchable: {
     padding: 5,
     backgroundColor: "blue",

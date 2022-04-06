@@ -4,12 +4,9 @@ import React, { useState, useEffect } from "react";
 // import React styles and features
 import {
   StyleSheet,
-  Text,
   View,
-  ImageBackground,
   FlatList,
   SafeAreaView,
-  TouchableOpacity,
 } from "react-native";
 
 // import Firebase storage
@@ -28,10 +25,8 @@ import {
   query,
   orderBy,
   where,
-  limit,
   doc,
   deleteDoc,
-  writeBatch,
 } from "firebase/firestore";
 
 // import account authentication
@@ -182,15 +177,12 @@ const DrawingsScreen = ({ navigation }) => {
 
 export default DrawingsScreen;
 
+
 const styles = StyleSheet.create({
+
   // entire page
   container: {
     flex: 1,
-  },
-
-  // title for Database
-  titleStyle: {
-    fontSize: 12,
   },
 
   // delete icon
@@ -210,7 +202,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 
-  // view style of text overlayed on img
+  // view style of text overlayed on image
   overlay: {
     flex: 0.4,
     flexDirection: "row",
@@ -219,7 +211,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 
-  // text style of text overlayed on img
+  // text style of text overlayed on image
   imgText: {
     flex: 10,
     fontSize: 22,
@@ -229,5 +221,12 @@ const styles = StyleSheet.create({
     color: "white",
     paddingLeft: "2%",
     paddingVertical: "1%",
+  },
+
+  // light/dark mode
+  separator: {
+    marginVertical: "10%",
+    height: 1,
+    width: "80%",
   },
 });
