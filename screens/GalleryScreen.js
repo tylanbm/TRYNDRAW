@@ -128,7 +128,7 @@ const GalleryScreen = ({ navigation }) => {
             const itemId = item.id;
             const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
             
-            // get data for img
+            // get data for the image
             let itemData = item.data();
             let img = {
                 id: itemId,
@@ -167,18 +167,20 @@ const GalleryScreen = ({ navigation }) => {
         getDownload();
     }, []);
 
-    // await async calls for getting img urls
+    // await async calls for getting image URLs
     const getDownload = async() => {
         loading = true;
+
         q = query(docsRef,
             orderBy('timestamp', 'desc'),
             limit(imgsToLoad));
+        
         querySnapshot = await getDocs(q);
         last = await getURLs(querySnapshot);
         loading = false;
     }
 
-    // await async calls for getting img urls
+    // await async calls for getting image URLs
     const getRefresh = async() => {
         if (!loading) {
             console.log('Refreshing...');
@@ -199,7 +201,7 @@ const GalleryScreen = ({ navigation }) => {
         else console.log('Cannot refresh at this time.');
     }
 
-    // load new imgs when halfway through FlatList
+    // load new images when halfway through FlatList
     const getMoreDownload = async() => {
         loading = true;
 
@@ -248,7 +250,7 @@ const GalleryScreen = ({ navigation }) => {
         );
     };
 
-    // // when refreshing, get imgs from Firebase Storage
+    // // when refreshing, get images from Firebase Storage
     // const onRefresh = useCallback(() => {
     //     refreshing = true;
     //     await getDownload();
@@ -360,7 +362,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
-    // view style overlayed on img
+    // view style overlayed on the image
     overlay: {
         flex: 1,
         justifyContent: 'center',
@@ -368,7 +370,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
-    // text style overlayed on img
+    // text style overlayed on the image
     imgText: {
         fontSize: 22,
         fontFamily: 'Medium',

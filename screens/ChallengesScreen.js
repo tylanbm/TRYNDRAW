@@ -65,6 +65,7 @@ const ChallengesScreen = ({ navigation }) => {
     },
   ]);
 
+  // generates 3 more 3-word prompts
   const reroll = () => {
     let temp_data = [...data];
 

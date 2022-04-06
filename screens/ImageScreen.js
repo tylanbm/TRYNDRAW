@@ -226,7 +226,7 @@ const ImageScreen = ({ route, navigation }) => {
             })
             console.log(writes + ' ' + changeType);
     
-            // if both are false, refresh the images
+            // if no pending writes but comment is added, refresh the images
             if (!writes && changeType) {
                 console.log('Change ' + new Date().getSeconds());
                 setAllComments([]);

@@ -79,7 +79,7 @@ const DrawingsScreen = ({ navigation }) => {
             const itemId = item.id;
             const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
             
-            // get data for img
+            // get data for the image
             let itemData = item.data();
             let img = {
                 id: itemId,
@@ -121,7 +121,7 @@ const DrawingsScreen = ({ navigation }) => {
         getDownload();
     }, []);
 
-    // await async calls for getting img urls
+    // await async calls for getting image URLs
     const getDownload = async() => {
         loading = true;
         q = query(docsRef,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
-    // view style of text overlayed on img
+    // view style of text overlayed on the image
     overlay: {
         flex: 0.4,
         flexDirection: 'row',
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
-    // text style of text overlayed on img
+    // text style of text overlayed on the image
     imgText: {
         flex: 10,
         fontSize: 22,

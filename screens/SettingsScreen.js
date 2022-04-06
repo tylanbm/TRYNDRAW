@@ -72,7 +72,7 @@ const SettingsScreen = ({ navigation }) => {
     // get and set profile pic from firebase storage
     useEffect(() => {
 
-        // listen to profile image
+        // listen to profile image change
         onSnapshot(query(userRef),
             { includeMetadataChanges: true },
             async(profileSnapshot) => {
@@ -83,7 +83,7 @@ const SettingsScreen = ({ navigation }) => {
 
             // if no pending writes, update Home screen profile image
             if (!writes) {
-                console.log('Change profile settings ' + new Date().getSeconds());
+                console.log('Change profile settings');
 
                 // if profile image does not exist, use default profile image
                 if (profileSnapshot.data().profileImageSet) {
@@ -97,7 +97,7 @@ const SettingsScreen = ({ navigation }) => {
                     setPic(temp);
                 }
             }
-            else console.log('Do not change profile settings ' + new Date().getSeconds());
+            else console.log('Do not change profile settings');
         });
     }, []);
 

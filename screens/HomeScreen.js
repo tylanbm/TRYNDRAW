@@ -83,7 +83,7 @@ const HomeScreen = ({ navigation }) => {
             const itemId = item.id;
             const itemRef = ref(storage, 'testImages/' + itemId + '.jpg');
             
-            // get data for img
+            // get data for the image
             const itemData = item.data();
             const img = {
                 id: itemId,
@@ -130,7 +130,7 @@ const HomeScreen = ({ navigation }) => {
             }
         });
 
-        // listen to My Drawings
+        // listen to uploading or deleting a drawing
         onSnapshot(query(imagesRef,
             orderBy('timestamp', 'desc'),
             where('imageAuthorUsername', '==', username),
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
-    // view style overlayed on img
+    // view style overlayed on the image
     overlay: {
         flex: 1,
         justifyContent: 'center',
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
 
-    // text style overlayed on img
+    // text style overlayed on the image
     imgText: {
         fontSize: 22,
         fontFamily: 'Medium',

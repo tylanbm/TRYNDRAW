@@ -224,7 +224,7 @@ const CanvasScreen = ({navigation, route}) => {
     }
     
     //A function that takes a snapshot of the canvas element and uploads image to firebase storage
-    const captureViewShot = async () => {
+    const captureViewShot = async() => {
         viewShot.current.capture().then((uri) => {
             console.log("Do something with ", uri);
             
@@ -237,7 +237,7 @@ const CanvasScreen = ({navigation, route}) => {
 
             const storageRef = ref(storage, storagePath);
             
-            const uploadImage = async (imageUri) => {
+            const uploadImage = async(imageUri) => {
                 const response = await fetch(imageUri);
                 //Generate blob from image URI
                 const blob = await response.blob();

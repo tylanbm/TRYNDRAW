@@ -63,6 +63,7 @@ const SignUpScreen = ({navigation}) => {
         return unsubscribe;
     }, [])
 
+    // check if the current username is unique
     const isUsernameAvailable = async(userNameInput) => {
 
         // edge case: username is a nonempty string
