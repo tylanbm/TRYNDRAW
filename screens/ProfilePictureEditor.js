@@ -16,7 +16,8 @@ import {
 // take screenshot of drawing
 import ViewShot from "react-native-view-shot";
 
-// draw on the canvas
+// ability to draw on the canvas
+// DrawRef needed
 import { Draw, DrawRef } from "@benjeau/react-native-draw";
 import {
   getStorage,
@@ -233,7 +234,7 @@ const ProfilePictureEditor = ({ navigation, route }) => {
   const captureViewShot = async () => {
     viewShot.current.capture().then((uri) => {
       console.log("Do something with ", uri);
-      
+
       const user = auth.currentUser;
       const userId = user.uid;
 

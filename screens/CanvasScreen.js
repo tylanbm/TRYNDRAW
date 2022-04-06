@@ -17,6 +17,7 @@ import {
 import ViewShot from "react-native-view-shot";
 
 // ability to draw on the canvas
+// DrawRef needed
 import { Draw, DrawRef } from "@benjeau/react-native-draw";
 
 // upload drawing to storage
@@ -159,7 +160,10 @@ const Item = ({ onPress, swatchColor, style }) => {
   let radius = 28;
 
   return (
-    <TouchableOpacity onPress={onPress} style={[style]}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={style}
+    >
       <View
         style={{
           width: radius,
