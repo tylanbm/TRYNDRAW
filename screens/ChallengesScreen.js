@@ -112,7 +112,10 @@ const ChallengesScreen = ({ navigation }) => {
         <Text style={styles.title}>What do you want to draw?</Text>
 
         <SafeAreaView>
-          <FlatList data={data} renderItem={renderItem} />
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+          />
         </SafeAreaView>
 
         <View style={{ alignItems: "center" }}>
@@ -128,7 +131,7 @@ const ChallengesScreen = ({ navigation }) => {
 
               setData(temp_data);
             }}
-          ></TouchableOpacity>
+          />
         </View>
 
         <View style={styles.reroll}>
@@ -138,7 +141,7 @@ const ChallengesScreen = ({ navigation }) => {
             backgroundColor={"white"}
             textColor={"#60B1B6"}
             borderColor={"#60B1B6"}
-          ></FullButton>
+          />
         </View>
 
         <View style={{ marginTop: "20%" }} />
@@ -150,7 +153,7 @@ const ChallengesScreen = ({ navigation }) => {
           backgroundColor={"#60B1B6"}
           textColor={"white"}
           borderColor={"transparent"}
-        ></FullButton>
+        />
 
         <View
           style={styles.separator}

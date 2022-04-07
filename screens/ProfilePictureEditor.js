@@ -17,7 +17,7 @@ import {
 import ViewShot from "react-native-view-shot";
 
 // ability to draw on the canvas
-// DrawRef needed
+// DrawRef needed, do not remove
 import { Draw, DrawRef } from "@benjeau/react-native-draw";
 import {
   getStorage,
