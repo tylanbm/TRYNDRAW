@@ -1,6 +1,6 @@
 # *TRYNDRAW*
 
-![logo](/readme_resources/logo.jpg)
+<img width=25% src="/readme_resources/logo.jpg" />
 
 *TRYNDRAW* is a social-lite drawing platform. Users are given randomly generated prompts that depict funny senarios. Then they are tasked to "try and draw" these prompts relying on their imagination and humor. Once they are done, the drawing is uploaded onto the platform for their friends and the world to see!
 
@@ -23,35 +23,36 @@ Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
 8. [Creating a Drawing](#creating-drawing)
 9. [The Drawing Selection Screen](#drawing-selection)
 10. [The Canvas Screen](#canvas)
-11. [The Upload Modal](#upload)
-12. [Uploading your drawing](#upload-drawing)
-13. [Back to the Home Tab](#back-home)
-14. [The My Drawings Screen](#my-drawings)
-15. [Creating your own profile image](#create-profile-image)
-16. [The Account Tab](#account)
-17. [The Profile Image Editor Screen](#profile-image-editor)
-18. [Back to the Account and Home Tabs](#back-to-account-and-home)
-19. [Logging out of your account](#logout)
-20. [The LogIn Screen](#login)
-21. [Best wishes and credits](#end)
-22. [Credits](#credits)
+11. [The Clear Canvas Modal](#clear)
+12. [The Upload Modal](#upload)
+13. [Uploading your drawing](#upload-drawing)
+14. [Back to the Home Tab](#back-home)
+15. [The My Drawings Screen](#my-drawings)
+16. [Creating your own profile image](#create-profile-image)
+17. [The Account Tab](#account)
+18. [The Profile Image Editor Screen](#profile-image-editor)
+19. [Back to the Account and Home Tabs](#back-to-account-and-home)
+20. [Logging out of your account](#logout)
+21. [The LogIn Screen](#login)
+22. [Best wishes and credits](#end)
+23. [Credits](#credits)
 
 </details>
 
 
-![speed](/readme_resources/speed_draw.gif)
+<img width=25% src="/readme_resources/logo.jpg" />
 
 
-### The Onboarding Screen <a name="onboarding"></a>
+### 1. The Onboarding Screen <a name="onboarding"></a>
 
-<img width=25% src="/readme_resources/onboarding_screen.png" />
+<img width=35% src="/readme_resources/onboarding_screen.png" />
 
-To get started, tap the "Sign up" button to create an account on *TRYNDRAW*.
+To get started, tap the "Sign up" button to go to the [Sign Up Screen](#signup) to create a *TRYNDRAW* account.
 
 
-### The Sign Up Screen <a name="signup"></a>
+### 2. The Sign Up Screen <a name="signup"></a>
 
-<img width=25% src="/readme_resources/signup_screen.png" />
+<img width=35% src="/readme_resources/signup_screen.png" />
 
 The [Sign Up Screen](#signup) prompts you to enter a unique username, email address and password for your new account. Firebase handles most error cases for authentication, but it misses a few crucial ones. For example, it does not check if your chosen username is unique to other users' usernames, so we implemented the `isUsernameAvailable()` function to handle username query conflicts.
 
@@ -98,16 +99,16 @@ This prevents you and everyone else from creating the same usernames by querying
 After entering a valid username, email and password, you can tap the "Create account" button to go to the [Home Tab](#home).
 
 
-### The Home Tab <a name="home"></a>
+### 3. The Home Tab <a name="home"></a>
 
-<img width=25% src="/readme_resources/home_tab1.png" />
+<img width=35% src="/readme_resources/home_tab.png" />
 
 The [Home Tab](#home) will greet you with a welcome message, a default profile picture and a prompt to start your first drawing. You can also navigate to other tabs at the bottom of the app to view screens such as the [Gallery Tab](#gallery).
 
 
-### The Gallery Tab <a name="gallery"></a>
+### 4. The Gallery Tab <a name="gallery"></a>
 
-<img width=25% src="/readme_resources/gallery_tab.png" />
+<img width=35% src="/readme_resources/gallery_tab.png" />
 
 The [Gallery Tab](#gallery) displays all the uploaded drawings drawn by other users for you to view and comment on with other users. Displaying the drawings requires loading them into a FlatList using our `getURLs()` function.
 
@@ -167,9 +168,9 @@ It also limits how many drawings the screen loads at a time (currently set to 20
 This continues until the screen has loaded all the drawings which then asks if you want to refresh the image list. Pressing the button refreshes the image list. To view a drawing in the [Gallery Tab](#gallery), simply tap on it to go to the [Image Screen](#image).
 
 
-### The Image Screen <a name="image"></a>
+### 5. The Image Screen <a name="image"></a>
 
-![image](/readme_resources/image_screen.jpg)
+<img width=35% src="/readme_resources/image_screen.png" />
 
 The [Image Screen](#image) displays a full-size image of the selected drawing with a back button, a like button and a report button. You can also view the full name of the drawing along with who drew it and its comments section. This screen displays only the first 2 comments using our `get2CommentsData()` function.
 
@@ -224,9 +225,10 @@ It queries into the "uniqueImageNames" collection to fetch its "comments" collec
 This screen also displays the total number of the drawing's comments. If there are n comments, the top of the comments section will say "n Comments." For example, if n=4, it will display "4 Comments." To view all the comments or write a comment of your own, tap either the "View all comments" or "Add a comment" button to display the [Comments Modal](#comments).
 
 
-### The Comments Modal <a name="comments"></a>
+### 6. The Comments Modal <a name="comments"></a>
 
-![comments](/readme_resources/comments_modal.jpg)
+<img width=35% src="/readme_resources/comments_modal1.png" />
+<img width=35% src="/readme_resources/comments_modal2.png" />
 
 The [Comments Modal](#comments) displays all the comments of the current drawing. You can tap on the "Add a comment" field to add your own comment and send it with the blue send button to the right of the input field. You can add as many comments as you want!
 
@@ -235,19 +237,19 @@ Each time you add a comment, the [Image Screen](#image)'s `onSnapshot()` method 
 To return back to the [Gallery Tab](#gallery), simply tap the back button at the top-left of the screen to go back to the [Image Screen](#image), then tap the back button on the image in the top-left.
 
 
-### Exploring the Gallery Tab <a name="explore-gallery"></a>
+### 7. Exploring the Gallery Tab <a name="explore-gallery"></a>
 
 You can continue to view and comment on other drawings as you please. Scrolling downwards sequentially displays 20 more drawings until you reach the end of all the drawings. The screen then gives you the option to refresh all the drawings from the start, possibly displaying newer ones submitted by other users if they have created any. You can also refresh the screen by scrolling upwards at the top of the [Gallery](#gallery)'s image list.
 
 
-### Creating a drawing <a name="creating-drawing"></a>
+### 8. Creating a drawing <a name="creating-drawing"></a>
 
 Do you want to create your own drawing? Go to the [Home Tab](#home) and tap either the big button in the middle saying "You have no drawings" or the "Start drawing" button at the bottom of the screen to take you to the [Drawing Selection Screen](#drawing-selection).
 
 
-### The Drawing Selection Screen <a name="drawing-selection"></a>
+### 9. The Drawing Selection Screen <a name="drawing-selection"></a>
 
-<img width=25% src="/readme_resources/drawingselection_screen.png" />
+<img width=35% src="/readme_resources/drawingselection_screen.png" />
 
 The [Drawing Selection Screen](#drawing-selection) gives you a list of randomly generated 3-word prompts containing 2 adjectives and a noun. These are the same style as the drawing titles in the [Gallery Tab](#gallery). Whichever one you select will be the drawing you will *TRY AND DRAW*! If you do not like the selection given, you can tap the "Reroll selection" button to generate three more 3-word prompts using our `reroll()` function.
 
@@ -275,23 +277,32 @@ It creates a temporary copy of the prompt list, generating 3 more prompts for th
 When you have decided on your prompt, you can then tap the "Start drawing" button to go to the [Canvas Screen](#canvas).
 
 
-### The Canvas Screen <a name="canvas"></a>
+### 10. The Canvas Screen <a name="canvas"></a>
 
-<img width=25% src="/readme_resources/canvas_screen.png" />
+<img width=35% src="/readme_resources/canvas_screen.png" />
 
 The [Canvas Screen](#canvas) provides many different tools for you to draw your best representation of your selected prompt. The screen displays your selected prompt at the top of the screen so you do not forget what you are drawing. In the middle of the screen is the canvas itself, giving you ample room for you to draw as large and detailed of a drawing as you want.
 
-At the top and bottom of the screen are your tools. The top features 23 different colours for you to use. The bottom features a brush utensil, an eraser, an Undo button, a brush thickness slider, an Undo all button and an Upload button. When you are done drawing, tap the Upload button to display the [Upload Modal](#upload).
+At the top and bottom of the screen are your tools. The top features 23 different colours for you to use. The bottom features a brush utensil, an eraser, an Undo button, a brush thickness slider, an Undo all button and an Upload button. If you are unsatisfied with your current drawing, you can tap the Undo all button to bring up the [Clear Canvas Modal](#clear).
 
 
-### The Upload Modal <a name="upload"></a>
+### 11. The Clear Canvas Modal <a name="clear"></a>
+   
+<img width=35% src="/readme_resources/clear_modal.png" />
+   
+The [Clear Canvas Modal](#clear) gives you 2 options. The "Yes" button clears the entire canvas to restart your drawing. The "No" button keeps your current drawing. Both buttons bring down the modal once you select one of them.
+   
+When you are done drawing, tap the Upload button to display the [Upload Modal](#upload).
 
-![upload](/readme_resources/upload_modal.jpg)
+
+### 12. The Upload Modal <a name="upload"></a>
+
+<img width=35% src="/readme_resources/upload_modal.png" />
 
 You can choose one of the 3 options the [Upload Modal](#upload) provides. You can upload your drawing and exit to the [Home Tab](#home), stay to continue your drawing or delete the drawing and exit to the [Home Tab](#home).
 
 
-### Uploading your drawing <a name="upload-drawing"></a>
+### 13. Uploading your drawing <a name="upload-drawing"></a>
 
 Tapping the "Upload drawing and exit" button runs the `captureViewShot()` function before returning you to the [Home Tab](#home).
 
@@ -340,9 +351,9 @@ Tapping the "Upload drawing and exit" button runs the `captureViewShot()` functi
 This uploads your new drawing as an image to the storage and then to the database with the image's data. This is crucial for retrieving the image's data for the [Image Screen](#image) and ordering the images in batches of 20 for the [Gallery Tab](#gallery). It first gets the uri of your drawing's viewShot and uploads it as a blob to the "testImages" folder in storage. It then uploads the image data (user ID, username, image title and timestamp) to the database so it can retrieve the image with all its data from anywhere in the app.
 
 
-### Back to the Home Tab <a name="back-home"></a>
+### 14. Back to the Home Tab <a name="back-home"></a>
 
-Returning to the [Home Tab](#home) will eventually replace the "You have no drawings" button with your uploaded drawing. It will also show a "View all" button to the right of your drawing with a big + icon. This happens due to the [Home Tab](#home)'s `onSnapshot()` function for showing your drawings.
+Returning to the [Home Tab](#home) will soon replace the "You have no drawings" button with your uploaded drawing. It will also show a "View all" button to the right of your drawing with a big + icon. This happens due to the [Home Tab](#home)'s `onSnapshot()` function for showing your drawings.
 
 <details open><summary>Home Tab: onSnapshot() for drawings</summary>
    
@@ -391,9 +402,9 @@ Uploading a drawing always runs the `onSnapshot()` function because your newest 
 You can create as many drawings as you want! However, the [Home Tab](#home) will display only your 2 newest drawings to prevent clutter. To view all your drawings, tap either the "View all" button at the top right of the drawings list or to the right of your first 2 drawings to go to the My Drawings Screen.
 
 
-### The My Drawings Screen <a name="my-drawings"></a>
+### 15. The My Drawings Screen <a name="my-drawings"></a>
 
-<img width=25% src="/readme_resources/mydrawings_screen.png" />
+<img width=35% src="/readme_resources/mydrawings_screen.png" />
 
 The [My Drawings Screen](#my-drawings) will display all your drawings in chronological order. You can again tap to view them in the [Image Screen](#image). You can also delete them with the Delete button at the bottom right of the image which runs the `onDeleteObject()` function.
    
@@ -433,21 +444,21 @@ While we do not need to delete your drawing from storage, it is good practice. I
 If the drawing you delete is one of your 2 newest, the [Home Tab](#home) will call `onSnapshot()` to refresh your 2 newest drawings.
 
 
-### Creating your own profile image <a name="create-profile-image"></a>
+### 16. Creating your own profile image <a name="create-profile-image"></a>
 
 You may have noticed some users have unique profile images when viewing their drawings in the [Gallery Tab](#gallery). To create your own profile image, first tap the "Account" tab to go to the [Account Tab](#account).
 
 
-### The Account Tab <a name="account"></a>
+### 17. The Account Tab <a name="account"></a>
 
-![account](/readme_resources/account_tab.jpg)
+<img width=35% src="/readme_resources/account_tab.png" />
 
 The [Account Tab](#account) will show your default profile image along with "Edit profile image" and "Sign out" buttons. Tap on the "Edit profile image" button to go to the [Profile Image Editor Screen](#profile-image-editor).
 
 
-### The Profile Image Editor Screen <a name="profile-image-editor"></a>
+### 18. The Profile Image Editor Screen <a name="profile-image-editor"></a>
 
-![profile-image-editor](/readme_resources/profileimageeditor_screen.jpg)
+<img width=35% src="/readme_resources/profileimageeditor_screen.png" />
 
 The [Profile Image Editor Screen](#profile-image-editor) is the same as the [Canvas Screen](#canvas) but with "Your profile photo" displayed at the top. You can draw whatever you want as your unique profile image!
 
@@ -501,7 +512,7 @@ This `captureViewShot()` function is very similar to the `captureViewShot()` fun
 Thus, unlike the [Canvas Screen](#canvas) that creates a brand new image with a new ID with your new drawing, there is no additional storage allocation for your profile image. It is set once you create a profile image and it never changes. No matter how many times you create a new profile image, we do not need anymore database nor storage allocation. If an image is size k, we save k storage space with each new profile image creation any user creates.
 
 
-### Back to the Account and Home Tabs <a name="back-to-account-and-home"></a>
+### 19. Back to the Account and Home Tabs <a name="back-to-account-and-home"></a>
 
 After tapping the "Upload profile photo and exit" button in the [Profile Picture Editor Screen](#profile-image-editor), you will go back to the [Account Tab](#account) and it along with the [Home Tab](#home) will set your profile image by running their own `onSnapshot()` functions. The `onSnapshot()` functions are the same on both screens. This means the [Home Tab](#home) has 2 `onSnapshot()` functions: one for updating your 2 newest drawings and another for updating your profile image.
    
@@ -548,26 +559,26 @@ This `onSnapshot()` function is conceptually the same as the other `onSnapshot()
 Your newly created profile image will replace your default profile image on your [Account Tab](#account) and [Home Tab](#home) along with the drawings you drew and comments you wrote. However, you will initially have only 2 API calls: one for the [Account Tab](#account) and another for the [Home Tab](#home). More API calls will happen when you go to the [Image Screen](#image) but that is the same as before you set your profile image. You can now display your unique profile image to other users just like they can with their own profile images!
 
 
-### Logging out of your account <a name="logout"></a>
+### 20. Logging out of your account <a name="logout"></a>
 
 If you ever wish to sign out of your account, simply tap the "Sign out" button on the [Account Tab](#account) to go back to the [Onboarding Screen](#onboarding). You can then tap the "Login" button to go to the [LogIn Screen](#login).
 
 
-### The LogIn Screen <a name="login"></a>
+### 21. The LogIn Screen <a name="login"></a>
 
-<img width=25% src="/readme_resources/login_screen.png" />
+<img width=35% src="/readme_resources/login_screen.png" />
 
 You can use the [LogIn Screen](#login) to log back into your account using your email and password. If you want to create a new account instead, you can tap the "Don't have an account?" button to go back to the [Sign Up](#signup) Screen.
 
 
-### Best wishes! <a name="end"></a>
+### 22. Best wishes! <a name="end"></a>
 
 We hope you enjoy *TRYNDRAW* to express and exercise your creativity and share it with others!
 
 Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
 
 
-### Credits <a name="credits"></a>
+### 23. Credits <a name="credits"></a>
 
 <img width=25% src="/readme_resources/tylan.png" />
 
