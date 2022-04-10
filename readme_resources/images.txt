@@ -1,1 +1,0 @@
-All the images in this directory are to be used in README.md file.
