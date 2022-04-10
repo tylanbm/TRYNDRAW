@@ -44,14 +44,14 @@ Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
 
 ### The Onboarding Screen <a name="onboarding"></a>
 
-![onboarding](/readme_resources/onboarding_screen.png)
+<img width=25% src="/readme_resources/onboarding_screen.png" />
 
 To get started, tap the "Sign up" button to create an account on *TRYNDRAW*.
 
 
 ### The Sign Up Screen <a name="signup"></a>
 
-![signup](/readme_resources/signup_screen.png)
+<img width=25% src="/readme_resources/signup_screen.png" />
 
 The [Sign Up Screen](#signup) prompts you to enter a unique username, email address and password for your new account. Firebase handles most error cases for authentication, but it misses a few crucial ones. For example, it does not check if your chosen username is unique to other users' usernames, so we implemented the `isUsernameAvailable()` function to handle username query conflicts.
 
@@ -100,14 +100,14 @@ After entering a valid username, email and password, you can tap the "Create acc
 
 ### The Home Tab <a name="home"></a>
 
-![](/readme_resources/home_tab.jpg)
+<img width=25% src="/readme_resources/home_tab1.png" />
 
 The [Home Tab](#home) will greet you with a welcome message, a default profile picture and a prompt to start your first drawing. You can also navigate to other tabs at the bottom of the app to view screens such as the [Gallery Tab](#gallery).
 
 
 ### The Gallery Tab <a name="gallery"></a>
 
-![gallery](/readme_resources/gallery_tab.png)
+<img width=25% src="/readme_resources/gallery_tab.png" />
 
 The [Gallery Tab](#gallery) displays all the uploaded drawings drawn by other users for you to view and comment on with other users. Displaying the drawings requires loading them into a FlatList using our `getURLs()` function.
 
@@ -247,7 +247,7 @@ Do you want to create your own drawing? Go to the [Home Tab](#home) and tap eith
 
 ### The Drawing Selection Screen <a name="drawing-selection"></a>
 
-![drawing-selection](/readme_resources/drawingselection_screen.png)
+<img width=25% src="/readme_resources/drawingselection_screen.png" />
 
 The [Drawing Selection Screen](#drawing-selection) gives you a list of randomly generated 3-word prompts containing 2 adjectives and a noun. These are the same style as the drawing titles in the [Gallery Tab](#gallery). Whichever one you select will be the drawing you will *TRY AND DRAW*! If you do not like the selection given, you can tap the "Reroll selection" button to generate three more 3-word prompts using our `reroll()` function.
 
@@ -277,7 +277,7 @@ When you have decided on your prompt, you can then tap the "Start drawing" butto
 
 ### The Canvas Screen <a name="canvas"></a>
 
-![canvas](/readme_resources/canvas_screen.png)
+<img width=25% src="/readme_resources/canvas_screen.png" />
 
 The [Canvas Screen](#canvas) provides many different tools for you to draw your best representation of your selected prompt. The screen displays your selected prompt at the top of the screen so you do not forget what you are drawing. In the middle of the screen is the canvas itself, giving you ample room for you to draw as large and detailed of a drawing as you want.
 
@@ -393,7 +393,7 @@ You can create as many drawings as you want! However, the [Home Tab](#home) will
 
 ### The My Drawings Screen <a name="my-drawings"></a>
 
-![my-drawings](/readme_resources/mydrawings_screen.png)
+<img width=25% src="/readme_resources/mydrawings_screen.png" />
 
 The [My Drawings Screen](#my-drawings) will display all your drawings in chronological order. You can again tap to view them in the [Image Screen](#image). You can also delete them with the Delete button at the bottom right of the image which runs the `onDeleteObject()` function.
    
@@ -555,7 +555,7 @@ If you ever wish to sign out of your account, simply tap the "Sign out" button o
 
 ### The LogIn Screen <a name="login"></a>
 
-![login](/readme_resources/login_screen.png)
+<img width=25% src="/readme_resources/login_screen.png" />
 
 You can use the [LogIn Screen](#login) to log back into your account using your email and password. If you want to create a new account instead, you can tap the "Don't have an account?" button to go back to the [Sign Up](#signup) Screen.
 
