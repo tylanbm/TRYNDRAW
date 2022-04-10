@@ -15,11 +15,7 @@ import {
 import { auth } from "../firebaseConfig";
 
 // import firebase storage
-import {
-  getStorage,
-  ref,
-  getDownloadURL
-} from "firebase/storage";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 // import Firestore docs
 import {
@@ -49,7 +45,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import ImageButton from "../components/ImageButton";
 import ProfileImage from "../components/ProfileImage";
 
-
 // get Firebase database and storage
 const db = getFirestore();
 const storage = getStorage();
@@ -59,7 +54,6 @@ const imagesRef = collection(db, "uniqueImageNames");
 const size = "20%";
 
 const HomeScreen = ({ navigation }) => {
-
   // user auth
   const user = auth.currentUser;
   const username = user.displayName;
@@ -185,7 +179,6 @@ const HomeScreen = ({ navigation }) => {
   });
   if (!fontsLoaded) return <AppLoading />;
 
-
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
       <View style={styles.container}>
@@ -219,13 +212,11 @@ const HomeScreen = ({ navigation }) => {
             onPress={() => navigation.navigate("Drawing Selection")}
             style={[styles.flatEmpty, { height: "31%" }]}
           >
-            <View style={{ marginVertical: "10%" }}>
-              <Text style={styles.flatEmptyText}>
-                You have no drawings.
-              </Text>
+            <View style={{ marginVertical: "4%", marginHorizontal: "4%" }}>
+              <Text style={styles.flatEmptyText}>Nothing here yet...</Text>
               <Ionicons
                 name="add-outline"
-                size={96}
+                size={90}
                 color="#60B1B6"
                 style={styles.flatEmptyIcon}
               />
@@ -285,9 +276,7 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen;
 
-
 const styles = StyleSheet.create({
-
   // entire screen
   container: {
     flex: 1,
@@ -348,12 +337,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#60B1B6",
     borderRadius: 0,
+    justifyContent: "center",
   },
 
   // FlatList empty text
   flatEmptyText: {
     textAlign: "center",
-    fontSize: 24,
+    justifyContent: "center",
+    fontSize: 18,
     fontFamily: "Medium",
     color: "#60B1B6",
   },
