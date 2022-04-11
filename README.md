@@ -6,7 +6,7 @@
 
 *TRYNDRAW* is powered by [React Native](https://reactnative.dev/) and [Firebase](https://firebase.google.com/).
 
-Check out *TRYNDRAW* here: https://github.com/tylanbm/TRYNDRAW
+Check out *TRYNDRAW* here: http://tryndraw.com/
 
 
 ## Table of Contents
