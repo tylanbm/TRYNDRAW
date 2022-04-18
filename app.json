@@ -4,7 +4,7 @@
     "slug": "TRYNDRAW",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "backgroundColor": "#ffffff",
     "splash": {
       "image": "./assets/splash.png",
