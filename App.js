@@ -39,7 +39,9 @@ import OnboardingScreen from "./screens/OnboardingScreen";
 //Android
 import { NativeModules } from "react-native";
 const { StatusBarManager } = NativeModules;
-const height = StatusBarManager.HEIGHT;
+//const height = StatusBarManager.HEIGHT;
+const height = 33;
+
 //IOS
 let iosHeight = 44;
 const majorVersionIOS = parseInt(Platform.Version, 10);
